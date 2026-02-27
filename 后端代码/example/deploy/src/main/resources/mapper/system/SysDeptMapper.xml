@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mock.example.modules.system.mapper.SysDeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mock.example.modules.system.entity.model.SysDept">
+        <id column="dept_id" property="deptId" />
+        <result column="parent_id" property="parentId" />
+        <result column="ancestors" property="ancestors" />
+        <result column="dept_name" property="deptName" />
+        <result column="order_num" property="orderNum" />
+        <result column="leader" property="leader" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+    <sql id="Table">
+        sys_dept d
+    </sql>
+
+    <select id="selectDeptList"  resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from <include refid="Table"/>
+        where d.del_flag = '0'
+        <if test="deptId != null and deptId != 0">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="parentId != null and parentId != 0">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="deptName != null and deptName != ''">
+            AND dept_name like concat('%', #{deptName}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        order by d.parent_id, d.order_num
+    </select>
+
+    <select id="selectChildrenDeptById"  resultMap="BaseResultMap">
+        select * from sys_dept where find_in_set(#{deptId}, ancestors)
+    </select>
+
+    <select id="selectDeptListByRoleId" resultType="Integer">
+        select d.dept_id
+        from sys_dept d
+        left join sys_role_dept rd on d.dept_id = rd.dept_id
+        where rd.role_id = #{roleId}
+        <if test="deptCheckStrictly">
+            and d.dept_id not in (select d.parent_id from sys_dept d inner join sys_role_dept rd on d.dept_id = rd.dept_id and rd.role_id = #{roleId})
+        </if>
+        order by d.parent_id, d.order_num
+    </select>
+
+    <select id="selectNormalChildrenDeptById" parameterType="Long" resultType="int">
+        select count(*) from sys_dept where status = 0 and del_flag = '0' and find_in_set(#{deptId}, ancestors)
+    </select>
+
+    <update id="updateDeptChildren" parameterType="java.util.List">
+        update sys_dept set ancestors =
+        <foreach collection="depts" item="item" index="index"
+                 separator=" " open="case dept_id" close="end">
+            when #{item.deptId} then #{item.ancestors}
+        </foreach>
+        where dept_id in
+        <foreach collection="depts" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.deptId}
+        </foreach>
+    </update>
+
+</mapper>

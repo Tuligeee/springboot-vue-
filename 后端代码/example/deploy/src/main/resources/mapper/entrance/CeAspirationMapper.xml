@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mock.example.modules.entrance.mapper.CeAspirationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mock.example.modules.entrance.entity.model.CeAspiration">
+        <id column="id" property="id" />
+        <result column="student_no" property="studentNo" />
+        <result column="entrance_year" property="entranceYear" />
+        <result column="created_time" property="createdTime" />
+        <result column="created_user" property="createdUser" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="updated_user" property="updatedUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, student_no, entrance_year, created_time, created_user, updated_time, updated_user
+    </sql>
+
+</mapper>
