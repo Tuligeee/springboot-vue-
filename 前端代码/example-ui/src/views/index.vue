@@ -87,6 +87,7 @@
 
 <script>
 import { listBanner } from "@/api/entrance/banner";
+import { listNews } from "@/api/entrance/news";
 
 export default {
   name: "Index",
@@ -94,11 +95,13 @@ export default {
     return {
       // 存放轮播图的数据
       bannerList: [],
+      newsList: [],// 增加这个变量用来存真实的资讯数据
     };
   },
   created() {
     // 页面一加载，就去拉取轮播图数据
     this.getBannerList();
+    this.getNewsList(); // 页面创建时去后台拉取最新资讯
   },
   methods: {
     /** 查询轮播图列表 */
@@ -109,6 +112,7 @@ export default {
         this.bannerList = response.rows || response.data || [];
       });
     }
+
   }
 };
 </script>
