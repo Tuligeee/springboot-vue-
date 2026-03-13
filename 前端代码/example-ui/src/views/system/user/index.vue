@@ -1,32 +1,13 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--部门数据-->
-      <el-col :span="4" :xs="24">
-        <div class="head-container">
-          <el-input
-            v-model="deptName"
-            placeholder="请输入部门名称"
-            clearable
-            size="small"
-            prefix-icon="el-icon-search"
-            style="margin-bottom: 20px"
-          />
-        </div>
-        <div class="head-container">
-          <el-tree
-            :data="deptOptions"
-            :props="defaultProps"
-            :expand-on-click-node="false"
-            :filter-node-method="filterNode"
-            ref="tree"
-            default-expand-all
-            @node-click="handleNodeClick"
-          />
-        </div>
-      </el-col>
-      <!--用户数据-->
-      <el-col :span="20" :xs="24">
+      <!-- 隐藏部门数据/高中学校树，使界面更直接 -->
+      <!-- <el-col :span="4" :xs="24">
+        ... (树状图逻辑)
+      </el-col> -->
+      
+      <!--用户数据占满全屏-->
+      <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="用户名称" prop="userName">
             <el-input
@@ -47,6 +28,16 @@
               style="width: 240px"
               @keyup.enter.native="handleQuery"
             />
+          </el-form-item>
+          <el-form-item label="所属学校" prop="collegeId">
+            <el-select v-model="queryParams.collegeId" placeholder="请选择学校" clearable size="small" style="width: 240px">
+              <el-option
+                v-for="item in collegeOptions"
+                :key="item.id"
+                :label="item.collegeName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="状态" prop="status">
             <el-select
@@ -205,20 +196,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="班级" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属班级" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
             <el-form-item label="手机号码" prop="mobile">
               <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -269,6 +248,18 @@
                   :label="item.roleName"
                   :value="item.roleId"
                   :disabled="item.status == 1"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="所属学校">
+              <el-select v-model="form.collegeId" placeholder="请选择学校" clearable>
+                <el-option
+                  v-for="item in collegeOptions"
+                  :key="item.id"
+                  :label="item.collegeName"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -324,6 +315,7 @@
 import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from "@/api/system/user";
 import { getToken } from "@/utils/auth";
 import { treeselect } from "@/api/system/dept";
+import { listCollege } from "@/api/entrance/college"; // 引入学校列表接口
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -352,6 +344,8 @@ export default {
       title: "",
       // 部门树选项
       deptOptions: undefined,
+      // 学校选项
+      collegeOptions: [],
       // 是否显示弹出层
       open: false,
       // 部门名称
@@ -403,7 +397,7 @@ export default {
         { key: 0, label: `用户编号`, visible: true },
         { key: 1, label: `用户名称`, visible: true },
         { key: 2, label: `用户昵称`, visible: true },
-        { key: 3, label: `部门`, visible: true },
+        { key: 3, label: `部门`, visible: false }, // 隐藏部门列
         { key: 4, label: `手机号码`, visible: true },
         { key: 5, label: `状态`, visible: true },
         { key: 6, label: `创建时间`, visible: true }
@@ -456,6 +450,10 @@ export default {
     this.getConfigKey("sys.user.initPassword").then(response => {
       this.initPassword = response.msg;
     });
+    // 加载学校列表
+    listCollege().then(response => {
+      this.collegeOptions = response.rows;
+    });
   },
   methods: {
     /** 查询用户列表 */
@@ -506,22 +504,24 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
-        nickName: undefined,
-        password: undefined,
-        mobile: undefined,
-        email: undefined,
-        sex: undefined,
-        status: "0",
-        remark: undefined,
-        postIds: [],
-        roleIds: []
-      };
-      this.resetForm("form");
+    this.form = {
+      userId: undefined,
+      deptId: undefined,
+      collegeId: undefined, // 重置学校ID
+      userName: undefined,
+      nickName: undefined,
+      password: undefined,
+      mobile: undefined,
+      email: undefined,
+      sex: undefined,
+      status: "0",
+      remark: undefined,
+      postIds: [],
+      roleIds: []
+    };
+    this.resetForm("form");
     },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -561,7 +561,7 @@ export default {
         this.roleOptions = response.data.roles;
         this.open = true;
         this.title = "添加用户";
-        this.form.password = this.initPassword;
+        this.form.password = "123456"; // 强制设为 123456
       });
     },
     /** 修改按钮操作 */

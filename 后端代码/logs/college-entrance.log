@@ -3968,3 +3968,869 @@ java.lang.NumberFormatException: For input string: "null"
 2026-02-28 12:14:14.196 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
 2026-02-28 12:14:14.199 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 5.051 seconds (JVM running for 6.097)
 2026-02-28 12:14:39.949 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-28 12:14:39.955 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-02-28 12:14:39.960 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 5 ms
+2026-02-28 17:52:37.344 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-02-28 17:52:37.370 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-02-28 17:52:37.371 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-02-28 17:52:37.404 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 10:43:37.478 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 10:43:37.501 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 25124 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 10:43:37.502 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 10:43:38.792 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@4bcaa195' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 10:43:38.796 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 10:43:38.981 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 10:43:38.988 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 10:43:38.989 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 10:43:38.989 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 10:43:39.109 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 10:43:39.109 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1576 ms
+2026-03-13 10:43:39.325 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 10:43:39.435 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 10:43:41.323 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 10:43:41.649 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3e39f08c, org.springframework.security.web.context.SecurityContextPersistenceFilter@5ee6fdc4, org.springframework.security.web.header.HeaderWriterFilter@517a46f3, org.springframework.web.filter.CorsFilter@16134476, org.springframework.web.filter.CorsFilter@16134476, org.springframework.security.web.authentication.logout.LogoutFilter@b32e983, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@2251b3bc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f9f8d23, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@39a3984c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@16e07bae, org.springframework.security.web.session.SessionManagementFilter@965bcbc, org.springframework.security.web.access.ExceptionTranslationFilter@fd4459b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@46894dc5]
+2026-03-13 10:43:42.169 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 10:43:42.187 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 10:43:42.191 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 5.04 seconds (JVM running for 6.263)
+2026-03-13 10:45:55.917 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 10:45:55.917 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 10:45:55.934 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 17 ms
+2026-03-13 11:19:04.460 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 11:19:04.475 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 2920 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 11:19:04.476 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 11:19:05.710 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@6d2a2560' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 11:19:05.713 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 11:19:05.871 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 11:19:05.877 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 11:19:05.877 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 11:19:05.878 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 11:19:05.967 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 11:19:05.967 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1464 ms
+2026-03-13 11:19:06.176 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 11:19:06.278 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 11:19:08.150 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 11:19:08.426 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@c82d925, org.springframework.security.web.context.SecurityContextPersistenceFilter@6e7e0259, org.springframework.security.web.header.HeaderWriterFilter@965bcbc, org.springframework.web.filter.CorsFilter@1e5eb20a, org.springframework.web.filter.CorsFilter@1e5eb20a, org.springframework.security.web.authentication.logout.LogoutFilter@2da5fdc, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@3aed69dd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5501d1c8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@16df9bde, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@55c03e4, org.springframework.security.web.session.SessionManagementFilter@4d2f9e3c, org.springframework.security.web.access.ExceptionTranslationFilter@18483b8b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4571cebe]
+2026-03-13 11:19:09.009 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 11:19:09.027 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 11:19:09.030 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 4.873 seconds (JVM running for 5.988)
+2026-03-13 11:23:29.464 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 11:23:29.464 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 11:23:29.472 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 8 ms
+2026-03-13 11:55:17.325 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 11:55:17.336 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 11:55:17.336 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 11:55:17.342 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 11:55:24.948 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 11:55:24.966 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 23604 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 11:55:24.967 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 11:55:26.166 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@53c1179a' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 11:55:26.169 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 11:55:26.369 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 11:55:26.376 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 11:55:26.377 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 11:55:26.377 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 11:55:26.472 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 11:55:26.472 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1477 ms
+2026-03-13 11:55:26.691 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 11:55:26.800 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 11:55:28.657 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 11:55:28.936 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@f810c18, org.springframework.security.web.context.SecurityContextPersistenceFilter@70c205bf, org.springframework.security.web.header.HeaderWriterFilter@31e7afde, org.springframework.web.filter.CorsFilter@39941489, org.springframework.web.filter.CorsFilter@39941489, org.springframework.security.web.authentication.logout.LogoutFilter@6d3ad37a, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@61ff6a49, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2520aa05, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6f240187, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@59f3426f, org.springframework.security.web.session.SessionManagementFilter@5fc7255c, org.springframework.security.web.access.ExceptionTranslationFilter@7d626f2, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@70b196d3]
+2026-03-13 11:55:29.465 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 11:55:29.482 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 11:55:29.484 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 4.84 seconds (JVM running for 5.837)
+2026-03-13 11:55:50.168 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 11:55:50.168 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 11:55:50.175 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 7 ms
+2026-03-13 11:57:49.309 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 11:57:49.320 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 11:57:49.320 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 11:57:49.322 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 11:57:53.120 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 11:57:53.134 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 2576 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 11:57:53.134 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 11:57:54.254 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@3811510' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 11:57:54.259 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 11:57:54.424 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 11:57:54.430 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 11:57:54.431 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 11:57:54.431 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 11:57:54.522 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 11:57:54.522 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1360 ms
+2026-03-13 11:57:54.722 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 11:57:54.825 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 11:57:56.654 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 11:57:56.927 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3cb195dd, org.springframework.security.web.context.SecurityContextPersistenceFilter@460f1cdb, org.springframework.security.web.header.HeaderWriterFilter@312f3050, org.springframework.web.filter.CorsFilter@74b86971, org.springframework.web.filter.CorsFilter@74b86971, org.springframework.security.web.authentication.logout.LogoutFilter@46894dc5, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@2287395, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@349f3ff7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1e606f64, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6dc2279c, org.springframework.security.web.session.SessionManagementFilter@11228bee, org.springframework.security.web.access.ExceptionTranslationFilter@23321be7, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3e2c4d4b]
+2026-03-13 11:57:57.485 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 11:57:57.502 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 11:57:57.504 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 4.695 seconds (JVM running for 5.873)
+2026-03-13 11:58:04.703 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 11:58:04.703 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 11:58:04.711 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 8 ms
+2026-03-13 12:00:51.318 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:00:51.327 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 12:00:51.327 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 12:00:51.330 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 12:00:54.944 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 12:00:54.959 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 5772 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 12:00:54.959 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 12:00:56.060 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@2e7157c7' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:00:56.063 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:00:56.227 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 12:00:56.233 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:00:56.233 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 12:00:56.233 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 12:00:56.320 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 12:00:56.320 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1334 ms
+2026-03-13 12:00:56.530 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 12:00:56.637 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 12:00:58.502 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:00:58.782 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@47797401, org.springframework.security.web.context.SecurityContextPersistenceFilter@2c0dca15, org.springframework.security.web.header.HeaderWriterFilter@652b3733, org.springframework.web.filter.CorsFilter@ac91282, org.springframework.web.filter.CorsFilter@ac91282, org.springframework.security.web.authentication.logout.LogoutFilter@460f1cdb, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@7bbfc5ff, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2da5fdc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1242d96b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@702f4124, org.springframework.security.web.session.SessionManagementFilter@17d816b3, org.springframework.security.web.access.ExceptionTranslationFilter@646e6d07, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5432dca2]
+2026-03-13 12:00:59.294 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:00:59.310 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 12:00:59.313 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 4.645 seconds (JVM running for 5.668)
+2026-03-13 12:01:06.104 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 12:01:06.104 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 12:01:06.112 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 8 ms
+2026-03-13 12:01:15.385 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:01:15.394 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 12:01:15.394 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 12:01:15.397 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 12:01:19.600 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 12:01:19.618 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 23152 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 12:01:19.618 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 12:01:20.902 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@25d0cb3a' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:01:20.907 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:01:21.072 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 12:01:21.082 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:01:21.082 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 12:01:21.082 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 12:01:21.171 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 12:01:21.171 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1516 ms
+2026-03-13 12:01:21.443 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 12:01:21.588 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 12:01:23.841 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:01:24.181 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@604f376a, org.springframework.security.web.context.SecurityContextPersistenceFilter@5be7b749, org.springframework.security.web.header.HeaderWriterFilter@39a3984c, org.springframework.web.filter.CorsFilter@7698b7a4, org.springframework.web.filter.CorsFilter@7698b7a4, org.springframework.security.web.authentication.logout.LogoutFilter@377e573a, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@68ab6ab0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2ec5cc14, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5560b64d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5432dca2, org.springframework.security.web.session.SessionManagementFilter@16df9bde, org.springframework.security.web.access.ExceptionTranslationFilter@29c244e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7a0f06ad]
+2026-03-13 12:01:24.770 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:01:24.787 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 12:01:24.790 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 5.542 seconds (JVM running for 6.957)
+2026-03-13 12:01:26.200 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 12:01:26.201 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 12:01:26.217 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 16 ms
+2026-03-13 12:05:47.037 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:05:47.046 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 12:05:47.046 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 12:05:47.050 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 12:05:50.987 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 12:05:51.002 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 23096 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 12:05:51.002 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 12:05:52.090 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@5f631ca0' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:05:52.093 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:05:52.253 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 12:05:52.258 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:05:52.259 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 12:05:52.259 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 12:05:52.343 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 12:05:52.343 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1313 ms
+2026-03-13 12:05:52.539 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 12:05:52.639 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 12:05:54.464 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:05:54.739 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@79ba0285, org.springframework.security.web.context.SecurityContextPersistenceFilter@42f9873e, org.springframework.security.web.header.HeaderWriterFilter@5529522f, org.springframework.web.filter.CorsFilter@7fda2001, org.springframework.web.filter.CorsFilter@7fda2001, org.springframework.security.web.authentication.logout.LogoutFilter@5501d1c8, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@604d23fa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@24fc2c80, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@95cecc5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6df2a206, org.springframework.security.web.session.SessionManagementFilter@7fe87c0e, org.springframework.security.web.access.ExceptionTranslationFilter@126a9a3d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@20a47036]
+2026-03-13 12:05:55.256 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:05:55.273 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 12:05:55.276 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 4.595 seconds (JVM running for 5.835)
+2026-03-13 12:06:07.062 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 12:06:07.065 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 12:06:07.072 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 7 ms
+2026-03-13 12:07:43.713 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:07:43.722 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 12:07:43.722 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 12:07:43.724 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 12:07:47.797 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 12:07:47.817 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 24564 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 12:07:47.817 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 12:07:49.083 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@2f4b98f6' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:07:49.088 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:07:49.346 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 12:07:49.355 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:07:49.358 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 12:07:49.359 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 12:07:49.469 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 12:07:49.469 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1616 ms
+2026-03-13 12:07:49.692 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 12:07:49.805 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 12:07:51.844 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:07:52.137 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@64420e34, org.springframework.security.web.context.SecurityContextPersistenceFilter@b32e983, org.springframework.security.web.header.HeaderWriterFilter@48b3b1b8, org.springframework.web.filter.CorsFilter@3c232051, org.springframework.web.filter.CorsFilter@3c232051, org.springframework.security.web.authentication.logout.LogoutFilter@1242d96b, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@3bc69ce9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@16df9bde, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@177ddd24, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@667a467f, org.springframework.security.web.session.SessionManagementFilter@6cc8c13c, org.springframework.security.web.access.ExceptionTranslationFilter@603d25db, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@c82d925]
+2026-03-13 12:07:52.810 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:07:52.828 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 12:07:52.831 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 5.398 seconds (JVM running for 6.652)
+2026-03-13 12:07:53.584 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 12:07:53.584 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 12:07:53.594 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 9 ms
+2026-03-13 12:13:58.077 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:13:58.087 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 12:13:58.087 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 12:13:58.089 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 12:14:02.782 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 12:14:02.804 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 16856 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 12:14:02.805 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 12:14:04.015 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@345cbf40' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:14:04.019 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:14:04.218 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 12:14:04.225 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:14:04.226 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 12:14:04.226 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 12:14:04.316 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 12:14:04.316 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1477 ms
+2026-03-13 12:14:04.544 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 12:14:04.670 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 12:14:06.682 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:14:06.995 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@c82d925, org.springframework.security.web.context.SecurityContextPersistenceFilter@6e7e0259, org.springframework.security.web.header.HeaderWriterFilter@965bcbc, org.springframework.web.filter.CorsFilter@7698b7a4, org.springframework.web.filter.CorsFilter@7698b7a4, org.springframework.security.web.authentication.logout.LogoutFilter@2da5fdc, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@68ab6ab0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5501d1c8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@16df9bde, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@55c03e4, org.springframework.security.web.session.SessionManagementFilter@4d2f9e3c, org.springframework.security.web.access.ExceptionTranslationFilter@18483b8b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4571cebe]
+2026-03-13 12:14:07.614 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:14:07.632 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 12:14:07.636 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 5.237 seconds (JVM running for 6.959)
+2026-03-13 12:14:16.495 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 12:14:16.495 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 12:14:16.502 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 7 ms
+2026-03-13 12:17:01.150 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:17:01.158 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 12:17:01.158 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 12:17:01.162 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 12:17:05.014 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 12:17:05.028 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 16884 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 12:17:05.028 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 12:17:06.105 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@1a47a1e8' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:17:06.110 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 12:17:06.280 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 12:17:06.286 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:17:06.286 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 12:17:06.287 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 12:17:06.384 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 12:17:06.384 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1330 ms
+2026-03-13 12:17:06.601 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 12:17:06.707 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 12:17:08.520 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 12:17:08.785 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@324e8baa, org.springframework.security.web.context.SecurityContextPersistenceFilter@16df9bde, org.springframework.security.web.header.HeaderWriterFilter@29c244e, org.springframework.web.filter.CorsFilter@1e5eb20a, org.springframework.web.filter.CorsFilter@1e5eb20a, org.springframework.security.web.authentication.logout.LogoutFilter@574ebdaf, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@3aed69dd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5be7b749, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@126675fd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1488a861, org.springframework.security.web.session.SessionManagementFilter@b32e983, org.springframework.security.web.access.ExceptionTranslationFilter@48b3b1b8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@14df5253]
+2026-03-13 12:17:09.310 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 12:17:09.328 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 12:17:09.331 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 4.598 seconds (JVM running for 5.76)
+2026-03-13 12:17:17.481 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 12:17:17.482 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 12:17:17.485 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 3 ms
+2026-03-13 14:16:00.593 [[36mhttp-nio-8082-exec-4[0;39m] [[1;31mERROR[0;39m] [[32mc.mock.example.common.config.mvc.GlobalExceptionHandler[0;39m]: 请求地址'/college_entrance/college/myCollege',发生未知异常.
+org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "myCollege"
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:133)
+	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:121)
+	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:167)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:134)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter.doFilterInternal(JwtAuthenticationTokenFilter.java:49)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.NumberFormatException: For input string: "myCollege"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at org.springframework.util.NumberUtils.parseNumber(NumberUtils.java:211)
+	at org.springframework.beans.propertyeditors.CustomNumberEditor.setAsText(CustomNumberEditor.java:115)
+	at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
+	at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
+	at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:73)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:53)
+	at org.springframework.validation.DataBinder.convertIfNecessary(DataBinder.java:693)
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:125)
+	... 95 common frames omitted
+2026-03-13 14:19:09.289 [[36mhttp-nio-8082-exec-10[0;39m] [[1;31mERROR[0;39m] [[32mc.mock.example.common.config.mvc.GlobalExceptionHandler[0;39m]: 请求地址'/college_entrance/college/myCollege',发生未知异常.
+org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "myCollege"
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:133)
+	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:121)
+	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:167)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:134)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter.doFilterInternal(JwtAuthenticationTokenFilter.java:49)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.NumberFormatException: For input string: "myCollege"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at org.springframework.util.NumberUtils.parseNumber(NumberUtils.java:211)
+	at org.springframework.beans.propertyeditors.CustomNumberEditor.setAsText(CustomNumberEditor.java:115)
+	at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
+	at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
+	at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:73)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:53)
+	at org.springframework.validation.DataBinder.convertIfNecessary(DataBinder.java:693)
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:125)
+	... 95 common frames omitted
+2026-03-13 14:24:48.439 [[36mhttp-nio-8082-exec-8[0;39m] [[1;31mERROR[0;39m] [[32mc.mock.example.common.config.mvc.GlobalExceptionHandler[0;39m]: 请求地址'/college_entrance/college/myCollege',发生未知异常.
+org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "myCollege"
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:133)
+	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:121)
+	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:167)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:134)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter.doFilterInternal(JwtAuthenticationTokenFilter.java:49)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.NumberFormatException: For input string: "myCollege"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at org.springframework.util.NumberUtils.parseNumber(NumberUtils.java:211)
+	at org.springframework.beans.propertyeditors.CustomNumberEditor.setAsText(CustomNumberEditor.java:115)
+	at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:429)
+	at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:402)
+	at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:155)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:73)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:53)
+	at org.springframework.validation.DataBinder.convertIfNecessary(DataBinder.java:693)
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:125)
+	... 95 common frames omitted
+2026-03-13 14:43:32.463 [[36mhttp-nio-8082-exec-9[0;39m] [[1;31mERROR[0;39m] [[32mc.mock.example.common.config.mvc.GlobalExceptionHandler[0;39m]: 不允许操作超级管理员角色
+com.mock.example.common.exception.BizException: 不允许操作超级管理员角色
+	at com.mock.example.modules.system.service.SysRoleService.checkAdminRole(SysRoleService.java:226)
+	at com.mock.example.modules.system.service.SysRoleService.editRole(SysRoleService.java:131)
+	at com.mock.example.modules.system.service.SysRoleService$$FastClassBySpringCGLIB$$9c872de8.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at com.mock.example.modules.system.service.SysRoleService$$EnhancerBySpringCGLIB$$531010c3.editRole(<generated>)
+	at com.mock.example.interfaces.controller.system.SysRoleController.edit(SysRoleController.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:920)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:655)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter.doFilterInternal(JwtAuthenticationTokenFilter.java:49)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+2026-03-13 14:46:38.479 [[36mhttp-nio-8082-exec-6[0;39m] [[1;31mERROR[0;39m] [[32mc.mock.example.common.config.mvc.GlobalExceptionHandler[0;39m]: 不允许操作超级管理员角色
+com.mock.example.common.exception.BizException: 不允许操作超级管理员角色
+	at com.mock.example.modules.system.service.SysRoleService.checkAdminRole(SysRoleService.java:226)
+	at com.mock.example.modules.system.service.SysRoleService.editRole(SysRoleService.java:131)
+	at com.mock.example.modules.system.service.SysRoleService$$FastClassBySpringCGLIB$$9c872de8.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at com.mock.example.modules.system.service.SysRoleService$$EnhancerBySpringCGLIB$$531010c3.editRole(<generated>)
+	at com.mock.example.interfaces.controller.system.SysRoleController.edit(SysRoleController.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:920)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:655)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter.doFilterInternal(JwtAuthenticationTokenFilter.java:49)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+2026-03-13 14:50:05.976 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 14:50:05.988 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 14:50:05.988 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 14:50:05.994 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 14:50:16.457 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 14:50:16.486 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 28368 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 14:50:16.487 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 14:50:18.037 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@748f93bb' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 14:50:18.043 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 14:50:18.239 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 14:50:18.247 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 14:50:18.247 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 14:50:18.248 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 14:50:18.354 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 14:50:18.354 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1833 ms
+2026-03-13 14:50:18.618 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 14:50:18.736 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 14:50:20.674 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 14:50:21.017 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@72001c71, org.springframework.security.web.context.SecurityContextPersistenceFilter@100807ca, org.springframework.security.web.header.HeaderWriterFilter@123ca460, org.springframework.web.filter.CorsFilter@3d8d17a3, org.springframework.web.filter.CorsFilter@3d8d17a3, org.springframework.security.web.authentication.logout.LogoutFilter@57f2e67, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@3a4aadf8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5fc7255c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@596afb2f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@e7b0bec, org.springframework.security.web.session.SessionManagementFilter@1958c0d9, org.springframework.security.web.access.ExceptionTranslationFilter@7d4d65f5, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7f4f1536]
+2026-03-13 14:50:21.586 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 14:50:21.605 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 14:50:21.608 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 5.504 seconds (JVM running for 6.688)
+2026-03-13 14:50:28.498 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 14:50:28.498 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 14:50:28.506 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 8 ms
+2026-03-13 15:03:10.783 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 15:03:10.804 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 15:03:10.805 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 15:03:10.815 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+2026-03-13 15:03:15.495 [[36mbackground-preinit[0;39m] [[34mINFO [0;39m] [[32morg.hibernate.validator.internal.util.Version[0;39m]: HV000001: Hibernate Validator 6.0.22.Final
+2026-03-13 15:03:15.513 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Starting WebApplication on DESKTOP-7M1N7N1 with PID 11676 (C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码\example\deploy\target\classes started by Tuilg in C:\Users\Tuilg\OneDrive\Desktop\springboot+vue gaokao\后端代码)
+2026-03-13 15:03:15.513 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: The following profiles are active: dev
+2026-03-13 15:03:16.927 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@25d0cb3a' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 15:03:16.931 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker[0;39m]: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-03-13 15:03:17.155 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat initialized with port(s): 8082 (http)
+2026-03-13 15:03:17.164 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Initializing ProtocolHandler ["http-nio-8082"]
+2026-03-13 15:03:17.164 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardService[0;39m]: Starting service [Tomcat]
+2026-03-13 15:03:17.164 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.catalina.core.StandardEngine[0;39m]: Starting Servlet engine: [Apache Tomcat/9.0.41]
+2026-03-13 15:03:17.286 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring embedded WebApplicationContext
+2026-03-13 15:03:17.286 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.b.w.s.context.ServletWebServerApplicationContext[0;39m]: Root WebApplicationContext: initialization completed in 1743 ms
+2026-03-13 15:03:17.546 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mc.a.d.s.boot.autoconfigure.DruidDataSourceAutoConfigure[0;39m]: Init DruidDataSource
+2026-03-13 15:03:17.679 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} inited
+2026-03-13 15:03:20.101 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Initializing ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 15:03:20.449 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.security.web.DefaultSecurityFilterChain[0;39m]: Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@269308cc, org.springframework.security.web.context.SecurityContextPersistenceFilter@63bca84d, org.springframework.security.web.header.HeaderWriterFilter@627bcd7e, org.springframework.web.filter.CorsFilter@73894c5a, org.springframework.web.filter.CorsFilter@73894c5a, org.springframework.security.web.authentication.logout.LogoutFilter@48106381, com.mock.example.common.config.security.filter.JwtAuthenticationTokenFilter@35d60381, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f6c8d45, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2ffb0d10, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@177ddd24, org.springframework.security.web.session.SessionManagementFilter@191e654, org.springframework.security.web.access.ExceptionTranslationFilter@269c7104, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3c346c45]
+2026-03-13 15:03:21.120 [[36mmain[0;39m] [[34mINFO [0;39m] [[32morg.apache.coyote.http11.Http11NioProtocol[0;39m]: Starting ProtocolHandler ["http-nio-8082"]
+2026-03-13 15:03:21.149 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mo.s.boot.web.embedded.tomcat.TomcatWebServer[0;39m]: Tomcat started on port(s): 8082 (http) with context path ''
+2026-03-13 15:03:21.152 [[36mmain[0;39m] [[34mINFO [0;39m] [[32mcom.mock.example.WebApplication[0;39m]: Started WebApplication in 6.032 seconds (JVM running for 7.356)
+2026-03-13 15:04:28.352 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32mo.a.catalina.core.ContainerBase.[Tomcat].[localhost].[/][0;39m]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-13 15:04:28.353 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Initializing Servlet 'dispatcherServlet'
+2026-03-13 15:04:28.366 [[36mhttp-nio-8082-exec-1[0;39m] [[34mINFO [0;39m] [[32morg.springframework.web.servlet.DispatcherServlet[0;39m]: Completed initialization in 13 ms
+2026-03-13 15:44:22.848 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mo.s.scheduling.concurrent.ThreadPoolTaskExecutor[0;39m]: Shutting down ExecutorService 'threadPoolTaskExecutor'
+2026-03-13 15:44:22.858 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32mcom.alibaba.druid.pool.DruidDataSource[0;39m]: {dataSource-1} closed
+2026-03-13 15:44:22.859 [[36mSpringContextShutdownHook[0;39m] [[34mINFO [0;39m] [[32msys-user[0;39m]: ====关闭后台任务任务线程池====
+2026-03-13 15:44:22.862 [[36mSpringContextShutdownHook[0;39m] [[31mWARN [0;39m] [[32mo.s.context.annotation.CommonAnnotationBeanPostProcessor[0;39m]: Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError

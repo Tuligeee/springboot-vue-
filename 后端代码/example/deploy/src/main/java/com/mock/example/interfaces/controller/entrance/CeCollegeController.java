@@ -73,6 +73,15 @@ public class CeCollegeController extends BaseController {
     }
 
     /**
+     * 获取当前用户管理的学校信息
+     */
+    @ApiOperation(value = "获取当前用户管理的学校信息")
+    @GetMapping("/myCollege")
+    public Response getMyCollege() {
+        return collegeService.getMyCollege();
+    }
+
+    /**
      * 删除院校
      *
      * @param collegeIds 院校id列表
@@ -86,4 +95,3 @@ public class CeCollegeController extends BaseController {
 
 }
 
-  

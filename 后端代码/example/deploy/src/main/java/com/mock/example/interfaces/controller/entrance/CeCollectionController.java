@@ -12,6 +12,7 @@ import com.mock.example.modules.entrance.mapper.CeCollegeMapper;
 import com.mock.example.modules.entrance.mapper.CeNewsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.mock.example.modules.system.entity.model.SysUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,6 +147,48 @@ public class CeCollectionController {
         Response res = new Response();
         res.setCode(200);
         res.setData(resultList);
+        return res;
+    }
+    /**
+     * 新增：修改学校信息（带权限校验）
+     */
+    @PutMapping("/college")
+    public Response updateCollege(@RequestBody CeCollege college) {
+        // 1. 基础参数校验
+        if (college.getId() == null) {
+            Response res = new Response();
+            res.setCode(500);
+            res.setMsg("修改失败：学校ID不能为空");
+            return res;
+        }
+
+        // 2. 获取当前登录用户
+        // 注意：如果你的项目中是 SecurityUtil（不带s），请把下面的 SecurityUtils 改成 SecurityUtil
+        SysUser currentUser = SecurityUtil.getLoginUser().getUser();
+
+        // 3. 判断当前用户是否有“学校管理员”角色
+        if (SecurityUtil.hasRole("school_admin")) {
+            // 4. 如果是学校管理员，强制检查他修改的是不是自己绑定的学校
+            if (currentUser.getCollegeId() == null || !currentUser.getCollegeId().equals(college.getId())) {
+                Response res = new Response();
+                res.setCode(500);
+                res.setMsg("对不起，你只能修改自己学校的信息！");
+                return res;
+            }
+        }
+
+        // 5. 执行更新操作（使用你注入的 ceCollegeMapper）
+        // 注意：这里使用了 MyBatis-Plus 自带的 updateById，如果你有自定义的 update 方法请替换
+        int rows = ceCollegeMapper.updateById(college);
+
+        Response res = new Response();
+        if (rows > 0) {
+            res.setCode(200);
+            res.setMsg("修改成功");
+        } else {
+            res.setCode(500);
+            res.setMsg("修改失败：未找到对应学校或数据未变化");
+        }
         return res;
     }
 }

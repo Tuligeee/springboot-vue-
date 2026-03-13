@@ -30,32 +30,33 @@ public class CeCollegeService {
     private final ICeCollegeRepo collegeRepo;
 
     /**
-     * 请求院校列表 (已修改：增加学校管理员权限过滤)
-     *
-     * @param collegeBody 学生请求体
-     * @return 院校列表
+     * 请求院校列表 (增强版：双重保底逻辑)
      */
     public List<CeCollege> selectCollegeList(CollegeBody collegeBody) {
-        // 1. 复制请求体到查询实体
         CeCollege queryEntity = EntityCopyUtil.copyEntity(CeCollege.class, collegeBody);
 
-        // 2. 获取当前登录用户
         try {
             LoginUser loginUser = SecurityUtil.getLoginUser();
-            // 如果不是超级管理员（通常ID为1），则进行角色判断
             if (loginUser != null && !loginUser.getUserId().equals(1L)) {
-                // 判断是否包含 "school_admin" 角色
                 boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
                         .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
 
-                // 如果是学校管理员，强制只能查询自己管理的学校
                 if (isSchoolAdmin) {
+                    // 1. 优先尝试用 manager_id 过滤
                     queryEntity.setManagerId(loginUser.getUserId());
+                    List<CeCollege> list = collegeRepo.selectCollegeList(queryEntity);
+                    
+                    // 2. 保底逻辑：如果按管理员ID查不到，说明没绑定manager_id，尝试按用户所属的 college_id 查
+                    if (list.isEmpty() && loginUser.getUser().getCollegeId() != null) {
+                        queryEntity.setManagerId(null); // 清除刚才的过滤
+                        queryEntity.setId(loginUser.getUser().getCollegeId().intValue());
+                        return collegeRepo.selectCollegeList(queryEntity);
+                    }
+                    return list;
                 }
             }
         } catch (Exception e) {
-            // 忽略未登录或获取用户失败的情况（视具体业务场景，公共查询可能不需要登录）
-            log.warn("获取用户信息失败或当前为匿名访问: {}", e.getMessage());
+            log.warn("获取用户信息失败: {}", e.getMessage());
         }
 
         return collegeRepo.selectCollegeList(queryEntity);
@@ -144,10 +145,47 @@ public class CeCollegeService {
      * @return 结果
      */
     public Response<Boolean> deleteCollegeByIds(Integer[] collegeIds) {
-        // 这里也可以加上权限校验，防止学校管理员删除别人的学校，逻辑同 editCollege
-        // 简单起见暂时只允许管理员删除，或者由前端控制按钮显示
+        // 增加权限校验：学校管理员禁止删除院校
+        try {
+            LoginUser loginUser = SecurityUtil.getLoginUser();
+            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                return new Response<Boolean>().failMsg("权限不足：学校管理员禁止删除院校信息！");
+            }
+        } catch (Exception ignored) {}
+
         collegeRepo.removeByIds(Arrays.asList(collegeIds));
         return new Response<>(Boolean.TRUE);
+    }
+
+
+    /**
+     * 获取当前登录用户关联的学校信息
+     */
+    public Response<CeCollege> getMyCollege() {
+        try {
+            LoginUser loginUser = SecurityUtil.getLoginUser();
+            if (loginUser == null) return new Response<CeCollege>().failMsg("用户未登录");
+            
+            // 如果是系统管理员，返回列表第一个（或者提示不支持此操作）
+            if (loginUser.getUserId().equals(1L)) {
+                List<CeCollege> list = collegeRepo.list();
+                return new Response<>(list.isEmpty() ? null : list.get(0));
+            }
+
+            // 查询该用户管理的学校
+            CeCollege query = new CeCollege();
+            query.setManagerId(loginUser.getUserId());
+            List<CeCollege> myColleges = collegeRepo.selectCollegeList(query);
+            
+            if (myColleges.isEmpty()) {
+                return new Response<CeCollege>().failMsg("您的账号尚未绑定任何学校");
+            }
+            return new Response<>(myColleges.get(0));
+        } catch (Exception e) {
+            return new Response<CeCollege>().failMsg("获取学校信息失败");
+        }
     }
 
     /**

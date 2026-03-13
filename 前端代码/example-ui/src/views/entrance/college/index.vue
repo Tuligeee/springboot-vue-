@@ -28,6 +28,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
+            v-hasRole="['admin']"
             type="primary"
             plain
             icon="el-icon-plus"
@@ -41,12 +42,13 @@
             plain
             icon="el-icon-edit"
             size="mini"
-            :disabled="single"
+            :disabled="single && !checkRole(['school_admin'])"
             @click="handleUpdate"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
+            v-hasRole="['admin']"
             type="danger"
             plain
             icon="el-icon-delete"
@@ -59,7 +61,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="collegeList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column type="selection" width="55" align="center" v-if="checkRole(['admin'])" />
       <el-table-column label="ID" align="center" prop="id" width="60" />
 
       <el-table-column label="院校名称" align="center" prop="collegeName">
@@ -91,8 +93,10 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
+              v-if="checkRole(['admin', 'school_admin'])"
           >修改</el-button>
           <el-button
+              v-hasRole="['admin']"
               size="mini"
               type="text"
               icon="el-icon-delete"
@@ -148,6 +152,7 @@
 
 <script>
 import { listCollege, getCollege, delCollege, addCollege, updateCollege } from "@/api/entrance/college";
+import { checkRole } from "@/utils/permission"; // 引入权限判断工具
 
 export default {
   name: "College",
@@ -195,6 +200,7 @@ export default {
     this.getList();
   },
   methods: {
+    checkRole, // 暴露权限判断方法给模板使用
     /** 查询院校列表 */
     getList() {
       this.loading = true;
@@ -247,11 +253,25 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const id = row.id || this.ids
+      // 如果是学校管理员且没有传入row（点击了顶部修改按钮），自动尝试获取列表中的第一项
+      let id;
+      if (row && row.id) {
+        id = row.id;
+      } else if (this.ids && this.ids.length > 0) {
+        id = this.ids[0];
+      } else if (checkRole(['school_admin']) && this.collegeList.length > 0) {
+        id = this.collegeList[0].id;
+      }
+
+      if (!id) {
+        this.$message.warning("请选择要修改的院校");
+        return;
+      }
+
       getCollege(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改院校";
+        this.title = "修改院校信息";
       });
     },
     /** 提交按钮 */

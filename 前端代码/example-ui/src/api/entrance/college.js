@@ -17,6 +17,14 @@ export function getCollege(collegeId) {
     })
 }
 
+// 获取我管理的院校信息
+export function getMyCollege() {
+    return request({
+        url: '/college_entrance/college/myCollege',
+        method: 'get'
+    })
+}
+
 // 新增院校
 export function addCollege(data) {
     return request({

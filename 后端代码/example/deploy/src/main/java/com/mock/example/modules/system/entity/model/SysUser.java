@@ -40,6 +40,14 @@ public class SysUser implements Serializable {
     @Excel(name = "部门编号", type = Excel.Type.IMPORT)
     private Long deptId;
 
+    private Long collegeId;
+
+    public Long getCollegeId() {
+        return collegeId;
+    }
+    public void setCollegeId(Long collegeId) {
+        this.collegeId = collegeId;
+    }
     /**
      * 用户账号
      */

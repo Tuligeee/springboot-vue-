@@ -63,7 +63,7 @@
         </el-form-item>
 
         <el-form-item label="轮播图片" prop="imgUrl">
-          <image-upload v-model="form.imgUrl" :limit="1"/>
+          <banner-cropper v-model="form.imgUrl" />
         </el-form-item>
 
         <el-form-item label="跳转链接" prop="linkUrl">
@@ -89,12 +89,12 @@
 
 <script>
 import { listBanner, getBanner, delBanner, addBanner, updateBanner } from "@/api/entrance/banner";
-// 引入系统自带的图片上传组件
-import ImageUpload from '@/components/ImageUpload';
+// 引入裁剪上传组件
+import BannerCropper from '@/components/BannerCropper';
 
 export default {
   name: "Banner",
-  components: { ImageUpload },
+  components: { BannerCropper },
   data() {
     return {
       loading: true, ids: [], single: true, multiple: true, showSearch: true, total: 0,

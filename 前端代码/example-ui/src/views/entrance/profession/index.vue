@@ -45,7 +45,7 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-            v-hasPermi="['entrance:profession:add']"
+            v-if="checkRole(['admin', 'school_admin'])"
         >新增
         </el-button>
       </el-col>
@@ -55,9 +55,9 @@
             plain
             icon="el-icon-edit"
             size="mini"
-            :disabled="single"
+            :disabled="single && !checkRole(['school_admin'])"
             @click="handleUpdate"
-            v-hasPermi="['entrance:profession:edit']"
+            v-if="checkRole(['admin', 'school_admin'])"
         >修改
         </el-button>
       </el-col>
@@ -111,7 +111,6 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['entrance:profession:edit']"
           >修改
           </el-button>
           <el-button
@@ -119,7 +118,7 @@
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['entrance:profession:remove']"
+              v-if="checkRole(['admin'])"
           >删除
           </el-button>
           <el-button
@@ -127,7 +126,6 @@
               type="text"
               icon="el-icon-s-tools"
               @click="handleTagSet(scope.row)"
-              v-hasPermi="['entrance:profession:tag']"
           >设置标签
           </el-button>
         </template>
@@ -225,6 +223,8 @@
 
 import {delProfession, listProfession, addProfession, updateProfession, getProfession} from "@/api/entrance/profession";
 import {bindTags, getTags} from "@/api/entrance/tag";
+import { getMyCollege } from "@/api/entrance/college"; // 引入获取自己学校的接口
+import { checkRole } from "@/utils/permission";
 
 export default {
   name: "Profession",
@@ -232,6 +232,8 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      // 当前账号关联的学校信息
+      myCollege: null,
       // 导出遮罩层
       exportLoading: false,
       // 选中数组
@@ -287,9 +289,21 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // 1. 如果是学校管理员，先获取他的学校信息，然后以此为条件查询专业
+    if (checkRole(['school_admin'])) {
+      getMyCollege().then(res => {
+        this.myCollege = res.data;
+        if (this.myCollege) {
+          this.queryParams.collegeNo = this.myCollege.collegeNo;
+        }
+        this.getList();
+      });
+    } else {
+      this.getList();
+    }
   },
   methods: {
+    checkRole, // 暴露权限判断方法给模板使用
     /** 查询专业列表 */
     getList() {
       this.loading = true;
@@ -341,17 +355,35 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      // 如果是学校管理员，自动填入院校代码
+      if (checkRole(['school_admin']) && this.myCollege) {
+        this.form.collegeNo = this.myCollege.collegeNo;
+      }
       this.open = true;
-      this.title = "添加院校";
+      this.title = "添加专业计划";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const professionId = row.id || this.ids
-      getProfession(professionId).then(response => {
+      // 智能识别修改对象
+      let id;
+      if (row && row.id) {
+        id = row.id;
+      } else if (this.ids && this.ids.length > 0) {
+        id = this.ids[0];
+      } else if (checkRole(['school_admin']) && this.professionList.length > 0) {
+        id = this.professionList[0].id;
+      }
+
+      if (!id) {
+        this.$message.warning("请选择要修改的专业");
+        return;
+      }
+
+      getProfession(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改院校";
+        this.title = "修改专业信息";
       });
     },
     /** 提交按钮 */

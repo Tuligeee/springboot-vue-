@@ -3,7 +3,7 @@
 
     <el-row :gutter="20" style="margin-bottom: 30px;" v-if="bannerList && bannerList.length > 0">
       <el-col :span="24">
-        <el-carousel height="380px" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);">
+        <el-carousel class="home-banner" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
             <a :href="item.linkUrl || 'javascript:void(0)'" :target="item.linkUrl ? '_blank' : '_self'" style="display: block; height: 100%; position: relative;">
               <el-image
@@ -38,7 +38,7 @@
             <el-timeline-item timestamp="步骤 2" placement="top" color="#e4e7ed">
               <el-card shadow="hover" class="step-card">
                 <h4>完善个人档案</h4>
-                <p>在“个人中心”填写自己的高考分数、位次和生源地，这是智能推荐的基础。</p>
+                <p>在“个人中心”填写自己的高考分数、位次和生源地，这是查询匹配的基础。</p>
               </el-card>
             </el-timeline-item>
 
@@ -51,8 +51,8 @@
 
             <el-timeline-item timestamp="步骤 4" placement="top" color="#e4e7ed">
               <el-card shadow="hover" class="step-card">
-                <h4>智能模拟填报</h4>
-                <p>进入“填报中心”，使用智能推荐算法一键生成专属的高考志愿填报方案。</p>
+                <h4>志愿模拟管理</h4>
+                <p>进入“填报中心”，手动添加并保存您的报考方案，实现多方案对比管理。</p>
               </el-card>
             </el-timeline-item>
           </el-timeline>
@@ -103,6 +103,11 @@ export default {
     this.getBannerList();
     this.getNewsList(); // 页面创建时去后台拉取最新资讯
   },
+  activated() {
+    // 重点：当从其他页面跳回首页时，自动刷新轮播图数据
+    this.getBannerList();
+    this.getNewsList();
+  },
   methods: {
     /** 查询轮播图列表 */
     getBannerList() {
@@ -110,6 +115,13 @@ export default {
       listBanner({ status: "0" }).then(response => {
         // 兼容不同的返回体结构，确保能拿到数组
         this.bannerList = response.rows || response.data || [];
+      });
+    },
+    /** 查询最新资讯列表 */
+    getNewsList() {
+      // 获取前 5 条最新的新闻/资讯
+      listNews({ pageNum: 1, pageSize: 5 }).then(response => {
+        this.newsList = response.rows || response.data || [];
       });
     }
 
@@ -123,6 +135,18 @@ export default {
   color: #676a6c;
   overflow-x: hidden;
   padding: 20px;
+
+  /* 响应式比例轮播图：宽屏 2.5:1，现代大屏风格 */
+  .home-banner {
+    width: 100%;
+    aspect-ratio: 2.5 / 1; /* 锁定 2.5:1 的现代比例 */
+    height: auto !important;
+
+    /* 兼容旧版浏览器 (Element UI 覆盖) */
+    ::v-deep .el-carousel__container {
+      height: 100% !important;
+    }
+  }
 
   /* 轮播图底部黑色标题区域样式 */
   .banner-title {

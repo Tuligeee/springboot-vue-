@@ -109,4 +109,23 @@ public class SecurityUtil {
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
     }
+
+    /**
+     * 判断当前用户是否包含指定角色
+     *
+     * @param roleKey 角色权限字符串
+     * @return 结果
+     */
+    public static boolean hasRole(String roleKey) {
+        try {
+            LoginUser loginUser = getLoginUser();
+            if (loginUser == null || loginUser.getUser() == null || loginUser.getUser().getRoles() == null) {
+                return false;
+            }
+            return loginUser.getUser().getRoles().stream()
+                    .anyMatch(r -> roleKey.equals(r.getRoleKey()));
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

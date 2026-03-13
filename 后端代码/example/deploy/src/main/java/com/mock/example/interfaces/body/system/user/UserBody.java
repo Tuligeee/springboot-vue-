@@ -17,6 +17,7 @@ import java.util.Map;
 @Data
 public class UserBody implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
 
     /**
