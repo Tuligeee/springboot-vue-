@@ -227,7 +227,7 @@ import { getMyCollege } from "@/api/entrance/college"; // 引入获取自己学�
 import { checkRole } from "@/utils/permission";
 
 export default {
-  name: "Profession",
+  name: "ProfessionManagement",
   data() {
     return {
       // 遮罩层

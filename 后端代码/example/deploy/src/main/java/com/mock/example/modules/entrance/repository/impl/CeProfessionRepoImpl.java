@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import com.mock.example.common.utils.SecurityUtil;
+
 /**
  * <p>
  * 专业表 仓库实现类
@@ -42,6 +44,20 @@ public class CeProfessionRepoImpl
                         CeProfession::getProfessionName, ceProfession.getProfessionName())
                 .like(StrUtil.isNotBlank(ceProfession.getCollegeNo()),
                         CeProfession::getCollegeNo, ceProfession.getCollegeNo());
+
+        // 数据隔离
+        if (SecurityUtil.getLoginUser() != null && SecurityUtil.getLoginUser().getUser() != null) {
+            boolean isSchoolAdmin = SecurityUtil.getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                Long myCollegeId = SecurityUtil.getLoginUser().getUser().getCollegeId();
+                if (myCollegeId != null) {
+                    wrapper.inSql(CeProfession::getCollegeNo, "SELECT college_no FROM ce_college WHERE id = " + myCollegeId);
+                } else {
+                    wrapper.eq(CeProfession::getCollegeNo, "NO_COLLEGE_ASSIGNED");
+                }
+            }
+        }
 
         return this.list(wrapper);
     }

@@ -1,14 +1,11 @@
 package com.mock.example.interfaces.controller.entrance;
 
-import cn.hutool.core.util.StrUtil;
 import com.mock.example.common.component.page.TableDataInfo;
 import com.mock.example.common.entity.Response;
 import com.mock.example.interfaces.body.entrance.aspiration.AspirationBody;
 import com.mock.example.interfaces.body.entrance.aspiration.AspirationFormBody;
-import com.mock.example.interfaces.body.entrance.aspiration.EvaluateBody;
 import com.mock.example.interfaces.controller.BaseController;
 import com.mock.example.interfaces.vo.entrance.aspiration.AspirationFormVo;
-import com.mock.example.interfaces.vo.entrance.aspiration.EvaluateResultVo;
 import com.mock.example.modules.entrance.service.CeAspirationService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -28,32 +25,13 @@ public class CeAspirationController extends BaseController {
     private final CeAspirationService aspirationService;
 
     /**
-     * 测评分析
-     *
-     * @param evaluateBody 评估请求体
-     * @return 评测结果
-     */
-    @ApiOperation(value = "测评分析")
-    @GetMapping("/evaluate")
-    public Response<EvaluateResultVo> evaluate(EvaluateBody evaluateBody) {
-        if(StrUtil.isBlank(evaluateBody.getStudentNo())){
-            return new Response<>().failMsg("需要填写下学生编号");
-        }
-        if(evaluateBody.getByScore() == null || evaluateBody.getByTag() == null){
-            return new Response<>().failMsg("需要选择评测类型");
-        }
-
-        return new Response<>(aspirationService.evaluate(evaluateBody));
-    }
-
-    /**
      * 填报志愿
      *
      * @param aspirationFormBody 志愿填报对象
      * @return 结果
      */
     @ApiOperation(value = "填报志愿")
-    @PostMapping
+    @PostMapping("/addFrom")
     public Response<Boolean> addFrom(@RequestBody AspirationFormBody aspirationFormBody) {
         return new Response<>(aspirationService.addFrom(aspirationFormBody));
     }

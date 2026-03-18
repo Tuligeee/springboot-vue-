@@ -937,15 +937,15 @@ INSERT INTO `sys_menu` VALUES (1034, '参数删除', 106, 4, '#', '', '', 1, 0, 
 INSERT INTO `sys_menu` VALUES (1035, '参数导出', 106, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:export', '#', 'admin', '2022-03-21 21:33:12', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2052, '学生管理', 0, 4, 'student', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'peoples', 'admin', '2023-03-31 07:32:09', 'admin', '2025-01-04 20:17:41', '');
 INSERT INTO `sys_menu` VALUES (2053, '学生信息', 2052, 1, 'student', 'entrance/student/index', NULL, 1, 0, 'C', '0', '0', 'entrance:student:list', 'people', 'admin', '2023-03-31 07:32:58', 'admin', '2023-03-31 07:33:52', '');
-INSERT INTO `sys_menu` VALUES (2054, '院校管理', 0, 5, 'college', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'education', 'admin', '2025-01-01 01:12:06', 'admin', '2025-01-04 20:17:45', '');
-INSERT INTO `sys_menu` VALUES (2055, '院校查询', 2054, 1, 'college', 'entrance/college/index', NULL, 1, 0, 'C', '0', '0', 'entrance:college:index', 'search', 'admin', '2025-01-01 01:13:09', 'admin', '2025-01-01 01:13:28', '');
-INSERT INTO `sys_menu` VALUES (2056, '专业查询', 2054, 2, 'profession', 'entrance/profession/index', NULL, 1, 0, 'C', '0', '0', 'entrance:profession:index', 'guide', 'admin', '2025-01-01 07:33:13', 'admin', '2025-01-01 07:33:23', '');
+INSERT INTO `sys_menu` VALUES (2054, '学校中心', 0, 5, 'college', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'education', 'admin', '2025-01-01 01:12:06', 'admin', '2025-01-04 20:17:45', '高考辅助平台核心板块');
+INSERT INTO `sys_menu` VALUES (2055, '院校查询', 2054, 1, 'college', 'entrance/college/index', NULL, 1, 0, 'C', '0', '0', 'entrance:college:index', 'search', 'admin', '2025-01-01 01:13:09', 'admin', '2025-01-01 01:13:28', '包含院校信息浏览');
+INSERT INTO `sys_menu` VALUES (2056, '专业查询', 2054, 2, 'profession', 'entrance/profession/index', NULL, 1, 0, 'C', '0', '0', 'entrance:profession:list', 'guide', 'admin', '2025-01-01 07:33:13', 'admin', '2025-01-01 07:33:23', '包含专业信息浏览');
 INSERT INTO `sys_menu` VALUES (2057, '学生添加', 2052, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:add', '#', 'admin', '2025-01-02 03:38:11', 'admin', '2025-01-02 03:38:27', '');
 INSERT INTO `sys_menu` VALUES (2058, '学生编辑', 2052, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:edit', '#', 'admin', '2025-01-02 03:38:50', 'admin', '2025-01-02 03:39:05', '');
 INSERT INTO `sys_menu` VALUES (2059, '学生删除', 2052, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:remove', '#', 'admin', '2025-01-02 03:39:25', 'admin', '2025-01-04 06:45:48', '');
 INSERT INTO `sys_menu` VALUES (2060, '学生标签', 2052, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:tag', '#', 'admin', '2025-01-04 06:45:39', 'admin', '2025-01-04 06:45:58', '');
 INSERT INTO `sys_menu` VALUES (2061, '填报管理', 0, 6, 'aspiration', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'list', 'admin', '2025-01-04 19:00:03', 'admin', '2025-01-04 20:17:55', '');
-INSERT INTO `sys_menu` VALUES (2062, '测评分析', 2061, 1, 'evaluate', 'entrance/aspiration/evaluate', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:evaluate', 'cascader', 'admin', '2025-01-04 20:14:59', 'admin', '2025-01-05 04:35:54', '');
+
 INSERT INTO `sys_menu` VALUES (2063, '志愿管理', 2061, 2, 'aspiration', 'entrance/aspiration/index', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:index', 'logininfor', 'admin', '2025-01-05 04:34:31', 'admin', '2025-01-29 20:49:11', '');
 INSERT INTO `sys_menu` VALUES (2064, '志愿填报', 2061, 3, 'form', 'entrance/aspiration/form', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:form', 'edit', 'admin', '2025-01-29 21:01:01', 'admin', '2025-01-29 21:03:17', '');
 INSERT INTO `sys_menu` VALUES (2065, '高考资讯管理', 0, 1, 'news-admin', 'entrance/news/index', 'news-manage', 1, 0, 'C', '0', '0', 'entrance:news:list', 'documentation', 'admin', '2026-01-19 13:26:52', 'admin', '2026-01-19 13:47:31', '');
@@ -1067,6 +1067,31 @@ CREATE TABLE `sys_role_menu`  (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES (1, 2070);
+INSERT INTO `sys_role_menu` VALUES (100, 2070);
+INSERT INTO `sys_role_menu` VALUES (101, 2070);
+INSERT INTO `sys_role_menu` VALUES (1, 1);
+INSERT INTO `sys_role_menu` VALUES (1, 100);
+INSERT INTO `sys_role_menu` VALUES (1, 101);
+INSERT INTO `sys_role_menu` VALUES (1, 102);
+INSERT INTO `sys_role_menu` VALUES (1, 103);
+INSERT INTO `sys_role_menu` VALUES (1, 104);
+INSERT INTO `sys_role_menu` VALUES (1, 105);
+INSERT INTO `sys_role_menu` VALUES (1, 106);
+INSERT INTO `sys_role_menu` VALUES (1, 2052);
+INSERT INTO `sys_role_menu` VALUES (1, 2053);
+INSERT INTO `sys_role_menu` VALUES (1, 2054);
+INSERT INTO `sys_role_menu` VALUES (1, 2055);
+INSERT INTO `sys_role_menu` VALUES (1, 2056);
+INSERT INTO `sys_role_menu` VALUES (1, 2061);
+INSERT INTO `sys_role_menu` VALUES (1, 2063);
+INSERT INTO `sys_role_menu` VALUES (1, 2064);
+INSERT INTO `sys_role_menu` VALUES (1, 2065);
+INSERT INTO `sys_role_menu` VALUES (1, 2067);
+INSERT INTO `sys_role_menu` VALUES (1, 2068);
+INSERT INTO `sys_role_menu` VALUES (101, 2054);
+INSERT INTO `sys_role_menu` VALUES (101, 2055);
+INSERT INTO `sys_role_menu` VALUES (101, 2056);
 INSERT INTO `sys_role_menu` VALUES (2, 2052);
 INSERT INTO `sys_role_menu` VALUES (2, 2053);
 INSERT INTO `sys_role_menu` VALUES (100, 2054);
@@ -1075,6 +1100,7 @@ INSERT INTO `sys_role_menu` VALUES (100, 2056);
 INSERT INTO `sys_role_menu` VALUES (100, 2061);
 INSERT INTO `sys_role_menu` VALUES (100, 2063);
 INSERT INTO `sys_role_menu` VALUES (100, 2064);
+INSERT INTO `sys_role_menu` VALUES (100, 2066);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1083,6 +1109,7 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
   `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `dept_id` bigint NULL DEFAULT NULL COMMENT '部门ID',
+  `college_id` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '院校代码',
   `user_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户账号',
   `nick_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户昵称',
   `user_type` varchar(2) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',

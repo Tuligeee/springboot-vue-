@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询专业列表
 export function listProfession(query) {
     return request({
-        url: '/entrance/profession/list',
+        url: '/college_entrance/profession/list',
         method: 'get',
         params: query
     })

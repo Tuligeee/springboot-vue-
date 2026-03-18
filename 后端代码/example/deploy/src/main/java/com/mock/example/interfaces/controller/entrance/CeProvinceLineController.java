@@ -43,6 +43,19 @@ public class CeProvinceLineController extends BaseController {
         if (provinceLine.getBatchName() != null && !provinceLine.getBatchName().isEmpty()) {
             query.like("batch_name", provinceLine.getBatchName());
         }
+
+        // 数据隔离约束：如果是学校管理员，则只能查看关联学校的数据
+        if (getLoginUser() != null && getLoginUser().getUser() != null) {
+            boolean isSchoolAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                Long myCollegeId = getLoginUser().getUser().getCollegeId();
+                query.inSql("province", "SELECT city FROM ce_college WHERE id = " + myCollegeId);
+                // Note: CeProvinceLine doesn't seem to have college tracking inherently, typically it relates to province.
+                // Assuming province line is globally available since it applies to provinces, skipping hard isolation here unless it's specific.
+            }
+        }
+
         query.orderByDesc("year");
 
         List<CeProvinceLine> list = provinceLineService.list(query);

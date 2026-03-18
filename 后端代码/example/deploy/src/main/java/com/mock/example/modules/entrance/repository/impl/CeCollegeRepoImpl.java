@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import com.mock.example.common.utils.SecurityUtil;
+
 /**
  * <p>
  * 院校表 仓库实现类
@@ -34,6 +36,20 @@ public class CeCollegeRepoImpl
                         CeCollege::getCollegeName, college.getCollegeName())
                 .like(StrUtil.isNotBlank(college.getCity()),
                         CeCollege::getCity, college.getCity());
+
+        // 数据隔离
+        if (SecurityUtil.getLoginUser() != null && SecurityUtil.getLoginUser().getUser() != null) {
+            boolean isSchoolAdmin = SecurityUtil.getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                Long myCollegeId = SecurityUtil.getLoginUser().getUser().getCollegeId();
+                if (myCollegeId != null) {
+                    wrapper.eq(CeCollege::getId, myCollegeId);
+                } else {
+                    wrapper.eq(CeCollege::getId, -1); // 无权查看
+                }
+            }
+        }
 
         return this.list(wrapper);
     }

@@ -31,6 +31,11 @@ public class UserBody implements Serializable {
     private Long deptId;
 
     /**
+     * 院校代码
+     */
+    private Long collegeId;
+
+    /**
      * 用户账号
      */
     private String userName;

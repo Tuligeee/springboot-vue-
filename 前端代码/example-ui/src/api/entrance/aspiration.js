@@ -1,18 +1,9 @@
 import request from '@/utils/request'
 
-// 专业测评
-export function evaluate(query) {
-    return request({
-        url: '/college_entrance/aspiration/evaluate',
-        method: 'get',
-        params: query
-    })
-}
-
 // 填报志愿
 export function addForm(data) {
     return request({
-        url: '/college_entrance/aspiration',
+        url: '/college_entrance/aspiration/addFrom',
         method: 'post',
         data: data
     })

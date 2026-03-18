@@ -110,10 +110,14 @@ public class CeCollegeService {
                     .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
 
             if (isSchoolAdmin) {
-                // 查询数据库中该学校的现有信息
+                // 修改点：允许通过 managerId 或 collegeId 匹配进行修改
                 CeCollege existingCollege = collegeRepo.getById(collegeBody.getId());
-                // 如果学校不存在，或者该学校的管理员ID不等于当前用户ID
-                if (existingCollege == null || !loginUser.getUserId().equals(existingCollege.getManagerId())) {
+                Long userCollegeId = loginUser.getUser().getCollegeId();
+                
+                boolean isManager = loginUser.getUserId().equals(existingCollege.getManagerId());
+                boolean isBelongToCollege = userCollegeId != null && userCollegeId.intValue() == existingCollege.getId();
+
+                if (!isManager && !isBelongToCollege) {
                     return new Response<>().failMsg("您没有权限修改该学校的信息！");
                 }
             }
@@ -136,6 +140,13 @@ public class CeCollegeService {
         return EntityCopyUtil.copyEntity(
                 CollegeVo.class, collegeRepo.getById(collegeId)
         );
+    }
+
+    /**
+     * 根据ID获取院校实体
+     */
+    public CeCollege getById(Integer id) {
+        return collegeRepo.getById(id);
     }
 
     /**
