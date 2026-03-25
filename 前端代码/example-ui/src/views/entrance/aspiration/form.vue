@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-edit-outline" style="color: #409EFF; margin-right: 8px;"></i>
+          志愿填报
+        </span>
+      </div>
     <el-row :gutter="5" class="mb8">
       <div class="block">
         <el-card  class="" header="第一志愿">
@@ -50,6 +57,7 @@
       <span>填报完成</span>
     </el-dialog>
 
+      </el-card>
   </div>
 </template>
 <script>
@@ -67,41 +75,69 @@ export default {
       options2: [],
       options3: [],
       selectItem: {
-        professionNo1: "",
-        professionNo2: "",
-        professionNo3: "",
+        professionNo1: [],
+        professionNo2: [],
+        professionNo3: [],
       }
     };
   },
   methods: {
     /** 值变化*/
     handleChange1(value) {
-      this.selectItem.professionNo1 = value[1]
+      this.selectItem.professionNo1 = value
     },
     handleChange2(value) {
-      this.selectItem.professionNo2 = value[1]
+      this.selectItem.professionNo2 = value
     },
     handleChange3(value) {
-      this.selectItem.professionNo3 = value[1]
+      this.selectItem.professionNo3 = value
     },
     /** 志愿填报选项 */
     selectItems() {
+      const defaultCollegeNo = this.$route.query.collegeNo;
       selectItem().then(
           response => {
             this.options1 = response.data.items;
-            this.selectItem.professionNo1 = response.data.professionNo1;
             this.options2 = response.data.items;
-            this.selectItem.professionNo2 = response.data.professionNo2;
             this.options3 = response.data.items;
-            this.selectItem.professionNo3 = response.data.professionNo3;
+            
+            // 处理回显，级联选择器需要 [父级ID, 子级ID]
+            this.selectItem.professionNo1 = this.findPath(this.options1, response.data.professionNo1);
+            this.selectItem.professionNo2 = this.findPath(this.options2, response.data.professionNo2);
+            this.selectItem.professionNo3 = this.findPath(this.options3, response.data.professionNo3);
+
+            // 如果从院校中心跳转过来，且第一个志愿为空，则默认选中该学校
+            if (defaultCollegeNo && (!this.selectItem.professionNo1 || this.selectItem.professionNo1.length === 0)) {
+               this.selectItem.professionNo1 = [defaultCollegeNo];
+            }
           }
       );
     },
+    /** 根据专业编号查找级联路径 [collegeNo, professionNo] */
+    findPath(options, professionNo) {
+      if (!professionNo) return [];
+      for (const college of options) {
+        if (college.children) {
+          const profession = college.children.find(p => p.value === professionNo);
+          if (profession) {
+            return [college.value, profession.value];
+          }
+        }
+      }
+      return [];
+    },
     /** 确定 */
     handelConfirm() {
-      addForm(this.selectItem).then(
+      // 提交时只取专业编号 (数组最后一位)
+      const data = {
+        professionNo1: this.selectItem.professionNo1 ? this.selectItem.professionNo1[this.selectItem.professionNo1.length - 1] : "",
+        professionNo2: this.selectItem.professionNo2 ? this.selectItem.professionNo2[this.selectItem.professionNo2.length - 1] : "",
+        professionNo3: this.selectItem.professionNo3 ? this.selectItem.professionNo3[this.selectItem.professionNo3.length - 1] : "",
+      }
+      addForm(data).then(
           response => {
             if(response.data == true){
+              this.$message.success("填报完成");
               this.dialogVisible = true;
             }
           }

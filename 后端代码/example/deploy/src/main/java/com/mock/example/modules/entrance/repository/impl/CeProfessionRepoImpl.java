@@ -32,6 +32,7 @@ public class CeProfessionRepoImpl
         return this.getOne(
                 Wrappers.<CeProfession>lambdaQuery()
                         .eq(CeProfession::getProfessionNo, professionNo)
+                        .last("limit 1")
         );
     }
 

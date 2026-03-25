@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-news" style="color: #409EFF; margin-right: 8px;"></i>
+          高考资讯
+        </span>
+      </div>
     <el-card>
       <div slot="header">
         <span>高考资讯列表</span>
@@ -11,6 +18,7 @@
         </div>
       </div>
     </el-card>
+      </el-card>
   </div>
 </template>
 

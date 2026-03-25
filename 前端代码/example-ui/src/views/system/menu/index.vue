@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card" style="margin-bottom: 20px;">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-menu" style="color: #409EFF; margin-right: 8px;"></i>
+          菜单管理
+        </span>
+      </div>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
       <el-form-item label="菜单名称" prop="menuName">
         <el-input
@@ -271,6 +278,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+      </el-card>
   </div>
 </template>
 

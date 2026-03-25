@@ -1,0 +1,12 @@
+<svg width="1200" height="480" viewBox="0 0 1200 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="480" fill="url(#paint1_linear)"/>
+  <path d="M0 480L300 350L600 420L900 300L1200 380V480H0Z" fill="white" fill-opacity="0.05"/>
+  <text x="100" y="220" fill="white" style="font-family:Arial; font-weight:bold; font-size:48px;">科学填报 · 规划未来</text>
+  <text x="100" y="280" fill="white" fill-opacity="0.8" style="font-family:Arial; font-size:24px;">多方案模拟管理，助您稳健迈入理想学府</text>
+  <defs>
+    <linearGradient id="paint1_linear" x1="0" y1="0" x2="1200" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00b09b"/>
+      <stop offset="1" stop-color="#96c93d"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -240,45 +240,37 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
+  height: 40px;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  border-bottom: 1px solid #f0f2f5;
+  box-shadow: 0 1px 12px rgba(0, 21, 41, 0.05);
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
+      height: 30px;
+      line-height: 30px;
+      color: #606266;
+      background: #f4f7f9;
+      padding: 0 12px;
+      font-size: 13px;
+      margin-left: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      transition: all 0.3s;
+      border: none;
       &:first-of-type {
-        margin-left: 15px;
+        margin-left: 20px;
       }
       &:last-of-type {
-        margin-right: 15px;
+        margin-right: 20px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: #0974e7;
         color: #fff;
-        border-color: #42b983;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
+        box-shadow: 0 2px 8px rgba(9, 116, 231, 0.3);
       }
     }
   }
@@ -288,18 +280,19 @@ export default {
     z-index: 3000;
     position: absolute;
     list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
+    padding: 8px 0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
     color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     li {
       margin: 0;
-      padding: 7px 16px;
+      padding: 10px 20px;
       cursor: pointer;
       &:hover {
-        background: #eee;
+        background: #f5f7fa;
+        color: #0974e7;
       }
     }
   }

@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-chat-line-square" style="color: #409EFF; margin-right: 8px;"></i>
+          帖子详情
+        </span>
+      </div>
     <el-button size="mini" icon="el-icon-back" @click="$router.go(-1)" style="margin-bottom:10px;">返回列表</el-button>
 
     <el-card>
@@ -57,6 +64,7 @@
         <el-button type="primary" @click="submitComment" icon="el-icon-s-promotion">发送评论</el-button>
       </div>
     </div>
+      </el-card>
   </div>
 </template>
 

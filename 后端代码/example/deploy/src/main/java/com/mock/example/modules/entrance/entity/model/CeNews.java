@@ -19,7 +19,9 @@ public class CeNews {
     private String content;
     private String type; // 1-政策 2-指南 3-动态
     private Integer viewCount;
+    private Integer likeCount;
     private String createBy;
+    private String delFlag;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

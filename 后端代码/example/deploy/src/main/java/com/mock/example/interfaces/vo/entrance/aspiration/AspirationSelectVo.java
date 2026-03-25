@@ -24,6 +24,11 @@ public class AspirationSelectVo {
     private String value;
 
     /**
+     * 辅助展示信息 (如：招生人数、学制)
+     */
+    private String info;
+
+    /**
      * 子对象
      */
     private List<AspirationSelectVo> children;

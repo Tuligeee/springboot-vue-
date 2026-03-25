@@ -5,10 +5,11 @@
             <el-menu
                 :default-active="activeMenu"
                 :collapse="isCollapse"
-                :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
-                :text-color="settings.sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
-                :unique-opened="true"
-                :active-text-color="settings.theme"
+                :background-color="variables.menuBackground"
+                :text-color="variables.menuColor"
+                :unique-opened="false"
+                :default-openeds="openedMenus"
+                :active-text-color="variables.menuColorActive"
                 :collapse-transition="false"
                 mode="vertical"
             >
@@ -51,6 +52,12 @@ export default {
         },
         isCollapse() {
             return !this.sidebar.opened;
+        },
+        openedMenus() {
+            // 资深程序员优化：自动获取所有包含子菜单的父级路径，实现默认全展开
+            return this.sidebarRouters
+                .filter(item => item.children && item.children.length > 0)
+                .map(item => item.path);
         }
     }
 };

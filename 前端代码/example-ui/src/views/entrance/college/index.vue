@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-school" style="color: #409EFF; margin-right: 8px;"></i>
+          院校查询
+        </span>
+      </div>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="院校名称" prop="collegeName">
         <el-input
@@ -34,40 +41,66 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-        >新增</el-button>
+        >新增院校</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-            type="success"
-            plain
-            icon="el-icon-edit"
-            size="mini"
-            :disabled="single && !checkRole(['school_admin'])"
-            @click="handleUpdate"
-        >修改</el-button>
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+        >导出</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-            v-hasRole="['admin']"
-            type="danger"
-            plain
-            icon="el-icon-delete"
-            size="mini"
-            :disabled="multiple"
-            @click="handleDelete"
-        >删除</el-button>
+          type="info"
+          plain
+          icon="el-icon-upload2"
+          size="mini"
+          @click="handleImport"
+        >导入</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="collegeList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" v-if="checkRole(['admin'])" />
+    <!-- 院校导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <div class="el-upload__tip" style="margin-bottom: 10px;">
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的院校数据
+          </div>
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">下载模板</el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <el-table v-loading="loading" :data="collegeList">
       <el-table-column label="ID" align="center" prop="id" width="60" />
 
       <el-table-column label="院校名称" align="center" prop="collegeName">
         <template slot-scope="scope">
           <span
-              style="color: #409EFF; cursor: pointer; text-decoration: underline;"
+              style="color: #409EFF; cursor: pointer; text-decoration: underline; font-weight: bold;"
               @click="handleDetail(scope.row.id)"
           >
             {{ scope.row.collegeName }}
@@ -77,7 +110,7 @@
 
       <el-table-column label="院校代码" align="center" prop="collegeNo" />
       <el-table-column label="所在城市" align="center" prop="city" />
-      <el-table-column label="排名" align="center" prop="ranking" />
+      <el-table-column label="全国排名" align="center" prop="ranking" sortable />
       <el-table-column label="招生人数" align="center" prop="personCount" />
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -87,14 +120,14 @@
               type="text"
               icon="el-icon-view"
               @click="handleDetail(scope.row.id)"
-          >详情</el-button>
+          >查看详情</el-button>
           <el-button
               size="mini"
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-if="checkRole(['admin', 'school_admin'])"
-          >修改</el-button>
+          >编辑修改</el-button>
           <el-button
               v-hasRole="['admin']"
               size="mini"
@@ -115,6 +148,7 @@
         @pagination="getList"
     />
 
+    <!-- 新增/修改院校对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body :close-on-click-modal="false">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="院校名称" prop="collegeName">
@@ -147,52 +181,44 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+      </el-card>
   </div>
 </template>
 
 <script>
+import request from '@/utils/request'
 import { listCollege, getCollege, delCollege, addCollege, updateCollege } from "@/api/entrance/college";
-import { checkRole } from "@/utils/permission"; // 引入权限判断工具
+import { checkRole } from "@/utils/permission";
+import { getToken } from "@/utils/auth";
 
 export default {
   name: "College",
   data() {
     return {
-      // 遮罩层
       loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 显示搜索条件
-      showSearch: true,
-      // 总条数
-      total: 0,
-      // 院校表格数据
       collegeList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
+      total: 0,
+      showSearch: true,
       open: false,
-      // 查询参数
+      title: "",
+      upload: {
+        open: false,
+        title: "",
+        isUploading: false,
+        updateSupport: 0,
+        headers: { Authorization: "Bearer " + getToken() },
+        url: process.env.VUE_APP_BASE_API + "/college_entrance/college/importData"
+      },
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        collegeName: null, // 修正为 collegeName
-        city: null         // 修正为 city
+        collegeName: null,
+        city: null
       },
-      // 表单参数
       form: {},
-      // 表单校验
       rules: {
-        collegeName: [
-          { required: true, message: "院校名称不能为空", trigger: "blur" }
-        ],
-        collegeNo: [
-          { required: true, message: "院校代码不能为空", trigger: "blur" }
-        ]
+        collegeName: [{ required: true, message: "院校名称不能为空", trigger: "blur" }],
+        collegeNo: [{ required: true, message: "院校代码不能为空", trigger: "blur" }]
       }
     };
   },
@@ -200,8 +226,7 @@ export default {
     this.getList();
   },
   methods: {
-    checkRole, // 暴露权限判断方法给模板使用
-    /** 查询院校列表 */
+    checkRole,
     getList() {
       this.loading = true;
       listCollege(this.queryParams).then(response => {
@@ -210,83 +235,42 @@ export default {
         this.loading = false;
       });
     },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        collegeName: null, // 修正
-        collegeNo: null,   // 修正
-        city: null,        // 修正
-        ranking: 0,        // 新增
-        personCount: 0,    // 新增
-        detailInfo: null   // 修正
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+    handleDetail(id) {
+      this.$router.push('/college-view/detail/' + id);
     },
-    /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加院校";
     },
-    /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      // 如果是学校管理员且没有传入row（点击了顶部修改按钮），自动尝试获取列表中的第一项
-      let id;
-      if (row && row.id) {
-        id = row.id;
-      } else if (this.ids && this.ids.length > 0) {
-        id = this.ids[0];
-      } else if (checkRole(['school_admin']) && this.collegeList.length > 0) {
-        id = this.collegeList[0].id;
-      }
-
-      if (!id) {
-        this.$message.warning("请选择要修改的院校");
-        return;
-      }
-
-      getCollege(id).then(response => {
+      getCollege(row.id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改院校信息";
       });
     },
-    /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateCollege(this.form).then(response => {
-              this.$message.success("修改成功");
+            updateCollege(this.form).then(() => {
+              this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addCollege(this.form).then(response => {
-              this.$message.success("新增成功");
+            addCollege(this.form).then(() => {
+              this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -294,23 +278,89 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$confirm('是否确认删除院校ID为"' + ids + '"的数据项？', "警告", {
+      this.$confirm('是否确认删除该院校数据项？', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function() {
-        return delCollege(ids);
+      }).then(() => {
+        return delCollege(row.id);
       }).then(() => {
         this.getList();
-        this.$message.success("删除成功");
+        this.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 跳转到详情页 */
-    handleDetail(id) {
-      this.$router.push('/college/detail/' + id);
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    reset() {
+      this.form = {
+        id: null,
+        collegeName: null,
+        collegeNo: null,
+        city: null,
+        ranking: 1,
+        personCount: 0,
+        detailInfo: null
+      };
+      this.resetForm("form");
+    },
+    /** 导出按钮操作 - 修正版实现 */
+    handleExport() {
+      this.loading = true;
+      request({
+        url: '/college_entrance/college/export',
+        method: 'get',
+        params: this.queryParams
+      }).then(res => {
+        if (res.msg) {
+          this.executeDownload(res.msg);
+        } else {
+          this.msgError("导出失败：未返回文件名");
+        }
+        this.loading = false;
+      }).catch(() => {
+        this.loading = false;
+      });
+    },
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "院校数据导入";
+      this.upload.open = true;
+    },
+    /** 下载模板操作 - 修正版实现 */
+    importTemplate() {
+      request({
+        url: '/college_entrance/college/importTemplate',
+        method: 'get'
+      }).then(res => {
+        if (res.msg) {
+          this.executeDownload(res.msg);
+        } else {
+          this.msgError("获取模板失败");
+        }
+      });
+    },
+    /** 通用下载执行器 */
+    executeDownload(fileName) {
+      window.location.href = process.env.VUE_APP_BASE_API + "/common/download?fileName=" + encodeURIComponent(fileName) + "&delete=true";
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+      this.getList();
+    },
+    // 提交上传文件
+    submitFileForm() {
+      this.$refs.upload.submit();
     }
   }
 };

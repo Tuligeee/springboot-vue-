@@ -1,31 +1,34 @@
 package com.mock.example.interfaces.body.entrance.aspiration;
 
 import lombok.Data;
+import java.util.List;
 
 /**
- * 志愿填报表单
- *
- * @author: Mock
- * @date: 2023-04-30 08:55:42
+ * 志愿填报表单 (湖北模式优化版)
  */
 @Data
 public class AspirationFormBody {
 
     /**
-     * 第一志愿
+     * 志愿单序号 (1-5)
      */
-    private String professionNo1;
+    private Integer sheetNo;
 
     /**
-     * 第二志愿
+     * 院校专业组列表
      */
-    private String professionNo2;
+    private List<CollegeGroup> collegeGroups;
 
-    /**
-     * 第三志愿
-     */
-    private String professionNo3;
+    @Data
+    public static class CollegeGroup {
+        /**
+         * 院校代码
+         */
+        private String collegeNo;
 
+        /**
+         * 该校下选择的专业代码列表
+         */
+        private List<String> professionNos;
+    }
 }
-
-  

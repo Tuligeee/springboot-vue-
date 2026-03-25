@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card" style="margin-bottom: 20px;">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-time" style="color: #409EFF; margin-right: 8px;"></i>
+          定时任务
+        </span>
+      </div>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="任务名称" prop="jobName">
         <el-input
@@ -291,6 +298,7 @@
         <el-button @click="openView = false">关 闭</el-button>
       </div>
     </el-dialog>
+      </el-card>
   </div>
 </template>
 

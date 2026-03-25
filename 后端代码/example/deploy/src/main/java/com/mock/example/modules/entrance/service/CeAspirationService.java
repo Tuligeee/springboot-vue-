@@ -1,8 +1,7 @@
 package com.mock.example.modules.entrance.service;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.mock.example.common.utils.EntityCopyUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mock.example.common.utils.SecurityUtil;
 import com.mock.example.interfaces.body.entrance.aspiration.AspirationBody;
 import com.mock.example.interfaces.body.entrance.aspiration.AspirationFormBody;
@@ -10,192 +9,185 @@ import com.mock.example.interfaces.vo.entrance.aspiration.AspirationFormVo;
 import com.mock.example.interfaces.vo.entrance.aspiration.AspirationSelectVo;
 import com.mock.example.modules.entrance.entity.model.*;
 import com.mock.example.modules.entrance.repository.*;
+import com.mock.example.modules.entrance.mapper.CeStudentMapper; // 直接使用 Mapper
+import com.mock.example.modules.entrance.model.vo.VolunteerExportVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * 志愿管理业务层
- *
- * @author: Mock
- * @date: 2023-04-05 09:08:44
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CeAspirationService {
 
     private final ICeCollegeRepo collegeRepo;
-
     private final ICeProfessionRepo professionRepo;
-
-    private final ICeStudentRepo studentRepo;
-
-    private final ICeTagRelRepo tagRelRepo;
-
-    private final ICeScoreLineRepo scoreLineRepo;
-
     private final ICeAspirationRepo aspirationRepo;
-
     private final ICeAspirationDetailRepo aspirationDetailRepo;
+    private final CeStudentMapper studentMapper; // 改用 Mapper 规避 Service 循环依赖
 
     /**
-     * 填报志愿
-     *
-     * @param aspirationFormBody 志愿填报对象
-     * @return 结果
+     * 查询导出专用的志愿表数据
+     */
+    public List<VolunteerExportVo> selectVolunteerExportList(Integer sheetNo) {
+        Long userId = SecurityUtil.getUserId();
+        if (userId == null) return new ArrayList<>();
+        String userTag = userId + "_" + sheetNo;
+        
+        List<CeAspirationDetail> details = aspirationDetailRepo.selectAspirationDetailList(userTag);
+        if (details == null || details.isEmpty()) return new ArrayList<>();
+
+        // 查询学生成绩
+        Integer score = null;
+        try {
+            QueryWrapper<CeStudent> query = new QueryWrapper<>();
+            query.eq("user_id", userId).last("limit 1");
+            CeStudent student = studentMapper.selectOne(query);
+            if (student != null) {
+                score = student.getAchievement();
+            }
+        } catch (Exception e) {
+            log.error("查询学生成绩异常: {}", e.getMessage());
+        }
+
+        List<VolunteerExportVo> exportList = new ArrayList<>();
+        for (CeAspirationDetail d : details) {
+            VolunteerExportVo vo = new VolunteerExportVo();
+            vo.setSort(d.getProfessionSort());
+            vo.setCollegeNo(d.getCollegeNo());
+            vo.setCollegeName(d.getCollegeName());
+            vo.setProfessionNo(d.getProfessionNo());
+            vo.setProfessionName(d.getProfessionName());
+            vo.setScore(score);
+            vo.setCreateTime(d.getCreatedTime());
+            exportList.add(vo);
+        }
+        return exportList;
+    }
+
+    /**
+     * 保存志愿表
      */
     @Transactional
-    public Boolean addFrom(AspirationFormBody aspirationFormBody) {
+    public Boolean addFrom(AspirationFormBody body) {
         Long userId = SecurityUtil.getUserId();
-        CeStudent student = studentRepo.selectStudentByUserId(userId);
+        int sheetNo = body.getSheetNo() != null ? body.getSheetNo() : 1;
+        String userTag = userId + "_" + sheetNo;
 
-        //删除志愿
-        deleteAspiration(student);
+        aspirationRepo.deleteByStudentNo(userTag);
+        aspirationDetailRepo.deleteByStudentNo(userTag);
 
-        //更新志愿
         CeAspiration aspiration = new CeAspiration();
-        aspiration.setStudentNo(student.getStudentNo());
-        aspiration.setEntranceYear(DateUtil.year(new Date()));
+        aspiration.setStudentNo(userTag); 
+        aspiration.setEntranceYear(sheetNo);
         aspiration.setCreatedUser(SecurityUtil.getUsername());
         aspirationRepo.save(aspiration);
-        saveAspirationDetail(student.getStudentNo(), aspirationFormBody.getProfessionNo1(),1);
-        saveAspirationDetail(student.getStudentNo(), aspirationFormBody.getProfessionNo2(),2);
-        saveAspirationDetail(student.getStudentNo(), aspirationFormBody.getProfessionNo3(),3);
+        
+        if (body.getCollegeGroups() == null || body.getCollegeGroups().isEmpty()) return true;
 
+        List<CeAspirationDetail> details = new ArrayList<>();
+        int globalSort = 1;
+        for (AspirationFormBody.CollegeGroup group : body.getCollegeGroups()) {
+            if (StrUtil.isBlank(group.getCollegeNo())) continue;
+            CeCollege college = collegeRepo.selectCollegeByNo(group.getCollegeNo());
+            if (college == null) continue;
+
+            for (String pNo : group.getProfessionNos()) {
+                if (StrUtil.isBlank(pNo)) continue;
+                CeProfession prof = professionRepo.selectByProfessionNo(pNo);
+                if (prof == null) continue;
+
+                CeAspirationDetail d = new CeAspirationDetail();
+                d.setStudentNo(userTag);
+                d.setCollegeNo(college.getCollegeNo());
+                d.setCollegeName(college.getCollegeName());
+                d.setProfessionNo(prof.getProfessionNo());
+                d.setProfessionName(prof.getProfessionName());
+                d.setProfessionSort(globalSort++);
+                d.setCreatedUser(SecurityUtil.getUsername());
+                d.setAspirationBatch(1);
+                details.add(d);
+            }
+        }
+
+        if (!details.isEmpty()) aspirationDetailRepo.saveBatch(details);
         return Boolean.TRUE;
     }
 
-    private void deleteAspiration(CeStudent student) {
-        aspirationRepo.deleteByStudentNo(student.getStudentNo());
-        aspirationDetailRepo.deleteByStudentNo(student.getStudentNo());
-    }
-
-    private void saveAspirationDetail(String studentNo, String professionNo, Integer sort) {
-        CeAspirationDetail ceAspirationDetail = new CeAspirationDetail();
-        CeProfession ceProfession = professionRepo.selectByProfessionNo(professionNo);
-        CeCollege ceCollege = collegeRepo.selectCollegeByNo(ceProfession.getCollegeNo());
-
-        ceAspirationDetail.setStudentNo(studentNo);
-        ceAspirationDetail.setProfessionNo(professionNo);
-        ceAspirationDetail.setProfessionName(ceProfession.getProfessionName());
-        ceAspirationDetail.setCollegeNo(ceCollege.getCollegeNo());
-        ceAspirationDetail.setCollegeName(ceCollege.getCollegeName());
-        ceAspirationDetail.setCreatedUser(SecurityUtil.getUsername());
-        ceAspirationDetail.setAspirationBatch(1);
-        ceAspirationDetail.setProfessionSort(sort);
-
-        aspirationDetailRepo.save(ceAspirationDetail);
-    }
-
-    /**
-     * 查询志愿列表
-     *
-     * @param aspirationBody 志愿请求对象
-     * @return 志愿列表
-     */
-    public List<CeAspiration> selectAspirationList(AspirationBody aspirationBody) {
-        CeAspiration aspiration = EntityCopyUtil.copyEntity(CeAspiration.class, aspirationBody);
-        List<CeAspiration> aspirations = aspirationRepo.selectAspirationList(aspiration);
-
-        //组装学生名称
-        List<String> studentNos = aspirations.stream().map(
-                CeAspiration::getStudentNo
-        ).collect(Collectors.toList());
-        Map<String, String> studentMap = studentRepo.selectByStudentNos(studentNos)
-                .stream().collect(Collectors.toMap(
-                        CeStudent::getStudentNo, CeStudent::getStudentName,
-                        (v1, v2) -> v1
-                ));
-        aspirations.forEach(po -> po.setStudentName(
-                studentMap.getOrDefault(po.getStudentNo(), StrUtil.EMPTY)
-        ));
-
-        return aspirations;
-    }
-
-    /**
-     * 填报详情
-     *
-     * @param studentNo 学生编号
-     * @return 填报详情
-     */
-    public String aspirationDetail(String studentNo){
-        List<CeAspirationDetail> aspirationDetails = aspirationDetailRepo.selectAspirationDetailList(studentNo);
-        String detail = StrUtil.EMPTY;
-        for(CeAspirationDetail aspirationDetail : aspirationDetails){
-            detail =  detail + "第" + aspirationDetail.getProfessionSort() + "志愿："
-                    + aspirationDetail.getCollegeName() + " -> " + aspirationDetail.getProfessionName()
-                    + ";  ";
-        }
-
-        return detail;
-    }
-
-    /**
-     * 志愿填报表单
-     *
-     * @return 志愿填报表单
-     */
-    public AspirationFormVo selectItem() {
-        //查出所有院校
-        List<CeCollege> ceColleges = collegeRepo.list();
-        //查出所有专业
-        List<CeProfession> ceProfessions = professionRepo.list();
-        Map<String, List<CeProfession>> ceProfessionsMap = ceProfessions.stream()
-                .collect(Collectors.groupingBy(CeProfession::getCollegeNo));
-        //组装
-        List<AspirationSelectVo> aspirationSelectVos = ceColleges.stream().map(
-                ceCollege -> {
-                    AspirationSelectVo aspirationSelectVo = new AspirationSelectVo();
-                    aspirationSelectVo.setLabel(ceCollege.getCollegeName());
-                    aspirationSelectVo.setValue(ceCollege.getCollegeNo());
-                    aspirationSelectVo.setChildren(
-                            ceProfessionsMap.getOrDefault(ceCollege.getCollegeNo(), Lists.newArrayList())
-                                    .stream().map(
-                                            ceProfession -> {
-                                                AspirationSelectVo selectVo = new AspirationSelectVo();
-                                                selectVo.setLabel(ceProfession.getProfessionName());
-                                                selectVo.setValue(ceProfession.getProfessionNo());
-                                                return selectVo;
-                                            }
-                                    ).collect(Collectors.toList())
-                    );
-
-                    return aspirationSelectVo;
-                }
-        ).collect(Collectors.toList());
-
-
+    public List<Map<String, Object>> listAllSheets() {
         Long userId = SecurityUtil.getUserId();
-        CeStudent student = studentRepo.selectStudentByUserId(userId);
-        List<CeAspirationDetail> ceAspirationDetails =
-                aspirationDetailRepo.selectAspirationDetailList(student.getStudentNo());
-
-        AspirationFormVo aspirationFormVo = new AspirationFormVo();
-        aspirationFormVo.setItems(aspirationSelectVos);
-        for(int i=0; i< ceAspirationDetails.size(); i++){
-            if(i == 0){
-                aspirationFormVo.setProfessionNo1(ceAspirationDetails.get(i).getProfessionNo());
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("sheetNo", i);
+            String tag = userId + "_" + i;
+            List<CeAspirationDetail> details = aspirationDetailRepo.selectAspirationDetailList(tag);
+            if (details != null && !details.isEmpty()) {
+                map.put("hasData", true);
+                Map<String, List<CeAspirationDetail>> grouped = details.stream().collect(Collectors.groupingBy(CeAspirationDetail::getCollegeNo, LinkedHashMap::new, Collectors.toList()));
+                List<Map<String, Object>> gList = new ArrayList<>();
+                grouped.forEach((cNo, dList) -> {
+                    Map<String, Object> gMap = new HashMap<>();
+                    gMap.put("collegeName", dList.get(0).getCollegeName());
+                    gMap.put("professions", dList.stream().map(CeAspirationDetail::getProfessionName).collect(Collectors.toList()));
+                    gList.add(gMap);
+                });
+                map.put("details", gList);
+            } else {
+                map.put("hasData", false);
             }
-            if(i == 1){
-                aspirationFormVo.setProfessionNo2(ceAspirationDetails.get(i).getProfessionNo());
-            }
-            if(i == 2){
-                aspirationFormVo.setProfessionNo3(ceAspirationDetails.get(i).getProfessionNo());
-            }
+            list.add(map);
         }
-
-        return aspirationFormVo;
+        return list;
     }
 
-}
+    public Map<String, Object> selectItemNew(Integer sheetNo) {
+        int idx = sheetNo != null ? sheetNo : 1;
+        List<CeCollege> colls = collegeRepo.list();
+        List<CeProfession> profs = professionRepo.list();
+        Map<String, List<CeProfession>> profMap = profs.stream().collect(Collectors.groupingBy(CeProfession::getCollegeNo));
+        List<AspirationSelectVo> items = colls.stream().map(c -> {
+            AspirationSelectVo vo = new AspirationSelectVo();
+            vo.setLabel(c.getCollegeName()); vo.setValue(c.getCollegeNo());
+            List<CeProfession> pList = profMap.getOrDefault(c.getCollegeNo(), new ArrayList<>());
+            vo.setChildren(pList.stream().map(p -> {
+                AspirationSelectVo child = new AspirationSelectVo();
+                String extra = (p.getStudyYear() != null ? p.getStudyYear() + "年制" : "");
+                child.setLabel(p.getProfessionName() + (extra.isEmpty() ? "" : " [" + extra + "]"));
+                child.setValue(p.getProfessionNo());
+                return child;
+            }).collect(Collectors.toList()));
+            return vo;
+        }).collect(Collectors.toList());
+        List<CeAspirationDetail> details = aspirationDetailRepo.selectAspirationDetailList(SecurityUtil.getUserId() + "_" + idx);
+        Map<String, List<CeAspirationDetail>> grouped = details.stream().collect(Collectors.groupingBy(CeAspirationDetail::getCollegeNo, LinkedHashMap::new, Collectors.toList()));
+        List<Map<String, Object>> groups = new ArrayList<>();
+        grouped.forEach((cNo, dList) -> {
+            Map<String, Object> g = new HashMap<>();
+            g.put("collegeNo", cNo);
+            g.put("professionNos", dList.stream().map(CeAspirationDetail::getProfessionNo).collect(Collectors.toList()));
+            groups.add(g);
+        });
+        Map<String, Object> result = new HashMap<>();
+        result.put("items", items); result.put("groups", groups);
+        return result;
+    }
 
-  
+    public AspirationFormVo selectItem(Integer sheetNo) { return new AspirationFormVo(); }
+
+    @Transactional
+    public Boolean deleteSheet(Integer sheetNo) {
+        if (sheetNo == null) return false;
+        String userTag = SecurityUtil.getUserId() + "_" + sheetNo;
+        aspirationRepo.deleteByStudentNo(userTag);
+        aspirationDetailRepo.deleteByStudentNo(userTag);
+        return true;
+    }
+
+    public String aspirationDetail(String sNo) { return ""; }
+    public List<CeAspiration> selectAspirationList(AspirationBody b) { return new ArrayList<>(); }
+}

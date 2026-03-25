@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-user" style="color: #409EFF; margin-right: 8px;"></i>
+          学生信息管理
+        </span>
+      </div>
     <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
       <el-form-item label="学生编号" prop="studentNo">
         <el-input
@@ -216,6 +223,7 @@
         @pagination="getList"
     />
 
+      </el-card>
   </div>
 </template>
 

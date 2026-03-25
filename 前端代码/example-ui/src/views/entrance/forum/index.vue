@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-chat-dot-round" style="color: #409EFF; margin-right: 8px;"></i>
+          交流论坛
+        </span>
+      </div>
     <div style="margin-bottom: 20px;">
       <el-button type="primary" icon="el-icon-edit" @click="handleAdd">我要发帖</el-button>
     </div>
@@ -42,6 +49,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+      </el-card>
   </div>
 </template>
 

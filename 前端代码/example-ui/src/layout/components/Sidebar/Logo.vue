@@ -70,17 +70,19 @@ export default {
       height: 32px;
       vertical-align: middle;
       margin-right: 12px;
+      border-radius: 6px;
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
       color: #fff;
-      font-weight: 600;
+      font-weight: bold;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
+      letter-spacing: 1px;
     }
   }
 

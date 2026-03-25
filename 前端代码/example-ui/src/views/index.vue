@@ -5,7 +5,7 @@
       <el-col :span="24">
         <el-carousel class="home-banner" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
-            <a :href="item.linkUrl || 'javascript:void(0)'" :target="item.linkUrl ? '_blank' : '_self'" style="display: block; height: 100%; position: relative;">
+            <a :href="item.linkUrl || 'javascript:void(0)'" :target="item.linkUrl && item.linkUrl.startsWith('http') ? '_blank' : '_self'" @click.prevent="!item.linkUrl.startsWith('http') && $router.push(item.linkUrl)" style="display: block; height: 100%; position: relative;">
               <el-image
                   :src="item.imgUrl"
                   fit="cover"
@@ -21,63 +21,98 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="24" :md="16" :lg="16">
-        <div style="padding: 10px 20px;">
-          <h2 style="font-size: 26px; font-weight: bold; color: #303133; margin-top: 0;">高考志愿填报系统</h2>
-          <h4 style="font-size: 18px; font-weight: normal; color: #303133; margin-bottom: 30px;">同学们登录系统后按照以下步骤进行操作</h4>
+    <el-row :gutter="20" style="margin-bottom: 20px;">
+      <el-col :span="24">
+        <div class="notice-bar">
+          <i class="el-icon-bell notice-icon"></i>
+          <span class="notice-label">官方动态：</span>
+          <div class="notice-content">
+            <marquee behavior="scroll" direction="left" scrollamount="5">
+              [最新] 2026年全国普通高校招生计划查询系统已开放 ... [通知] 关于做好2026年普通高校招生填报志愿工作的通知 ... [提醒] 请广大考生注意保护个人账号密码安全，切勿泄露给第三方。
+            </marquee>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
 
-          <el-timeline>
-            <el-timeline-item timestamp="步骤 1" placement="top" color="#e4e7ed">
-              <el-card shadow="hover" class="step-card">
-                <h4>查学校、查专业</h4>
-                <p>登录系统，在“院校信息”或“填报中心”查询自己感兴趣的学校和专业分数线。</p>
-              </el-card>
-            </el-timeline-item>
+    <el-row :gutter="30">
+      <el-col :xs="24" :sm="24" :md="17" :lg="17">
+        <div style="padding: 10px 0;">
+          <h2 style="font-size: 28px; font-weight: bold; color: #1f2d3d; margin: 0 0 10px 0; display: flex; align-items: center;">
+            <i class="el-icon-school" style="color: #409EFF; margin-right: 12px;"></i>
+            欢迎使用高考志愿填报助手
+          </h2>
+          <p style="font-size: 16px; color: #909399; margin-bottom: 35px;">
+            提供权威的院校招生计划与历年录取数据查询，协助您科学管理志愿方案：
+          </p>
 
-            <el-timeline-item timestamp="步骤 2" placement="top" color="#e4e7ed">
-              <el-card shadow="hover" class="step-card">
-                <h4>完善个人档案</h4>
-                <p>在“个人中心”填写自己的高考分数、位次和生源地，这是查询匹配的基础。</p>
-              </el-card>
-            </el-timeline-item>
+          <div class="step-grid">
+            <div class="step-item" @click="$router.push('/college-view/list')">
+              <div class="step-icon bg-blue"><i class="el-icon-search"></i></div>
+              <div class="step-info">
+                <h3>1. 院校数据查询</h3>
+                <p>实时查询全国高校招生计划、专业设置及历年录取分数明细。</p>
+              </div>
+              <i class="el-icon-arrow-right arrow"></i>
+            </div>
 
-            <el-timeline-item timestamp="步骤 3" placement="top" color="#e4e7ed">
-              <el-card shadow="hover" class="step-card">
-                <h4>浏览资讯与攻略</h4>
-                <p>在首页或资讯中心查看最新的高考政策和报考指南，获取一手信息。</p>
-              </el-card>
-            </el-timeline-item>
+            <div class="step-item" @click="$router.push('/user/profile')">
+              <div class="step-icon bg-green"><i class="el-icon-user"></i></div>
+              <div class="step-info">
+                <h3>2. 个人档案管理</h3>
+                <p>记录个人高考成绩与位次信息，方便在查询过程中进行参考对比。</p>
+              </div>
+              <i class="el-icon-arrow-right arrow"></i>
+            </div>
 
-            <el-timeline-item timestamp="步骤 4" placement="top" color="#e4e7ed">
-              <el-card shadow="hover" class="step-card">
-                <h4>志愿模拟管理</h4>
-                <p>进入“填报中心”，手动添加并保存您的报考方案，实现多方案对比管理。</p>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
+            <div class="step-item" @click="$router.push('/news-view/list')">
+              <div class="step-icon bg-orange"><i class="el-icon-news"></i></div>
+              <div class="step-info">
+                <h3>3. 政策咨询中心</h3>
+                <p>汇总各省市最新的高考录取政策、报考指南及官方公告信息。</p>
+              </div>
+              <i class="el-icon-arrow-right arrow"></i>
+            </div>
+
+            <div class="step-item" @click="$router.push('/filling-view/list')">
+              <div class="step-icon bg-purple"><i class="el-icon-edit-outline"></i></div>
+              <div class="step-info">
+                <h3>4. 志愿方案管理</h3>
+                <p>支持创建 5 份独立的模拟志愿表，方便您进行多方案记录与保存。</p>
+              </div>
+              <i class="el-icon-arrow-right arrow"></i>
+            </div>
+          </div>
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :md="8" :lg="8">
-        <el-card shadow="never" class="box-card" style="margin-bottom: 20px;">
-          <div slot="header" class="clearfix" style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: bold; font-size: 16px;"><i class="el-icon-document" style="margin-right: 5px;"></i>最新资讯</span>
-            <el-link type="primary" :underline="false">更多 >></el-link>
-          </div>
-          <div style="text-align: center; color: #909399; padding: 40px 0;">
-            暂无资讯发布
-          </div>
-        </el-card>
-
-        <el-card shadow="never" class="box-card">
+      <el-col :xs="24" :sm="24" :md="7" :lg="7">
+        <el-card shadow="never" class="box-card" style="border-top: 4px solid #67C23A;">
           <div slot="header" class="clearfix">
-            <span style="font-weight: bold; font-size: 16px;"><i class="el-icon-phone-outline" style="margin-right: 5px;"></i>联系信息</span>
+            <span style="font-weight: bold; font-size: 17px; color: #303133;">
+              <i class="el-icon-phone-outline" style="margin-right: 8px; color: #67C23A;"></i>
+              官方咨询通道
+            </span>
           </div>
           <div class="contact-info">
-            <p><i class="el-icon-user-solid"></i> 招生办老师：张老师</p>
-            <p><i class="el-icon-phone"></i> 咨询电话：010-88888888</p>
-            <p><i class="el-icon-message"></i> 邮箱：service@gaokao.com</p>
+            <div class="contact-item">
+              <div class="c-label">招生办咨询</div>
+              <div class="c-value"><i class="el-icon-user"></i> 张老师</div>
+            </div>
+            <div class="contact-item">
+              <div class="c-label">咨询热线</div>
+              <div class="c-value" style="color: #409EFF; font-weight: bold; font-size: 18px;">
+                <i class="el-icon-phone"></i> 010-88888888
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="c-label">办公时间</div>
+              <div class="c-value"><i class="el-icon-time"></i> 周一至周五 09:00-17:00</div>
+            </div>
+            <el-divider></el-divider>
+            <p style="font-size: 13px; color: #909399; line-height: 1.6; text-align: center;">
+              * 请在办公时间内拨打咨询热线，或通过系统论坛留言。
+            </p>
           </div>
         </el-card>
       </el-col>
@@ -93,38 +128,41 @@ export default {
   name: "Index",
   data() {
     return {
-      // 存放轮播图的数据
       bannerList: [],
-      newsList: [],// 增加这个变量用来存真实的资讯数据
+      newsList: [],
     };
   },
   created() {
-    // 页面一加载，就去拉取轮播图数据
     this.getBannerList();
-    this.getNewsList(); // 页面创建时去后台拉取最新资讯
+    this.getNewsList();
   },
   activated() {
-    // 重点：当从其他页面跳回首页时，自动刷新轮播图数据
     this.getBannerList();
     this.getNewsList();
   },
   methods: {
-    /** 查询轮播图列表 */
     getBannerList() {
-      // 请求 status="0" (正常) 的数据
       listBanner({ status: "0" }).then(response => {
-        // 兼容不同的返回体结构，确保能拿到数组
-        this.bannerList = response.rows || response.data || [];
+        let rows = response.rows || response.data || [];
+        if (rows.length === 0) {
+          rows = [
+            { id: 101, title: '圆梦名校 · 精准导航', imgUrl: '/img/banner/banner1.svg', linkUrl: '/college-view/list' },
+            { id: 102, title: '科学填报 · 规划未来', imgUrl: '/img/banner/banner2.svg', linkUrl: '/filling-view/list' }
+          ];
+        }
+        this.bannerList = rows;
+      }).catch(() => {
+        this.bannerList = [
+          { id: 101, title: '圆梦名校 · 精准导航', imgUrl: '/img/banner/banner1.svg', linkUrl: '/college-view/list' },
+          { id: 102, title: '科学填报 · 规划未来', imgUrl: '/img/banner/banner2.svg', linkUrl: '/filling-view/list' }
+        ];
       });
     },
-    /** 查询最新资讯列表 */
     getNewsList() {
-      // 获取前 5 条最新的新闻/资讯
       listNews({ pageNum: 1, pageSize: 5 }).then(response => {
         this.newsList = response.rows || response.data || [];
       });
     }
-
   }
 };
 </script>
@@ -133,22 +171,15 @@ export default {
 .home {
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #676a6c;
-  overflow-x: hidden;
   padding: 20px;
 
-  /* 响应式比例轮播图：宽屏 2.5:1，现代大屏风格 */
   .home-banner {
     width: 100%;
-    aspect-ratio: 2.5 / 1; /* 锁定 2.5:1 的现代比例 */
+    aspect-ratio: 2.5 / 1;
     height: auto !important;
-
-    /* 兼容旧版浏览器 (Element UI 覆盖) */
-    ::v-deep .el-carousel__container {
-      height: 100% !important;
-    }
+    ::v-deep .el-carousel__container { height: 100% !important; }
   }
 
-  /* 轮播图底部黑色标题区域样式 */
   .banner-title {
     position: absolute;
     bottom: 0;
@@ -156,60 +187,74 @@ export default {
     width: 100%;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     color: #ffffff;
-    padding: 20px 20px 10px 20px;
+    padding: 20px;
     font-size: 20px;
     font-weight: bold;
-    letter-spacing: 1px;
-    text-align: left;
   }
 
-  /* 时间轴卡片样式调整，使其更贴近截图效果 */
-  .step-card {
-    border-radius: 4px;
-    h4 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 16px;
-      color: #303133;
+  .notice-bar {
+    display: flex;
+    align-items: center;
+    background: #FFF9E6;
+    border: 1px solid #FFD591;
+    border-radius: 8px;
+    padding: 8px 15px;
+    color: #E6A23C;
+    font-size: 14px;
+    .notice-icon { font-size: 18px; margin-right: 10px; }
+    .notice-label { font-weight: bold; white-space: nowrap; margin-right: 15px; }
+    .notice-content { flex: 1; overflow: hidden; }
+  }
+
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e6ebf1;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+      border-color: #409EFF;
+      .arrow { transform: translateX(5px); color: #409EFF; }
     }
-    p {
-      margin: 0;
-      line-height: 1.8;
-      color: #606266;
-      font-size: 14px;
+    .step-icon {
+      width: 54px; height: 54px; border-radius: 12px;
+      display: flex; justify-content: center; align-items: center;
+      font-size: 24px; color: white; margin-right: 20px; flex-shrink: 0;
+      &.bg-blue { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
+      &.bg-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+      &.bg-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+      &.bg-purple { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
     }
+    .step-info {
+      h3 { margin: 0 0 5px 0; font-size: 17px; color: #303133; }
+      p { margin: 0; font-size: 13px; color: #909399; line-height: 1.5; }
+    }
+    .arrow { margin-left: auto; color: #dcdfe6; font-size: 18px; transition: all 0.3s; }
   }
 
-  /* 右侧卡片基础样式 */
-  .box-card {
-    border-radius: 4px;
-  }
+  .box-card { border-radius: 12px; border: 1px solid #f0f2f5; }
 
-  /* 联系信息行高与图标间距 */
   .contact-info {
-    p {
-      margin: 15px 0;
-      font-size: 15px;
-      color: #303133;
-      display: flex;
-      align-items: center;
-
-      i {
-        font-size: 18px;
-        margin-right: 10px;
-        color: #606266;
-      }
+    padding: 10px 5px;
+    .contact-item {
+      margin-bottom: 20px;
+      .c-label { font-size: 13px; color: #909399; margin-bottom: 8px; }
+      .c-value { font-size: 15px; color: #303133; display: flex; align-items: center; i { margin-right: 10px; } }
     }
   }
 }
 
-/* 修改 Element UI 默认的 timeline 样式，让节点颜色变淡贴近截图 */
-::v-deep .el-timeline-item__timestamp {
-  color: #909399;
-  font-size: 14px;
-  padding-bottom: 8px;
-}
-::v-deep .el-timeline-item__tail {
-  border-left-color: #e4e7ed;
-}
+@media (max-width: 768px) { .home .step-grid { grid-template-columns: 1fr; } }
 </style>

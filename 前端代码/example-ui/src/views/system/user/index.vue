@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card" style="margin-bottom: 20px;">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-user" style="color: #409EFF; margin-right: 8px;"></i>
+          用户管理
+        </span>
+      </div>
     <el-row :gutter="20">
       <!-- 隐藏部门数据/高中学校树，使界面更直接 -->
       <!-- <el-col :span="4" :xs="24">
@@ -308,6 +315,7 @@
         <el-button @click="upload.open = false">取 消</el-button>
       </div>
     </el-dialog>
+      </el-card>
   </div>
 </template>
 

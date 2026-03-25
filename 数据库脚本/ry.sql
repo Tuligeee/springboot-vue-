@@ -272,25 +272,31 @@ INSERT INTO `ce_profession` VALUES (22, 'P015', '数字媒体艺术', 'C009', 4,
 INSERT INTO `ce_profession` VALUES (23, 'P016', '工业设计', 'C009', 4, '工业设计（industrial design），简称ID。指以工学、美学、经济学为基础对工业产品进行设计。\n工业设计分为产品设计、环境设计、传播设计、设计管理4类；包括造型设计、机械设计、服装设计、环境规划、室内设计、UI设计、平面设计、包装设计、广告设计、展示设计、网站设计等。工业设计又称工业产品设计学，工业设计涉及到心理学，社会学，美学，人机工程学，机械构造，摄影，色彩学等。工业发展和劳动分工所带来的工业设计，与其它艺术、生产活动、工艺制作等都有明显不同，它是各种学科、技术和审美观念的交叉产物。', '2025-01-02 18:13:02', 'admin', '2025-01-02 18:23:08', 'admin');
 
 -- ----------------------------
--- Table structure for ce_province_line
+-- Table structure for ce_province_score
 -- ----------------------------
-DROP TABLE IF EXISTS `ce_province_line`;
-CREATE TABLE `ce_province_line`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `year` int NOT NULL COMMENT '年份',
-  `province` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '湖北' COMMENT '省份',
-  `batch_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '批次名称',
-  `score` int NOT NULL COMMENT '分数线',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '省控线表' ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `ce_province_score`;
+CREATE TABLE `ce_province_score` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `year` int(11) NOT NULL COMMENT '年份',
+  `province` varchar(50) NOT NULL COMMENT '省份',
+  `category` varchar(20) NOT NULL COMMENT '科类 (文科/理科/综合)',
+  `batch` varchar(50) NOT NULL COMMENT '批次 (本科一批/本科二批/高职专科)',
+  `score` int(11) NOT NULL COMMENT '分数线',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='历年分数线表';
 
 -- ----------------------------
--- Records of ce_province_line
+-- Records of ce_province_score
 -- ----------------------------
-INSERT INTO `ce_province_line` VALUES (1, 2026, '湖北', '本科批', 100, NULL, NULL);
-INSERT INTO `ce_province_line` VALUES (2, 2027, '湖北', '本科批', 106, NULL, NULL);
+INSERT INTO `ce_province_score` VALUES (1, 2023, '湖北', '理科', '本科一批', 525, '演示数据', 'admin', NOW(), NULL, NULL);
+INSERT INTO `ce_province_score` VALUES (2, 2023, '湖北', '文科', '本科一批', 542, '演示数据', 'admin', NOW(), NULL, NULL);
+INSERT INTO `ce_province_score` VALUES (3, 2022, '湖北', '理科', '本科一批', 504, '演示数据', 'admin', NOW(), NULL, NULL);
+INSERT INTO `ce_province_score` VALUES (4, 2022, '湖北', '文科', '本科一批', 527, '演示数据', 'admin', NOW(), NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ce_score_line
@@ -937,7 +943,7 @@ INSERT INTO `sys_menu` VALUES (1034, '参数删除', 106, 4, '#', '', '', 1, 0, 
 INSERT INTO `sys_menu` VALUES (1035, '参数导出', 106, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:export', '#', 'admin', '2022-03-21 21:33:12', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2052, '学生管理', 0, 4, 'student', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'peoples', 'admin', '2023-03-31 07:32:09', 'admin', '2025-01-04 20:17:41', '');
 INSERT INTO `sys_menu` VALUES (2053, '学生信息', 2052, 1, 'student', 'entrance/student/index', NULL, 1, 0, 'C', '0', '0', 'entrance:student:list', 'people', 'admin', '2023-03-31 07:32:58', 'admin', '2023-03-31 07:33:52', '');
-INSERT INTO `sys_menu` VALUES (2054, '学校中心', 0, 5, 'college', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'education', 'admin', '2025-01-01 01:12:06', 'admin', '2025-01-04 20:17:45', '高考辅助平台核心板块');
+INSERT INTO `sys_menu` VALUES (2054, '高考辅助平台', 0, 5, 'college', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'education', 'admin', '2025-01-01 01:12:06', 'admin', NOW(), '高考辅助平台核心板块');
 INSERT INTO `sys_menu` VALUES (2055, '院校查询', 2054, 1, 'college', 'entrance/college/index', NULL, 1, 0, 'C', '0', '0', 'entrance:college:index', 'search', 'admin', '2025-01-01 01:13:09', 'admin', '2025-01-01 01:13:28', '包含院校信息浏览');
 INSERT INTO `sys_menu` VALUES (2056, '专业查询', 2054, 2, 'profession', 'entrance/profession/index', NULL, 1, 0, 'C', '0', '0', 'entrance:profession:list', 'guide', 'admin', '2025-01-01 07:33:13', 'admin', '2025-01-01 07:33:23', '包含专业信息浏览');
 INSERT INTO `sys_menu` VALUES (2057, '学生添加', 2052, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:add', '#', 'admin', '2025-01-02 03:38:11', 'admin', '2025-01-02 03:38:27', '');
@@ -950,8 +956,19 @@ INSERT INTO `sys_menu` VALUES (2063, '志愿管理', 2061, 2, 'aspiration', 'ent
 INSERT INTO `sys_menu` VALUES (2064, '志愿填报', 2061, 3, 'form', 'entrance/aspiration/form', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:form', 'edit', 'admin', '2025-01-29 21:01:01', 'admin', '2025-01-29 21:03:17', '');
 INSERT INTO `sys_menu` VALUES (2065, '高考资讯管理', 0, 1, 'news-admin', 'entrance/news/index', 'news-manage', 1, 0, 'C', '0', '0', 'entrance:news:list', 'documentation', 'admin', '2026-01-19 13:26:52', 'admin', '2026-01-19 13:47:31', '');
 INSERT INTO `sys_menu` VALUES (2066, '我的志愿表', 2061, 1, 'my-volunteer', 'entrance/filling/index', NULL, 1, 0, 'C', '0', '0', NULL, 'button', 'admin', '2026-01-20 13:26:29', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2067, '档线信息管理', 0, 1, 'provinceLine', 'entrance/provinceLine/index', NULL, 1, 0, 'C', '0', '0', NULL, 'cascader', 'admin', '2026-01-21 13:58:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3000, '历年分数线', 2054, 3, 'provinceScore', 'entrance/provinceScore/index', NULL, 1, 0, 'C', '0', '0', 'entrance:provinceScore:list', 'chart', 'admin', NOW(), '', NULL, '历年分数线查询');
+INSERT INTO `sys_menu` VALUES (3001, '分数线查询', 3000, 1, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:query', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3002, '分数线新增', 3000, 2, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:add', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3003, '分数线修改', 3000, 3, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:edit', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3004, '分数线删除', 3000, 4, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:remove', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3005, '分数线导出', 3000, 5, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:export', '#', 'admin', NOW(), '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2068, '轮播图管理', 0, 1, 'banner', 'entrance/banner/index', NULL, 1, 0, 'C', '0', '0', NULL, 'color', 'admin', '2026-02-26 12:10:08', 'admin', '2026-02-26 12:13:39', '');
+INSERT INTO `sys_menu` VALUES (2069, '专业分数管理', 2054, 4, 'scoreLine', 'entrance/scoreLine/index', NULL, 1, 0, 'C', '0', '0', 'entrance:scoreLine:list', 'chart', 'admin', NOW(), '', NULL, '维护各校专业的历年分数');
+INSERT INTO `sys_menu` VALUES (2075, '分数查询', 2069, 1, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:query', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2076, '分数新增', 2069, 2, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:add', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2077, '分数修改', 2069, 3, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:edit', '#', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2078, '分数删除', 2069, 4, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:remove', '#', 'admin', NOW(), '', NULL, '');
+
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -1067,6 +1084,27 @@ CREATE TABLE `sys_role_menu`  (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES (1, 3000);
+INSERT INTO `sys_role_menu` VALUES (1, 3001);
+INSERT INTO `sys_role_menu` VALUES (1, 3002);
+INSERT INTO `sys_role_menu` VALUES (1, 3003);
+INSERT INTO `sys_role_menu` VALUES (1, 3004);
+INSERT INTO `sys_role_menu` VALUES (1, 3005);
+INSERT INTO `sys_role_menu` VALUES (100, 3000);
+INSERT INTO `sys_role_menu` VALUES (100, 3001);
+INSERT INTO `sys_role_menu` VALUES (101, 3000);
+INSERT INTO `sys_role_menu` VALUES (101, 3001);
+INSERT INTO `sys_role_menu` VALUES (101, 3002);
+INSERT INTO `sys_role_menu` VALUES (101, 3003);
+INSERT INTO `sys_role_menu` VALUES (1, 2069);
+INSERT INTO `sys_role_menu` VALUES (1, 2075);
+INSERT INTO `sys_role_menu` VALUES (1, 2076);
+INSERT INTO `sys_role_menu` VALUES (1, 2077);
+INSERT INTO `sys_role_menu` VALUES (1, 2078);
+INSERT INTO `sys_role_menu` VALUES (101, 2069);
+INSERT INTO `sys_role_menu` VALUES (101, 2075);
+INSERT INTO `sys_role_menu` VALUES (101, 2076);
+INSERT INTO `sys_role_menu` VALUES (101, 2077);
 INSERT INTO `sys_role_menu` VALUES (1, 2070);
 INSERT INTO `sys_role_menu` VALUES (100, 2070);
 INSERT INTO `sys_role_menu` VALUES (101, 2070);

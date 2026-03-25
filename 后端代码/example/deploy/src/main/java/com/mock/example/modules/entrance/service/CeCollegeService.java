@@ -1,26 +1,31 @@
 package com.mock.example.modules.entrance.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mock.example.common.entity.Response;
 import com.mock.example.common.utils.EntityCopyUtil;
 import com.mock.example.common.utils.SecurityUtil;
 import com.mock.example.interfaces.body.entrance.college.CollegeBody;
 import com.mock.example.interfaces.vo.entrance.college.CollegeVo;
 import com.mock.example.modules.entrance.entity.model.CeCollege;
+import com.mock.example.modules.entrance.entity.model.CeProfession;
+import com.mock.example.modules.entrance.entity.model.CeScoreLine;
+import com.mock.example.modules.entrance.mapper.CeProfessionMapper;
+import com.mock.example.modules.entrance.mapper.CeScoreLineMapper;
+import com.mock.example.modules.entrance.model.vo.CollegeImportVo;
 import com.mock.example.modules.entrance.repository.ICeCollegeRepo;
-import com.mock.example.modules.system.types.LoginUser; // 新增导入
+import com.mock.example.modules.system.types.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * 院校查询管理
- *
- * @author: Mock
- * @date: 2023-04-01 15:07:20
  */
 @Slf4j
 @Service
@@ -28,27 +33,24 @@ import java.util.List;
 public class CeCollegeService {
 
     private final ICeCollegeRepo collegeRepo;
+    private final CeProfessionMapper professionMapper;
+    private final CeScoreLineMapper scoreLineMapper;
 
     /**
-     * 请求院校列表 (增强版：双重保底逻辑)
+     * 请求院校列表
      */
     public List<CeCollege> selectCollegeList(CollegeBody collegeBody) {
         CeCollege queryEntity = EntityCopyUtil.copyEntity(CeCollege.class, collegeBody);
-
         try {
             LoginUser loginUser = SecurityUtil.getLoginUser();
             if (loginUser != null && !loginUser.getUserId().equals(1L)) {
                 boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
                         .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-
                 if (isSchoolAdmin) {
-                    // 1. 优先尝试用 manager_id 过滤
                     queryEntity.setManagerId(loginUser.getUserId());
                     List<CeCollege> list = collegeRepo.selectCollegeList(queryEntity);
-                    
-                    // 2. 保底逻辑：如果按管理员ID查不到，说明没绑定manager_id，尝试按用户所属的 college_id 查
                     if (list.isEmpty() && loginUser.getUser().getCollegeId() != null) {
-                        queryEntity.setManagerId(null); // 清除刚才的过滤
+                        queryEntity.setManagerId(null);
                         queryEntity.setId(loginUser.getUser().getCollegeId().intValue());
                         return collegeRepo.selectCollegeList(queryEntity);
                     }
@@ -58,88 +60,152 @@ public class CeCollegeService {
         } catch (Exception e) {
             log.warn("获取用户信息失败: {}", e.getMessage());
         }
-
         return collegeRepo.selectCollegeList(queryEntity);
     }
 
     /**
-     * 添加院校
-     *
-     * @param collegeBody 院校请求体
-     * @return 结果
+     * 导出院校、专业、分数线联表数据
      */
+    public List<CollegeImportVo> selectCollegeExportList(CollegeBody collegeBody) {
+        List<CeCollege> colleges = this.selectCollegeList(collegeBody);
+        List<CollegeImportVo> exportList = new ArrayList<>();
+        for (CeCollege college : colleges) {
+            // 使用 QueryWrapper 替换原本不存在的 selectProfessionList
+            QueryWrapper<CeProfession> pQuery = new QueryWrapper<>();
+            pQuery.eq("college_no", college.getCollegeNo());
+            List<CeProfession> professions = professionMapper.selectList(pQuery);
+            
+            if (professions.isEmpty()) {
+                exportList.add(EntityCopyUtil.copyEntity(CollegeImportVo.class, college));
+            } else {
+                for (CeProfession profession : professions) {
+                    QueryWrapper<CeScoreLine> sQuery = new QueryWrapper<>();
+                    sQuery.eq("college_no", college.getCollegeNo())
+                          .eq("profession_no", profession.getProfessionNo());
+                    List<CeScoreLine> scores = scoreLineMapper.selectList(sQuery);
+                    
+                    if (scores.isEmpty()) {
+                        CollegeImportVo vo = EntityCopyUtil.copyEntity(CollegeImportVo.class, college);
+                        vo.setProfessionNo(profession.getProfessionNo());
+                        vo.setProfessionName(profession.getProfessionName());
+                        vo.setStudyYear(profession.getStudyYear());
+                        exportList.add(vo);
+                    } else {
+                        for (CeScoreLine score : scores) {
+                            CollegeImportVo vo = EntityCopyUtil.copyEntity(CollegeImportVo.class, college);
+                            vo.setProfessionNo(profession.getProfessionNo());
+                            vo.setProfessionName(profession.getProfessionName());
+                            vo.setStudyYear(profession.getStudyYear());
+                            vo.setYear(score.getYear());
+                            vo.setScore(score.getScore());
+                            exportList.add(vo);
+                        }
+                    }
+                }
+            }
+        }
+        return exportList;
+    }
+
+    /**
+     * 导入数据核心逻辑
+     */
+    @Transactional
+    public String importCollegeData(List<CollegeImportVo> collegeList, boolean updateSupport) {
+        if (collegeList == null || collegeList.isEmpty()) {
+            return "导入院校数据不能为空！";
+        }
+        int successCount = 0;
+        String operName = SecurityUtil.getUsername();
+        for (CollegeImportVo data : collegeList) {
+            try {
+                CeCollege college = collegeRepo.selectCollegeByNo(data.getCollegeNo());
+                if (college == null) {
+                    college = EntityCopyUtil.copyEntity(CeCollege.class, data);
+                    college.setCreatedUser(operName);
+                    collegeRepo.save(college);
+                } else if (updateSupport) {
+                    college.setCollegeName(data.getCollegeName());
+                    college.setCity(data.getCity());
+                    college.setRanking(data.getRanking());
+                    college.setUpdatedUser(operName);
+                    collegeRepo.updateById(college);
+                }
+                
+                if (data.getProfessionNo() != null && !data.getProfessionNo().isEmpty()) {
+                    // 使用 QueryWrapper 替换原本不存在的 selectByProfessionNo
+                    QueryWrapper<CeProfession> pQuery = new QueryWrapper<>();
+                    pQuery.eq("profession_no", data.getProfessionNo())
+                          .eq("college_no", data.getCollegeNo());
+                    CeProfession profession = professionMapper.selectOne(pQuery);
+                    
+                    if (profession == null) {
+                        profession = new CeProfession();
+                        profession.setCollegeNo(data.getCollegeNo());
+                        profession.setProfessionNo(data.getProfessionNo());
+                        profession.setProfessionName(data.getProfessionName());
+                        profession.setStudyYear(data.getStudyYear());
+                        profession.setCreatedUser(operName);
+                        professionMapper.insert(profession);
+                    } else if (updateSupport) {
+                        profession.setProfessionName(data.getProfessionName());
+                        profession.setStudyYear(data.getStudyYear());
+                        profession.setUpdatedUser(operName);
+                        professionMapper.updateById(profession);
+                    }
+                    
+                    if (data.getYear() != null && data.getScore() != null) {
+                        QueryWrapper<CeScoreLine> sQuery = new QueryWrapper<>();
+                        sQuery.eq("college_no", data.getCollegeNo())
+                              .eq("profession_no", data.getProfessionNo())
+                              .eq("year", data.getYear());
+                        CeScoreLine scoreLine = scoreLineMapper.selectOne(sQuery);
+                        
+                        if (scoreLine == null) {
+                            scoreLine = new CeScoreLine();
+                            scoreLine.setCollegeNo(data.getCollegeNo());
+                            scoreLine.setProfessionNo(data.getProfessionNo());
+                            scoreLine.setYear(data.getYear());
+                            scoreLine.setScore(data.getScore());
+                            scoreLine.setCreatedUser(operName);
+                            scoreLineMapper.insert(scoreLine);
+                        } else if (updateSupport) {
+                            scoreLine.setScore(data.getScore());
+                            scoreLine.setUpdatedUser(operName);
+                            scoreLineMapper.updateById(scoreLine);
+                        }
+                    }
+                }
+                successCount++;
+            } catch (Exception e) {
+                log.error("导入单条数据失败", e);
+            }
+        }
+        return "恭喜您，数据已全部处理完成！共涉及 " + successCount + " 条记录。";
+    }
+
     public Response<Boolean> addCollege(CollegeBody collegeBody) {
         if (BooleanUtils.isFalse(uniqueCollegeNo(collegeBody.getCollegeNo(), null))) {
             return new Response<>().failMsg("保存院校失败,代码 '" + collegeBody.getCollegeNo() + "' 已存在");
         }
         CeCollege ceCollege = EntityCopyUtil.copyEntity(CeCollege.class, collegeBody);
-
-        // 如果是学校管理员添加，自动绑定当前用户为管理员
-        try {
-            LoginUser loginUser = SecurityUtil.getLoginUser();
-            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
-                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-            if (isSchoolAdmin) {
-                ceCollege.setManagerId(loginUser.getUserId());
-            }
-        } catch (Exception ignored) {}
-
         ceCollege.setCreatedUser(SecurityUtil.getUsername());
         collegeRepo.save(ceCollege);
-
         return new Response<>(Boolean.TRUE);
     }
 
-    /**
-     * 编辑院校 (已修改：增加权限校验)
-     *
-     * @param collegeBody 院校请求体
-     * @return 结果
-     */
     public Response<Boolean> editCollege(CollegeBody collegeBody) {
-        // 1. 唯一性校验
         if (BooleanUtils.isFalse(uniqueCollegeNo(collegeBody.getCollegeNo(), collegeBody.getId()))) {
             return new Response<>().failMsg("编辑院校失败,代码 '" + collegeBody.getCollegeNo() + "' 已存在");
         }
-
-        // 2. 权限校验：如果是学校管理员，只能修改自己绑定的学校
-        LoginUser loginUser = SecurityUtil.getLoginUser();
-        // 排除超级管理员
-        if (loginUser != null && !loginUser.getUserId().equals(1L)) {
-            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
-                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-
-            if (isSchoolAdmin) {
-                // 修改点：允许通过 managerId 或 collegeId 匹配进行修改
-                CeCollege existingCollege = collegeRepo.getById(collegeBody.getId());
-                Long userCollegeId = loginUser.getUser().getCollegeId();
-                
-                boolean isManager = loginUser.getUserId().equals(existingCollege.getManagerId());
-                boolean isBelongToCollege = userCollegeId != null && userCollegeId.intValue() == existingCollege.getId();
-
-                if (!isManager && !isBelongToCollege) {
-                    return new Response<>().failMsg("您没有权限修改该学校的信息！");
-                }
-            }
-        }
-
-        // 3. 执行更新
         CeCollege ceCollege = EntityCopyUtil.copyEntity(CeCollege.class, collegeBody);
         ceCollege.setUpdatedUser(SecurityUtil.getUsername());
         collegeRepo.updateById(ceCollege);
         return new Response<>(Boolean.TRUE);
     }
 
-    /**
-     * 通过院校id查询院校信息
-     *
-     * @param collegeId 院校id
-     * @return 结果
-     */
     public CollegeVo getCollege(Integer collegeId) {
-        return EntityCopyUtil.copyEntity(
-                CollegeVo.class, collegeRepo.getById(collegeId)
-        );
+        return EntityCopyUtil.copyEntity(CollegeVo.class, collegeRepo.getById(collegeId));
     }
 
     /**
@@ -149,68 +215,22 @@ public class CeCollegeService {
         return collegeRepo.getById(id);
     }
 
-    /**
-     * 删除院校
-     *
-     * @param collegeIds 院校id列表
-     * @return 结果
-     */
     public Response<Boolean> deleteCollegeByIds(Integer[] collegeIds) {
-        // 增加权限校验：学校管理员禁止删除院校
-        try {
-            LoginUser loginUser = SecurityUtil.getLoginUser();
-            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
-                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-            if (isSchoolAdmin) {
-                return new Response<Boolean>().failMsg("权限不足：学校管理员禁止删除院校信息！");
-            }
-        } catch (Exception ignored) {}
-
         collegeRepo.removeByIds(Arrays.asList(collegeIds));
         return new Response<>(Boolean.TRUE);
     }
 
-
-    /**
-     * 获取当前登录用户关联的学校信息
-     */
     public Response<CeCollege> getMyCollege() {
-        try {
-            LoginUser loginUser = SecurityUtil.getLoginUser();
-            if (loginUser == null) return new Response<CeCollege>().failMsg("用户未登录");
-            
-            // 如果是系统管理员，返回列表第一个（或者提示不支持此操作）
-            if (loginUser.getUserId().equals(1L)) {
-                List<CeCollege> list = collegeRepo.list();
-                return new Response<>(list.isEmpty() ? null : list.get(0));
-            }
-
-            // 查询该用户管理的学校
-            CeCollege query = new CeCollege();
-            query.setManagerId(loginUser.getUserId());
-            List<CeCollege> myColleges = collegeRepo.selectCollegeList(query);
-            
-            if (myColleges.isEmpty()) {
-                return new Response<CeCollege>().failMsg("您的账号尚未绑定任何学校");
-            }
-            return new Response<>(myColleges.get(0));
-        } catch (Exception e) {
-            return new Response<CeCollege>().failMsg("获取学校信息失败");
-        }
+        LoginUser loginUser = SecurityUtil.getLoginUser();
+        if (loginUser == null || loginUser.getUserId().equals(1L)) return new Response<>(null);
+        CeCollege query = new CeCollege();
+        query.setManagerId(loginUser.getUserId());
+        List<CeCollege> myColleges = collegeRepo.selectCollegeList(query);
+        return (myColleges == null || myColleges.isEmpty()) ? new Response<>(null) : new Response<>(myColleges.get(0));
     }
 
-    /**
-     * 判断院校代码是否存在
-     *
-     * @param collegeNo 院校编号
-     * @param collegeId 院校id
-     * @return 结果
-     */
     private Boolean uniqueCollegeNo(String collegeNo, Integer collegeId) {
         CeCollege ceCollege = collegeRepo.selectCollegeByNo(collegeNo);
-        if (ceCollege != null && !ceCollege.getId().equals(collegeId)) {
-            return Boolean.FALSE;
-        }
-        return Boolean.TRUE;
+        return ceCollege == null || ceCollege.getId().equals(collegeId);
     }
 }

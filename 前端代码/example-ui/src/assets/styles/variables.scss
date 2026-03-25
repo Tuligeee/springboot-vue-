@@ -1,45 +1,29 @@
 // base color
-$blue:#324157;
+$blue:#0974e7;
 $light-blue:#3A71A8;
-$red:#C03639;
+$red:#f5222d;
 $pink: #E65D6E;
-$green: #30B08F;
+$green: #52c41a;
 $tiffany: #4AB7BD;
-$yellow:#FEC171;
+$yellow:#faad14;
 $panGreen: #30B08F;
 
-// 默认菜单主题风格
-$base-menu-color:#bfcbd9;
-$base-menu-color-active:#f4f4f5;
-$base-menu-background:#304156;
+// 高级深蓝菜单主题风格 - 经典且专业
+$base-menu-color: rgba(255, 255, 255, 0.7);
+$base-menu-color-active: #ffffff;
+$base-menu-background: #001529; // 深宝蓝背景
 $base-logo-title-color: #ffffff;
 
-$base-menu-light-color:rgba(0,0,0,.70);
-$base-menu-light-background:#ffffff;
+$base-menu-light-color: rgba(0, 0, 0, 0.85);
+$base-menu-light-background: #ffffff;
 $base-logo-light-title-color: #001529;
 
-$base-sub-menu-background:#1f2d3d;
-$base-sub-menu-hover:#001528;
+$base-sub-menu-background: #000c17;
+$base-sub-menu-hover: #1890ff; // 悬浮使用亮蓝色
 
-// 自定义暗色菜单风格
-/**
-$base-menu-color:hsla(0,0%,100%,.65);
-$base-menu-color-active:#fff;
-$base-menu-background:#001529;
-$base-logo-title-color: #ffffff;
-
-$base-menu-light-color:rgba(0,0,0,.70);
-$base-menu-light-background:#ffffff;
-$base-logo-light-title-color: #001529;
-
-$base-sub-menu-background:#000c17;
-$base-sub-menu-hover:#001528;
-*/
-
-$base-sidebar-width: 200px;
+$base-sidebar-width: 210px;
 
 // the :export directive is the magic sauce for webpack
-// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
   menuColor: $base-menu-color;
   menuLightColor: $base-menu-light-color;

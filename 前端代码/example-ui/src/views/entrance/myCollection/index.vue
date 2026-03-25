@@ -1,53 +1,55 @@
 <template>
   <div class="app-container">
-    <el-card shadow="never">
+    <el-card shadow="hover" class="page-card">
       <div slot="header" class="clearfix">
-        <span style="font-size: 18px; font-weight: bold;"><i class="el-icon-collection"></i> 我的收藏中心</span>
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-star-on" style="color: #F7BA2A; margin-right: 8px;"></i>
+          我的收藏中心
+        </span>
       </div>
 
-      <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-        <el-tab-pane label="高考资讯" name="1"></el-tab-pane>
-        <el-tab-pane label="大学院校" name="2"></el-tab-pane>
-        <el-tab-pane label="历年分数" name="3"></el-tab-pane>
-        <el-tab-pane label="填报中心" name="4"></el-tab-pane>
-      </el-tabs>
-
-      <el-table v-loading="loading" :data="collectionList" border style="margin-top: 15px">
-        <el-table-column label="序号" type="index" width="60" align="center" />
-        <el-table-column label="内容名称 / 标题" prop="showTitle">
-          <template slot-scope="scope">
-            <el-link type="primary" :underline="false" @click="handleViewDetail(scope.row)">
-              {{ scope.row.showTitle }}
-            </el-link>
-          </template>
-        </el-table-column>
-        <el-table-column label="收藏时间" align="center" prop="createTime" width="180">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.createTime) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center" width="150">
-          <template slot-scope="scope">
-            <el-button size="mini" type="text" icon="el-icon-delete" style="color: #F56C6C" @click="handleCancelCollect(scope.row)">
-              取消收藏
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div v-loading="loading">
+        <el-row :gutter="20" v-if="collectionList.length > 0">
+          <el-col :span="12" v-for="item in collectionList" :key="item.collectionId" style="margin-bottom: 20px;">
+            <el-card shadow="hover" class="collection-item-card">
+              <div class="card-content">
+                <div class="college-info">
+                  <div class="title-row">
+                    <span class="college-name">{{ item.collegeName }}</span>
+                    <el-tag size="mini" type="warning" v-if="item.ranking">排名 {{ item.ranking }}</el-tag>
+                  </div>
+                  <div class="detail-row">
+                    <span><i class="el-icon-location-outline"></i> {{ item.city || '未知城市' }}</span>
+                    <span style="margin-left: 15px;"><i class="el-icon-postcard"></i> 代码：{{ item.collegeNo }}</span>
+                  </div>
+                  <div class="time-row">收藏于：{{ parseTime(item.createTime) }}</div>
+                </div>
+                <div class="actions">
+                  <el-button type="primary" plain size="small" @click="handleView(item.targetId)">查看详情</el-button>
+                  <el-button type="danger" plain size="small" icon="el-icon-delete" @click="handleDelete(item.collectionId)">取消收藏</el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+        
+        <el-empty v-else description="您还没有收藏任何院校哦，快去院校中心看看吧">
+          <el-button type="primary" @click="$router.push('/college/college')">去寻找目标院校</el-button>
+        </el-empty>
+      </div>
     </el-card>
   </div>
 </template>
 
 <script>
-import { listCollection, toggleCollect } from "@/api/entrance/collection";
+import { listCollection, delCollection } from "@/api/entrance/collection";
 
 export default {
   name: "MyCollection",
   data() {
     return {
-      activeTab: "2", // 默认打开“大学院校”Tab
       loading: true,
-      collectionList: [],
+      collectionList: []
     };
   },
   created() {
@@ -56,29 +58,65 @@ export default {
   methods: {
     getList() {
       this.loading = true;
-      listCollection({ targetType: this.activeTab }).then(response => {
-        this.collectionList = response.data;
+      listCollection().then(res => {
+        // 后端现在返回结构化 Map
+        this.collectionList = res.rows;
+        this.loading = false;
+      }).catch(() => {
         this.loading = false;
       });
     },
-    handleTabClick() {
-      this.getList(); // 点击切换Tab时重新查询
+    handleView(id) {
+      this.$router.push('/college-view/detail/' + id);
     },
-    handleCancelCollect(row) {
-      this.$modal.confirm('确认要取消收藏该内容吗？').then(() => {
-        return toggleCollect({ targetId: row.targetId, targetType: row.targetType });
+    handleDelete(id) {
+      this.$confirm('确认要取消收藏该院校吗？', '提示', {
+        type: 'warning'
       }).then(() => {
+        return delCollection(id);
+      }).then(() => {
+        this.$message.success("取消收藏成功");
         this.getList();
-        this.$modal.msgSuccess("已移除收藏");
-      }).catch(() => {});
-    },
-    handleViewDetail(row) {
-      let path = "";
-      if (row.targetType == 1) path = "/entrance/news/detail";
-      else if (row.targetType == 2) path = "/entrance/college/detail";
-
-      this.$router.push({ path: path, query: { id: row.targetId } });
+      });
     }
   }
 };
 </script>
+
+<style scoped>
+.collection-item-card {
+  border-radius: 12px;
+  border: 1px solid #ebeef5;
+  background: #fdfdfd;
+}
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.college-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0974e7;
+  margin-right: 10px;
+}
+.title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.detail-row {
+  font-size: 14px;
+  color: #606266;
+  margin-bottom: 8px;
+}
+.time-row {
+  font-size: 12px;
+  color: #909399;
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+</style>

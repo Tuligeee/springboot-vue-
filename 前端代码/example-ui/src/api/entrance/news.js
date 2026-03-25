@@ -35,6 +35,14 @@ export function updateNews(data) {
     })
 }
 
+// 点赞资讯
+export function likeNews(id) {
+    return request({
+        url: '/entrance/news/like/' + id,
+        method: 'post'
+    })
+}
+
 // 删除资讯
 export function delNews(id) {
     return request({

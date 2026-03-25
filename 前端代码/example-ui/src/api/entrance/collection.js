@@ -1,13 +1,27 @@
 import request from '@/utils/request'
 
-export function checkCollect(query) {
-    return request({ url: '/entrance/collection/check', method: 'get', params: query })
-}
-
-export function toggleCollect(data) {
-    return request({ url: '/entrance/collection/toggle', method: 'post', data: data })
-}
-
+// 查询收藏列表
 export function listCollection(query) {
-    return request({ url: '/entrance/collection/list', method: 'get', params: query })
+    return request({
+        url: '/college_entrance/collection/list',
+        method: 'get',
+        params: query
+    })
+}
+
+// 新增收藏
+export function addCollection(data) {
+    return request({
+        url: '/college_entrance/collection',
+        method: 'post',
+        data: data
+    })
+}
+
+// 删除收藏
+export function delCollection(collectionId) {
+    return request({
+        url: '/college_entrance/collection/' + collectionId,
+        method: 'delete'
+    })
 }

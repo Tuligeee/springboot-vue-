@@ -21,32 +21,21 @@ const permission = {
       state.defaultRoutes = constantRoutes.concat(routes)
     },
     SET_TOPBAR_ROUTES: (state, routes) => {
-      // 顶部导航菜单默认添加统计报表栏指向首页
-      const index = [{
-        path: 'index',
-        meta: { title: '统计报表', icon: 'dashboard'}
-      }]
-      state.topbarRouters = routes.concat(index);
+      state.topbarRouters = routes.concat([{ path: 'index', meta: { title: '首页', icon: 'dashboard' } }]);
     },
     SET_SIDEBAR_ROUTERS: (state, routes) => {
       state.sidebarRouters = routes
     },
   },
   actions: {
-    // 生成路由
     GenerateRoutes({ commit }) {
       return new Promise(resolve => {
-        // 向后端请求路由数据
         getRouters().then(res => {
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
-
           const sidebarRoutes = filterAsyncRouter(sdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-
-          //会让未进行路由配置的页面，跳转到404
           rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
-
           commit('SET_ROUTES', rewriteRoutes)
           commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
           commit('SET_DEFAULT_ROUTES', sidebarRoutes)
@@ -58,15 +47,30 @@ const permission = {
   }
 }
 
-// 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {
+    // 全局更名逻辑 (去管理化)
+    if (route.meta && route.meta.title) {
+      const titleMap = {
+        '招生信息管理': '院校查询',
+        '本校专业管理': '专业查询',
+        '填报管理': '志愿模拟填报',
+        '高考资讯管理': '政策资讯中心',
+        '档线信息管理': '历年分数线查询',
+        '轮播图管理': '首页内容展示',
+        '志愿管理': '志愿单管理'
+      };
+      if (titleMap[route.meta.title]) {
+        route.meta.title = titleMap[route.meta.title];
+      } else if (route.meta.title.includes('管理') && !route.meta.title.includes('系统')) {
+        route.meta.title = route.meta.title.replace('管理', '查询');
+      }
+    }
+
     if (type && route.children) {
       route.children = filterChildren(route.children)
     }
-
     if (route.component) {
-      // Layout ParentView 组件特殊处理
       if (route.component === 'Layout') {
         route.component = Layout
       } else if (route.component === 'ParentView') {
@@ -111,7 +115,7 @@ function filterChildren(childrenMap, lastRouter = false) {
   return children
 }
 
-export const loadView = (view) => { // 路由懒加载
+export const loadView = (view) => {
   return (resolve) => require([`@/views/${view}`], resolve)
 }
 

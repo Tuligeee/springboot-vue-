@@ -357,10 +357,10 @@ public class SysUserService {
             if (!regFlag) {
                 msg = "注册失败,请联系系统管理人员";
             } else {
-                // 2. 【核心修改】赋予“学生用户”角色 (ID: 100)
+                // 2. 【核心修改】赋予“学生用户”角色 (ID: 11)
                 SysUserRole userRole = new SysUserRole();
                 userRole.setUserId(sysUser.getUserId());
-                userRole.setRoleId(100L); // 对应数据库中学生角色的ID
+                userRole.setRoleId(11L); // 对应数据库中学生角色的ID
                 userRoleRepository.save(userRole);
 
                 // 3. 【核心修改】初始化 ce_student 学生档案

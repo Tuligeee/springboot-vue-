@@ -1,0 +1,7 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#67C23A"/>
+  <path d="M120 200L200 100L280 200H120Z" fill="white" fill-opacity="0.3"/>
+  <path d="M80 220L150 130L220 220H80Z" fill="white" fill-opacity="0.2"/>
+  <circle cx="300" cy="80" r="30" fill="white" fill-opacity="0.4"/>
+  <text x="200" y="260" text-anchor="middle" fill="white" style="font-family:Arial; font-weight:bold; font-size:24px;">名校风采展示</text>
+</svg>

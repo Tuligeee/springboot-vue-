@@ -6,13 +6,12 @@
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <template v-if="device!=='mobile' && checkRole(['admin'])">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -24,7 +23,7 @@
           <router-link to="/user/profile">
             <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="setting = true">
+          <el-dropdown-item @click.native="setting = true" v-if="checkRole(['admin'])">
             <span>布局设置</span>
           </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
@@ -46,6 +45,7 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
+import { checkRole } from "@/utils/permission";
 
 export default {
   components: {
@@ -82,6 +82,7 @@ export default {
     }
   },
   methods: {
+    checkRole,
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -106,7 +107,7 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 12px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
@@ -146,7 +147,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 12px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
@@ -163,24 +164,25 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
+      margin-right: 35px;
 
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+        display: flex;
+        align-items: center;
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          border: 2px solid #e6ebf5;
         }
 
         .el-icon-caret-bottom {
           cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
+          margin-left: 8px;
           font-size: 12px;
         }
       }

@@ -29,7 +29,23 @@ public class CeNewsController extends BaseController {
     /** 获取详情 */
     @GetMapping("/{id}")
     public Response<CeNews> getInfo(@PathVariable Long id) {
-        return new Response<>(newsService.getNewsById(id));
+        CeNews news = newsService.getNewsById(id);
+        if (news != null) {
+            news.setViewCount((news.getViewCount() == null ? 0 : news.getViewCount()) + 1);
+            newsService.updateById(news);
+        }
+        return new Response<>(news);
+    }
+
+    /** 点赞 */
+    @PostMapping("/like/{id}")
+    public Response<Void> like(@PathVariable Long id) {
+        CeNews news = newsService.getNewsById(id);
+        if (news != null) {
+            news.setLikeCount((news.getLikeCount() == null ? 0 : news.getLikeCount()) + 1);
+            newsService.updateById(news);
+        }
+        return new Response<>();
     }
 
     /** 新增 */

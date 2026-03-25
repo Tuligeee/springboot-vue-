@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-card shadow="hover" class="page-card" style="margin-bottom: 20px;">
+      <div slot="header" class="clearfix">
+        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+          <i class="el-icon-user-solid" style="color: #409EFF; margin-right: 8px;"></i>
+          在线用户
+        </span>
+      </div>
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
       <el-form-item label="登录地址" prop="ipaddr">
         <el-input
@@ -61,6 +68,7 @@
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="pageNum" :limit.sync="pageSize" />
+      </el-card>
   </div>
 </template>
 
