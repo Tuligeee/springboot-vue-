@@ -44,17 +44,8 @@ public class CeProvinceLineController extends BaseController {
             query.like("batch_name", provinceLine.getBatchName());
         }
 
-        // 数据隔离约束：如果是学校管理员，则只能查看关联学校的数据
-        if (getLoginUser() != null && getLoginUser().getUser() != null) {
-            boolean isSchoolAdmin = getLoginUser().getUser().getRoles().stream()
-                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-            if (isSchoolAdmin) {
-                Long myCollegeId = getLoginUser().getUser().getCollegeId();
-                query.inSql("province", "SELECT city FROM ce_college WHERE id = " + myCollegeId);
-                // Note: CeProvinceLine doesn't seem to have college tracking inherently, typically it relates to province.
-                // Assuming province line is globally available since it applies to provinces, skipping hard isolation here unless it's specific.
-            }
-        }
+        // 数据隔离约束：省控线为全国通用基础数据，不应限制学校管理员只看本市数据。
+        // 已删除原本按 city 匹配 province 的错误过滤逻辑。
 
         query.orderByDesc("year");
 
@@ -77,6 +68,11 @@ public class CeProvinceLineController extends BaseController {
     @ApiOperation(value = "新增档线")
     @PostMapping
     public Response<Boolean> add(@RequestBody CeProvinceLine provinceLine) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可新增省控线");
+        }
         return new Response<>(provinceLineService.save(provinceLine));
     }
 
@@ -86,6 +82,11 @@ public class CeProvinceLineController extends BaseController {
     @ApiOperation(value = "修改档线")
     @PutMapping
     public Response<Boolean> edit(@RequestBody CeProvinceLine provinceLine) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可修改省控线");
+        }
         return new Response<>(provinceLineService.updateById(provinceLine));
     }
 
@@ -95,6 +96,11 @@ public class CeProvinceLineController extends BaseController {
     @ApiOperation(value = "删除档线")
     @DeleteMapping("/{ids}")
     public Response<Boolean> remove(@PathVariable Integer[] ids) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可删除省控线");
+        }
         return new Response<>(provinceLineService.removeByIds(Arrays.asList(ids)));
     }
 }

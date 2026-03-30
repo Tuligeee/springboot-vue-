@@ -51,12 +51,22 @@ public class CeNewsController extends BaseController {
     /** 新增 */
     @PostMapping
     public Response<Boolean> add(@RequestBody CeNews news) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可发布政策资讯");
+        }
         return new Response<>(newsService.addNews(news));
     }
 
     /** 修改 */
     @PutMapping
     public Response<Boolean> edit(@RequestBody CeNews news) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可修改政策资讯");
+        }
         news.setUpdateTime(new java.util.Date());
         return new Response<>(newsService.updateById(news));
     }
@@ -64,6 +74,11 @@ public class CeNewsController extends BaseController {
     /** 删除 */
     @DeleteMapping("/{ids}")
     public Response<Boolean> remove(@PathVariable Long[] ids) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可删除政策资讯");
+        }
         return new Response<>(newsService.removeByIds(Arrays.asList(ids)));
     }
 }

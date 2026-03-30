@@ -83,7 +83,7 @@ public class CeAspirationService {
 
         CeAspiration aspiration = new CeAspiration();
         aspiration.setStudentNo(userTag); 
-        aspiration.setEntranceYear(sheetNo);
+        aspiration.setEntranceYear(java.time.Year.now().getValue());
         aspiration.setCreatedUser(SecurityUtil.getUsername());
         aspirationRepo.save(aspiration);
         
@@ -145,24 +145,37 @@ public class CeAspirationService {
         return list;
     }
 
+    private List<AspirationSelectVo> cachedItems = null;
+    private long cacheTime = 0;
+
     public Map<String, Object> selectItemNew(Integer sheetNo) {
         int idx = sheetNo != null ? sheetNo : 1;
-        List<CeCollege> colls = collegeRepo.list();
-        List<CeProfession> profs = professionRepo.list();
-        Map<String, List<CeProfession>> profMap = profs.stream().collect(Collectors.groupingBy(CeProfession::getCollegeNo));
-        List<AspirationSelectVo> items = colls.stream().map(c -> {
-            AspirationSelectVo vo = new AspirationSelectVo();
-            vo.setLabel(c.getCollegeName()); vo.setValue(c.getCollegeNo());
-            List<CeProfession> pList = profMap.getOrDefault(c.getCollegeNo(), new ArrayList<>());
-            vo.setChildren(pList.stream().map(p -> {
-                AspirationSelectVo child = new AspirationSelectVo();
-                String extra = (p.getStudyYear() != null ? p.getStudyYear() + "年制" : "");
-                child.setLabel(p.getProfessionName() + (extra.isEmpty() ? "" : " [" + extra + "]"));
-                child.setValue(p.getProfessionNo());
-                return child;
-            }).collect(Collectors.toList()));
-            return vo;
-        }).collect(Collectors.toList());
+        List<AspirationSelectVo> items;
+        
+        // Use a local cache for 1 hour to avoid OOM and massive DB queries
+        if (cachedItems != null && System.currentTimeMillis() - cacheTime < 3600000) {
+            items = cachedItems;
+        } else {
+            List<CeCollege> colls = collegeRepo.list();
+            List<CeProfession> profs = professionRepo.list();
+            Map<String, List<CeProfession>> profMap = profs.stream().collect(Collectors.groupingBy(CeProfession::getCollegeNo));
+            items = colls.stream().map(c -> {
+                AspirationSelectVo vo = new AspirationSelectVo();
+                vo.setLabel(c.getCollegeName()); vo.setValue(c.getCollegeNo());
+                List<CeProfession> pList = profMap.getOrDefault(c.getCollegeNo(), new ArrayList<>());
+                vo.setChildren(pList.stream().map(p -> {
+                    AspirationSelectVo child = new AspirationSelectVo();
+                    String extra = (p.getStudyYear() != null ? p.getStudyYear() + "年制" : "");
+                    child.setLabel(p.getProfessionName() + (extra.isEmpty() ? "" : " [" + extra + "]"));
+                    child.setValue(p.getProfessionNo());
+                    return child;
+                }).collect(Collectors.toList()));
+                return vo;
+            }).collect(Collectors.toList());
+            cachedItems = items;
+            cacheTime = System.currentTimeMillis();
+        }
+        
         List<CeAspirationDetail> details = aspirationDetailRepo.selectAspirationDetailList(SecurityUtil.getUserId() + "_" + idx);
         Map<String, List<CeAspirationDetail>> grouped = details.stream().collect(Collectors.groupingBy(CeAspirationDetail::getCollegeNo, LinkedHashMap::new, Collectors.toList()));
         List<Map<String, Object>> groups = new ArrayList<>();

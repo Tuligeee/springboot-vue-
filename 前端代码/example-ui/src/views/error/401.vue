@@ -53,7 +53,7 @@ export default {
     max-width: 100%;
     margin: 100px auto;
     .pan-back-btn {
-      background: #008489;
+      background: #0974e7;
       color: #fff;
       border: none!important;
     }
@@ -77,7 +77,7 @@ export default {
         padding-bottom: 5px;
       }
       a {
-        color: #008489;
+        color: #0974e7;
         text-decoration: none;
         &:hover {
           text-decoration: underline;

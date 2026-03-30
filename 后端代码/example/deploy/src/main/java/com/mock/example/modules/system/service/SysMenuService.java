@@ -143,7 +143,50 @@ public class SysMenuService {
         Long userId = SecurityUtil.getUserId();
         List<SysMenu> menus = sysMenuRepository.selectMenuTreeByUserId(userId);
 
+        List<com.mock.example.modules.system.entity.model.SysRole> roles = SecurityUtil.getLoginUser().getUser().getRoles();
+        boolean isAdmin = roles.stream().anyMatch(r -> "admin".equals(r.getRoleKey()) || r.getRoleId() == 1L);
+        boolean isSchoolAdmin = roles.stream().anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+        boolean isStudent = roles.stream().anyMatch(r -> r.getRoleId() == 11L || "common".equals(r.getRoleKey()) || "student".equals(r.getRoleKey()));
+
+        // 如果用户身上多个角色叠加，优先考虑管理员，其次学校，其次学生
+        if (isAdmin && isSchoolAdmin) isSchoolAdmin = false;
+        if (isAdmin && isStudent) isStudent = false;
+        if (isSchoolAdmin && isStudent) isStudent = false;
+
+        customizeMenuNamesByRole(menus, isAdmin, isSchoolAdmin, isStudent);
+
         return buildMenus(menus);
+    }
+
+    /**
+     * 动态转换不同角色的显示菜单名称以增强体验
+     */
+    private void customizeMenuNamesByRole(List<SysMenu> menus, boolean isAdmin, boolean isSchoolAdmin, boolean isStudent) {
+        if (menus == null || menus.isEmpty()) return;
+        for (SysMenu menu : menus) {
+            String originalName = menu.getMenuName();
+            if (isAdmin) {
+                if ("院校管理".equals(originalName) || "院校查询".equals(originalName)) menu.setMenuName("全国院校库维护");
+                if ("专业管理".equals(originalName) || "专业查询".equals(originalName)) menu.setMenuName("全国专业库维护");
+                if ("录取分数线".equals(originalName)) menu.setMenuName("院校录取分数维护");
+                if ("历年分数线".equals(originalName) || "省控线管理".equals(originalName)) menu.setMenuName("各省省控线维护");
+            } else if (isSchoolAdmin) {
+                if ("院校管理".equals(originalName) || "院校查询".equals(originalName)) menu.setMenuName("本校基础信息维护");
+                if ("专业管理".equals(originalName) || "专业查询".equals(originalName)) menu.setMenuName("本校招生专业设置");
+                if ("录取分数线".equals(originalName)) menu.setMenuName("本校历年录取分数");
+                if ("历年分数线".equals(originalName) || "省控线管理".equals(originalName)) menu.setMenuName("各省省控线查询");
+            } else if (isStudent) {
+                if ("院校管理".equals(originalName) || "院校查询".equals(originalName)) menu.setMenuName("全国高校信息查询");
+                if ("专业管理".equals(originalName) || "专业查询".equals(originalName)) menu.setMenuName("高校开设专业查询");
+                if ("录取分数线".equals(originalName)) menu.setMenuName("各校录取分数查询");
+                if ("历年分数线".equals(originalName) || "省控线管理".equals(originalName)) menu.setMenuName("各省省控线查询");
+                if ("模拟填报".equals(originalName) || "在线志愿填报".equals(originalName)) menu.setMenuName("历年数据模拟查询");
+                if ("志愿单".equals(originalName) || "志愿单管理".equals(originalName)) menu.setMenuName("我的志愿草稿表");
+            }
+            if (menu.getChildren() != null && !menu.getChildren().isEmpty()) {
+                customizeMenuNamesByRole(menu.getChildren(), isAdmin, isSchoolAdmin, isStudent);
+            }
+        }
     }
 
     /**

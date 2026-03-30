@@ -117,43 +117,56 @@ public class CeCollegeService {
         }
         int successCount = 0;
         String operName = SecurityUtil.getUsername();
+        
+        java.util.Set<String> processedColleges = new java.util.HashSet<>();
+        java.util.Set<String> processedProfessions = new java.util.HashSet<>();
+        
         for (CollegeImportVo data : collegeList) {
             try {
-                CeCollege college = collegeRepo.selectCollegeByNo(data.getCollegeNo());
-                if (college == null) {
-                    college = EntityCopyUtil.copyEntity(CeCollege.class, data);
-                    college.setCreatedUser(operName);
-                    collegeRepo.save(college);
-                } else if (updateSupport) {
-                    college.setCollegeName(data.getCollegeName());
-                    college.setCity(data.getCity());
-                    college.setRanking(data.getRanking());
-                    college.setUpdatedUser(operName);
-                    collegeRepo.updateById(college);
+                // 1. 处理院校表数据 (相同 batch 只处理/更新一次)
+                if (!processedColleges.contains(data.getCollegeNo())) {
+                    CeCollege college = collegeRepo.selectCollegeByNo(data.getCollegeNo());
+                    if (college == null) {
+                        college = EntityCopyUtil.copyEntity(CeCollege.class, data);
+                        college.setCreatedUser(operName);
+                        collegeRepo.save(college);
+                    } else if (updateSupport) {
+                        college.setCollegeName(data.getCollegeName());
+                        college.setCity(data.getCity());
+                        college.setRanking(data.getRanking());
+                        college.setUpdatedUser(operName);
+                        collegeRepo.updateById(college);
+                    }
+                    processedColleges.add(data.getCollegeNo());
                 }
                 
+                // 2. 处理专业表数据 (相同 batch、相同专业只处理/更新一次)
                 if (data.getProfessionNo() != null && !data.getProfessionNo().isEmpty()) {
-                    // 使用 QueryWrapper 替换原本不存在的 selectByProfessionNo
-                    QueryWrapper<CeProfession> pQuery = new QueryWrapper<>();
-                    pQuery.eq("profession_no", data.getProfessionNo())
-                          .eq("college_no", data.getCollegeNo());
-                    CeProfession profession = professionMapper.selectOne(pQuery);
-                    
-                    if (profession == null) {
-                        profession = new CeProfession();
-                        profession.setCollegeNo(data.getCollegeNo());
-                        profession.setProfessionNo(data.getProfessionNo());
-                        profession.setProfessionName(data.getProfessionName());
-                        profession.setStudyYear(data.getStudyYear());
-                        profession.setCreatedUser(operName);
-                        professionMapper.insert(profession);
-                    } else if (updateSupport) {
-                        profession.setProfessionName(data.getProfessionName());
-                        profession.setStudyYear(data.getStudyYear());
-                        profession.setUpdatedUser(operName);
-                        professionMapper.updateById(profession);
+                    String profKey = data.getCollegeNo() + "_" + data.getProfessionNo();
+                    if (!processedProfessions.contains(profKey)) {
+                        QueryWrapper<CeProfession> pQuery = new QueryWrapper<>();
+                        pQuery.eq("profession_no", data.getProfessionNo())
+                              .eq("college_no", data.getCollegeNo());
+                        CeProfession profession = professionMapper.selectOne(pQuery);
+                        
+                        if (profession == null) {
+                            profession = new CeProfession();
+                            profession.setCollegeNo(data.getCollegeNo());
+                            profession.setProfessionNo(data.getProfessionNo());
+                            profession.setProfessionName(data.getProfessionName());
+                            profession.setStudyYear(data.getStudyYear());
+                            profession.setCreatedUser(operName);
+                            professionMapper.insert(profession);
+                        } else if (updateSupport) {
+                            profession.setProfessionName(data.getProfessionName());
+                            profession.setStudyYear(data.getStudyYear());
+                            profession.setUpdatedUser(operName);
+                            professionMapper.updateById(profession);
+                        }
+                        processedProfessions.add(profKey);
                     }
                     
+                    // 3. 处理录取分数线记录
                     if (data.getYear() != null && data.getScore() != null) {
                         QueryWrapper<CeScoreLine> sQuery = new QueryWrapper<>();
                         sQuery.eq("college_no", data.getCollegeNo())
@@ -195,8 +208,19 @@ public class CeCollegeService {
     }
 
     public Response<Boolean> editCollege(CollegeBody collegeBody) {
+        LoginUser loginUser = SecurityUtil.getLoginUser();
+        if (loginUser != null && !loginUser.getUserId().equals(1L)) {
+            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                Long myCollegeId = loginUser.getUser().getCollegeId();
+                if (myCollegeId == null || !myCollegeId.equals(Long.valueOf(collegeBody.getId()))) {
+                    return new Response<Boolean>().failMsg("禁止越权修改其他院校信息");
+                }
+            }
+        }
         if (BooleanUtils.isFalse(uniqueCollegeNo(collegeBody.getCollegeNo(), collegeBody.getId()))) {
-            return new Response<>().failMsg("编辑院校失败,代码 '" + collegeBody.getCollegeNo() + "' 已存在");
+            return new Response<Boolean>().failMsg("编辑院校失败,代码 '" + collegeBody.getCollegeNo() + "' 已存在");
         }
         CeCollege ceCollege = EntityCopyUtil.copyEntity(CeCollege.class, collegeBody);
         ceCollege.setUpdatedUser(SecurityUtil.getUsername());
@@ -216,6 +240,14 @@ public class CeCollegeService {
     }
 
     public Response<Boolean> deleteCollegeByIds(Integer[] collegeIds) {
+        LoginUser loginUser = SecurityUtil.getLoginUser();
+        if (loginUser != null && !loginUser.getUserId().equals(1L)) {
+            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                return new Response<Boolean>().failMsg("禁止学校用户执行院校删除操作");
+            }
+        }
         collegeRepo.removeByIds(Arrays.asList(collegeIds));
         return new Response<>(Boolean.TRUE);
     }

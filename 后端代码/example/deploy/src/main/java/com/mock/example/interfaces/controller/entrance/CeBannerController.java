@@ -40,16 +40,31 @@ public class CeBannerController extends BaseController {
 
     @PostMapping
     public Response<Boolean> add(@RequestBody CeBanner banner) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可发布轮播图");
+        }
         return new Response<>(bannerService.save(banner));
     }
 
     @PutMapping
     public Response<Boolean> edit(@RequestBody CeBanner banner) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可修改轮播图");
+        }
         return new Response<>(bannerService.updateById(banner));
     }
 
     @DeleteMapping("/{ids}")
     public Response<Boolean> remove(@PathVariable Integer[] ids) {
+        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
+            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
+                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
+            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可删除轮播图");
+        }
         return new Response<>(bannerService.removeByIds(Arrays.asList(ids)));
     }
 }

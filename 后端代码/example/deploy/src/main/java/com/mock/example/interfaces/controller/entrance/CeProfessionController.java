@@ -14,7 +14,6 @@ import com.mock.example.common.entity.Response;
 import com.mock.example.common.utils.SecurityUtil;
 import com.mock.example.modules.system.types.LoginUser;
 import org.springframework.web.bind.annotation.*;
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/college_entrance/profession")
@@ -95,6 +94,19 @@ public class CeProfessionController extends BaseController {
      */
     @PutMapping
     public Response<Boolean> edit(@RequestBody CeProfession profession) {
+        LoginUser loginUser = SecurityUtil.getLoginUser();
+        if (loginUser != null && loginUser.getUser() != null) {
+            boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                Long myCollegeId = loginUser.getUser().getCollegeId();
+                if (myCollegeId == null) return new Response<>().failMsg("缺少所属院校管理权限");
+                com.mock.example.modules.entrance.entity.model.CeCollege myCollege = collegeService.getById(myCollegeId.intValue());
+                if (myCollege == null || !myCollege.getCollegeNo().equals(profession.getCollegeNo())) {
+                    return new Response<>().failMsg("禁止越权修改其他院校的专业");
+                }
+            }
+        }
         profession.setUpdatedUser(SecurityUtil.getUsername());
         return new Response<>(professionService.updateById(profession));
     }
@@ -104,6 +116,33 @@ public class CeProfessionController extends BaseController {
      */
     @DeleteMapping("/{ids}")
     public Response<Boolean> remove(@PathVariable Integer[] ids) {
-        return new Response<>(professionService.removeByIds(Arrays.asList(ids)));
+        LoginUser loginUser = SecurityUtil.getLoginUser();
+        boolean isSchoolAdmin = false;
+        String myCollegeNo = null;
+        if (loginUser != null && loginUser.getUser() != null) {
+            isSchoolAdmin = loginUser.getUser().getRoles().stream()
+                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
+            if (isSchoolAdmin) {
+                Long myCollegeId = loginUser.getUser().getCollegeId();
+                if (myCollegeId == null) return new Response<>().failMsg("缺少所属院校管理权限");
+                com.mock.example.modules.entrance.entity.model.CeCollege myCollege = collegeService.getById(myCollegeId.intValue());
+                if (myCollege != null) myCollegeNo = myCollege.getCollegeNo();
+            }
+        }
+        
+        java.util.List<Integer> validIds = new java.util.ArrayList<>();
+        for (Integer id : ids) {
+            if (isSchoolAdmin && myCollegeNo != null) {
+                CeProfession item = professionService.getById(id);
+                if (item == null || !myCollegeNo.equals(item.getCollegeNo())) {
+                    continue; // 跳过越权数据
+                }
+            }
+            validIds.add(id);
+        }
+        if (!validIds.isEmpty()) {
+            professionService.removeByIds(validIds);
+        }
+        return new Response<>(Boolean.TRUE);
     }
 }
