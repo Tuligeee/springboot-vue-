@@ -21,14 +21,6 @@
             <span style="margin-right: 20px;"><i class="el-icon-view"></i> 阅读：{{ news.viewCount }}</span>
           </div>
           <div style="margin-top: 20px;">
-            <el-button 
-              :type="isLiked ? 'primary' : 'default'" 
-              icon="el-icon-thumb" 
-              circle 
-              @click="handleLike"
-              :disabled="isLiked"
-            ></el-button>
-            <span style="margin-left: 5px; margin-right: 20px; color: #909399;">{{ news.likeCount || 0 }}</span>
 
             <el-button 
               :type="isCollected ? 'warning' : 'default'" 
@@ -87,7 +79,7 @@
 </template>
 
 <script>
-import { getNews, likeNews } from "@/api/entrance/news";
+import { getNews } from "@/api/entrance/news";
 import { checkCollect, toggleCollect } from "@/api/entrance/collection";
 import { listComment, addComment, delComment } from "@/api/entrance/comment";
 
@@ -98,7 +90,6 @@ export default {
       id: null,
       loading: true,
       news: {},
-      isLiked: false,
       isCollected: false,
       commentList: [],
       commentForm: {
@@ -134,13 +125,6 @@ export default {
     getComments() {
       listComment({ targetId: this.id, type: "1" }).then(res => {
         this.commentList = res.data;
-      });
-    },
-    handleLike() {
-      likeNews(this.id).then(() => {
-        this.msgSuccess("点赞成功");
-        this.isLiked = true;
-        this.news.likeCount = (this.news.likeCount || 0) + 1;
       });
     },
     handleCollect() {

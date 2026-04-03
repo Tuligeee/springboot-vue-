@@ -1,7 +1,10 @@
 <template>
-  <div class="app-container home">
+  <div class="home-wrapper">
+    <admin-dashboard v-if="isGlobalAdmin" />
+    <school-dashboard v-else-if="isSchoolAdmin" />
+    <div v-else class="app-container home">
 
-    <el-row :gutter="20" style="margin-bottom: 30px;" v-if="bannerList && bannerList.length > 0">
+      <el-row :gutter="20" style="margin-bottom: 30px;" v-if="bannerList && bannerList.length > 0">
       <el-col :span="24">
         <el-carousel class="home-banner" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
@@ -116,29 +119,51 @@
           </div>
         </el-card>
       </el-col>
+      </el-col>
     </el-row>
+    </div>
   </div>
 </template>
 
 <script>
 import { listBanner } from "@/api/entrance/banner";
 import { listNews } from "@/api/entrance/news";
+import AdminDashboard from './dashboard/AdminDashboard.vue';
+import SchoolDashboard from './dashboard/SchoolDashboard.vue';
 
 export default {
   name: "Index",
+  components: { AdminDashboard, SchoolDashboard },
   data() {
     return {
       bannerList: [],
       newsList: [],
     };
   },
+  computed: {
+    isGlobalAdmin() {
+      const roles = this.$store.getters.roles || [];
+      return roles.includes('admin');
+    },
+    isSchoolAdmin() {
+      const roles = this.$store.getters.roles || [];
+      return roles.includes('school_admin');
+    },
+    isAdmin() {
+      return this.isGlobalAdmin || this.isSchoolAdmin;
+    }
+  },
   created() {
-    this.getBannerList();
-    this.getNewsList();
+    if (!this.isAdmin) {
+      this.getBannerList();
+      this.getNewsList();
+    }
   },
   activated() {
-    this.getBannerList();
-    this.getNewsList();
+    if (!this.isAdmin) {
+      this.getBannerList();
+      this.getNewsList();
+    }
   },
   methods: {
     getBannerList() {
