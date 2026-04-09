@@ -14,6 +14,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import com.mock.example.common.utils.SecurityUtil;
+import com.mock.example.modules.entrance.entity.model.CeCollege;
+import com.mock.example.modules.entrance.repository.ICeCollegeRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -26,6 +32,9 @@ import com.mock.example.common.utils.SecurityUtil;
 @Repository
 public class CeProfessionRepoImpl
         extends ServiceImpl<CeProfessionMapper, CeProfession> implements ICeProfessionRepo {
+
+    @Autowired
+    private ICeCollegeRepo ceCollegeRepo;
 
     @Override
     public CeProfession selectByProfessionNo(String professionNo) {
@@ -60,7 +69,24 @@ public class CeProfessionRepoImpl
             }
         }
 
-        return this.list(wrapper);
+        List<CeProfession> list = this.list(wrapper);
+
+        // 批量填充院校名称
+        if (CollUtil.isNotEmpty(list)) {
+            List<String> collegeNos = list.stream()
+                    .map(CeProfession::getCollegeNo)
+                    .filter(StrUtil::isNotBlank)
+                    .distinct()
+                    .collect(Collectors.toList());
+            if (CollUtil.isNotEmpty(collegeNos)) {
+                List<CeCollege> colleges = ceCollegeRepo.selectCollegeListByNos(collegeNos);
+                Map<String, String> collegeMap = colleges.stream()
+                        .collect(Collectors.toMap(CeCollege::getCollegeNo, CeCollege::getCollegeName, (v1, v2) -> v1));
+                list.forEach(p -> p.setCollegeName(collegeMap.get(p.getCollegeNo())));
+            }
+        }
+
+        return list;
     }
 
     @Override

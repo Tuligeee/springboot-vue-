@@ -52,7 +52,7 @@
 
         <div class="section-title">
           开设专业 ({{ professions.length }} 个)
-          <el-button type="text" style="float: right" @click="$router.push({path: '/college/profession', query: {collegeNo: college.collegeNo}})">查看更多专业</el-button>
+          <el-button type="text" style="float: right" @click="$router.push({path: '/profession-view/list', query: {collegeNo: college.collegeNo}})">查看更多专业</el-button>
         </div>
         <el-table :data="professions" stripe style="width: 100%" border>
           <el-table-column label="专业名称" align="center" prop="professionName">

@@ -214,6 +214,7 @@ export default {
         pageSize: 10,
         noticeTitle: undefined,
         createBy: undefined,
+        noticeType: undefined,
         status: undefined
       },
       // 表单参数

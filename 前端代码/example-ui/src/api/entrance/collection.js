@@ -25,3 +25,21 @@ export function delCollection(collectionId) {
         method: 'delete'
     })
 }
+
+// 查询当前是否已收藏
+export function checkCollect(params) {
+    return request({
+        url: '/college_entrance/collection/check',
+        method: 'get',
+        params
+    })
+}
+
+// 切换收藏状态（已收藏则取消，未收藏则新增）
+export function toggleCollect(data) {
+    return request({
+        url: '/college_entrance/collection/toggle',
+        method: 'post',
+        data
+    })
+}

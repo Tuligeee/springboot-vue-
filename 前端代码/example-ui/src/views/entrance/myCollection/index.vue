@@ -34,7 +34,7 @@
         </el-row>
         
         <el-empty v-else description="您还没有收藏任何院校哦，快去院校中心看看吧">
-          <el-button type="primary" @click="$router.push('/college/college')">去寻找目标院校</el-button>
+          <el-button type="primary" @click="$router.push('/college-view/list')">去寻找目标院校</el-button>
         </el-empty>
       </div>
     </el-card>

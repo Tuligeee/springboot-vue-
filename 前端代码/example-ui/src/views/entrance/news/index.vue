@@ -242,10 +242,17 @@ export default {
       });
     },
     handleViewDetail(row) {
-      getNews(row.id).then(response => {
-        this.form = response.data;
-        this.viewOpen = true;
-      });
+      const isAdmin = checkRole(['admin']);
+      if (isAdmin) {
+        // 管理员：弹窗快速预览
+        getNews(row.id).then(response => {
+          this.form = response.data;
+          this.viewOpen = true;
+        });
+      } else {
+        // 学生：跳转到有评论/收藏的完整详情页
+        this.$router.push('/news-view/detail/' + row.id);
+      }
     },
     cancel() { this.open = false; this.reset(); },
     reset() {

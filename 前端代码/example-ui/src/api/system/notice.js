@@ -42,3 +42,20 @@ export function delNotice(noticeId) {
     method: 'delete'
   })
 }
+
+// 前台公告列表（仅正常状态）
+export function listPublicNotice(query) {
+  return request({
+    url: '/system/notice/public/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 前台公告详情（仅正常状态）
+export function getPublicNotice(noticeId) {
+  return request({
+    url: '/system/notice/public/' + noticeId,
+    method: 'get'
+  })
+}

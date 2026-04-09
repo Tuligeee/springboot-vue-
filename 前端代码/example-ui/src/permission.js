@@ -24,6 +24,8 @@ router.beforeEach((to, from, next) => {
           store.dispatch('GenerateRoutes').then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
             router.addRoutes(accessRoutes) // 动态添加可访问路由表
+            // 最后单独追加 * 通配路由，确保它是绝对最后一个
+            router.addRoutes([{ path: '*', redirect: '/404', hidden: true }])
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })
         }).catch(err => {

@@ -30,10 +30,14 @@
           <i class="el-icon-bell notice-icon"></i>
           <span class="notice-label">官方动态：</span>
           <div class="notice-content">
-            <marquee behavior="scroll" direction="left" scrollamount="5">
-              [最新] 2026年全国普通高校招生计划查询系统已开放 ... [通知] 关于做好2026年普通高校招生填报志愿工作的通知 ... [提醒] 请广大考生注意保护个人账号密码安全，切勿泄露给第三方。
+            <marquee behavior="scroll" direction="left" scrollamount="5" v-if="noticeTitles">
+              {{ noticeTitles }}
             </marquee>
+            <span v-else>暂无系统公告</span>
           </div>
+          <el-link type="warning" :underline="false" class="notice-more" @click="$router.push('/notice-view/list')">
+            更多
+          </el-link>
         </div>
       </el-col>
     </el-row>
@@ -49,41 +53,57 @@
             提供权威的院校招生计划与历年录取数据查询，协助您科学管理志愿方案：
           </p>
 
-          <div class="step-grid">
-            <div class="step-item" @click="$router.push('/college-view/list')">
-              <div class="step-icon bg-blue"><i class="el-icon-search"></i></div>
-              <div class="step-info">
-                <h3>1. 院校数据查询</h3>
-                <p>实时查询全国高校招生计划、专业设置及历年录取分数明细。</p>
+          <div class="modern-cards">
+            <div class="modern-card" @click="$router.push('/college-view/list')">
+              <div class="card-header">
+                <div class="icon-wrapper bg-blue-light">
+                  <i class="el-icon-school text-blue"></i>
+                </div>
+                <i class="el-icon-right arrow-icon"></i>
               </div>
-              <i class="el-icon-arrow-right arrow"></i>
+              <div class="card-body">
+                <h3 class="card-title">院校分数查询</h3>
+                <p class="card-desc">权威的全国高校招生计划、专业设置及历年录取最低分数线明细数据查询。</p>
+              </div>
             </div>
 
-            <div class="step-item" @click="$router.push('/user/profile')">
-              <div class="step-icon bg-green"><i class="el-icon-user"></i></div>
-              <div class="step-info">
-                <h3>2. 个人档案管理</h3>
-                <p>记录个人高考成绩与位次信息，方便在查询过程中进行参考对比。</p>
+            <div class="modern-card" @click="$router.push('/user/profile')">
+              <div class="card-header">
+                <div class="icon-wrapper bg-green-light">
+                  <i class="el-icon-user text-green"></i>
+                </div>
+                <i class="el-icon-right arrow-icon"></i>
               </div>
-              <i class="el-icon-arrow-right arrow"></i>
+              <div class="card-body">
+                <h3 class="card-title">个人档案管理</h3>
+                <p class="card-desc">记录并管理个人高考成绩与位次信息，利用系统算法提供科学志愿参考建议。</p>
+              </div>
             </div>
 
-            <div class="step-item" @click="$router.push('/news-view/list')">
-              <div class="step-icon bg-orange"><i class="el-icon-news"></i></div>
-              <div class="step-info">
-                <h3>3. 政策咨询中心</h3>
-                <p>汇总各省市最新的高考录取政策、报考指南及官方公告信息。</p>
+            <div class="modern-card" @click="$router.push('/news-view/list')">
+              <div class="card-header">
+                <div class="icon-wrapper bg-orange-light">
+                  <i class="el-icon-reading text-orange"></i>
+                </div>
+                <i class="el-icon-right arrow-icon"></i>
               </div>
-              <i class="el-icon-arrow-right arrow"></i>
+              <div class="card-body">
+                <h3 class="card-title">政策资讯中心</h3>
+                <p class="card-desc">全网最新汇总的各省市高考录取政策、查分动态、报考技巧及官方权威公告。</p>
+              </div>
             </div>
 
-            <div class="step-item" @click="$router.push('/filling-view/list')">
-              <div class="step-icon bg-purple"><i class="el-icon-edit-outline"></i></div>
-              <div class="step-info">
-                <h3>4. 志愿方案管理</h3>
-                <p>支持创建 5 份独立的模拟志愿表，方便您进行多方案记录与保存。</p>
+            <div class="modern-card" @click="$router.push('/filling-view/list')">
+              <div class="card-header">
+                <div class="icon-wrapper bg-purple-light">
+                  <i class="el-icon-document-checked text-purple"></i>
+                </div>
+                <i class="el-icon-right arrow-icon"></i>
               </div>
-              <i class="el-icon-arrow-right arrow"></i>
+              <div class="card-body">
+                <h3 class="card-title">志愿方案管理</h3>
+                <p class="card-desc">支持创建多份独立的模拟志愿表，方便您进行多方案记录与保存，为您提供科学参考。</p>
+              </div>
             </div>
           </div>
         </div>
@@ -128,6 +148,7 @@
 <script>
 import { listBanner } from "@/api/entrance/banner";
 import { listNews } from "@/api/entrance/news";
+import { listPublicNotice } from "@/api/system/notice";
 import AdminDashboard from './dashboard/AdminDashboard.vue';
 import SchoolDashboard from './dashboard/SchoolDashboard.vue';
 
@@ -138,6 +159,7 @@ export default {
     return {
       bannerList: [],
       newsList: [],
+      noticeList: [],
     };
   },
   computed: {
@@ -151,18 +173,26 @@ export default {
     },
     isAdmin() {
       return this.isGlobalAdmin || this.isSchoolAdmin;
+    },
+    noticeTitles() {
+      if (!this.noticeList.length) {
+        return "";
+      }
+      return this.noticeList.map(item => `【${item.noticeType === "1" ? "通知" : "公告"}】${item.noticeTitle}`).join("  ·  ");
     }
   },
   created() {
     if (!this.isAdmin) {
       this.getBannerList();
       this.getNewsList();
+      this.getNoticeList();
     }
   },
   activated() {
     if (!this.isAdmin) {
       this.getBannerList();
       this.getNewsList();
+      this.getNoticeList();
     }
   },
   methods: {
@@ -186,6 +216,13 @@ export default {
     getNewsList() {
       listNews({ pageNum: 1, pageSize: 5 }).then(response => {
         this.newsList = response.rows || response.data || [];
+      });
+    },
+    getNoticeList() {
+      listPublicNotice({ pageNum: 1, pageSize: 6 }).then(response => {
+        this.noticeList = response.rows || [];
+      }).catch(() => {
+        this.noticeList = [];
       });
     }
   }
@@ -229,44 +266,96 @@ export default {
     .notice-icon { font-size: 18px; margin-right: 10px; }
     .notice-label { font-weight: bold; white-space: nowrap; margin-right: 15px; }
     .notice-content { flex: 1; overflow: hidden; }
+    .notice-more { margin-left: 12px; white-space: nowrap; }
   }
 
-  .step-grid {
+  .modern-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-top: 20px;
+    gap: 24px;
+    margin-top: 25px;
   }
 
-  .step-item {
-    display: flex;
-    align-items: center;
+  .modern-card {
     background: #ffffff;
-    border: 1px solid #e6ebf1;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 24px;
     cursor: pointer;
-    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 20px rgba(0,0,0,0.05);
-      border-color: #409EFF;
-      .arrow { transform: translateX(5px); color: #409EFF; }
+      transform: translateY(-6px);
+      box-shadow: 0 16px 30px rgba(64, 158, 255, 0.12);
+      border-color: rgba(64, 158, 255, 0.2);
+      
+      .arrow-icon {
+        opacity: 1;
+        transform: translateX(0);
+        color: #409EFF;
+      }
     }
-    .step-icon {
-      width: 54px; height: 54px; border-radius: 12px;
-      display: flex; justify-content: center; align-items: center;
-      font-size: 24px; color: white; margin-right: 20px; flex-shrink: 0;
-      &.bg-blue { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
-      &.bg-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-      &.bg-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-      &.bg-purple { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
     }
-    .step-info {
-      h3 { margin: 0 0 5px 0; font-size: 17px; color: #303133; }
-      p { margin: 0; font-size: 13px; color: #909399; line-height: 1.5; }
+
+    .icon-wrapper {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      transition: all 0.3s;
+      
+      &.bg-blue-light { background: #ecf5ff; }
+      &.bg-green-light { background: #f0f9eb; }
+      &.bg-orange-light { background: #fdf6ec; }
+      &.bg-purple-light { background: #f4f0fa; }
+      
+      .text-blue { color: #409EFF; }
+      .text-green { color: #67C23A; }
+      .text-orange { color: #E6A23C; }
+      .text-purple { color: #9059f7; }
     }
-    .arrow { margin-left: auto; color: #dcdfe6; font-size: 18px; transition: all 0.3s; }
+
+    .arrow-icon {
+      font-size: 22px;
+      color: #c0c4cc;
+      opacity: 0;
+      transform: translateX(-15px);
+      transition: all 0.3s ease;
+    }
+
+    .card-body {
+      flex: 1;
+
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #303133;
+        margin: 0 0 10px 0;
+        letter-spacing: 0.5px;
+      }
+
+      .card-desc {
+        font-size: 13.5px;
+        color: #909399;
+        line-height: 1.6;
+        margin: 0;
+      }
+    }
   }
 
   .box-card { border-radius: 12px; border: 1px solid #f0f2f5; }
@@ -281,5 +370,5 @@ export default {
   }
 }
 
-@media (max-width: 768px) { .home .step-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .home .modern-cards { grid-template-columns: 1fr; } }
 </style>

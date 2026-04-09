@@ -41,4 +41,16 @@ public class CeCollectionController extends BaseController {
     public Response<Boolean> remove(@PathVariable Integer ids) {
         return collectionService.removeCollection(ids);
     }
+
+    @ApiOperation(value = "检查是否已收藏")
+    @GetMapping("/check")
+    public Response<Boolean> check(@RequestParam Long targetId, @RequestParam Integer targetType) {
+        return collectionService.checkCollected(targetId, targetType);
+    }
+
+    @ApiOperation(value = "切换收藏状态")
+    @PostMapping("/toggle")
+    public Response<Boolean> toggle(@RequestBody CeCollection ceCollection) {
+        return collectionService.toggleCollection(ceCollection);
+    }
 }

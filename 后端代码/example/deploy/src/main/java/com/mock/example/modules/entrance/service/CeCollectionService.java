@@ -87,4 +87,44 @@ public class CeCollectionService {
     public Response<Boolean> removeCollection(Integer id) {
         return new Response<>(collectionMapper.deleteById(id) > 0);
     }
+
+    /**
+     * 查询当前用户是否已收藏目标
+     */
+    public Response<Boolean> checkCollected(Long targetId, Integer targetType) {
+        if (targetId == null || targetType == null) {
+            return new Response<Boolean>().failMsg("参数不能为空");
+        }
+        Long currentUserId = SecurityUtil.getUserId();
+        QueryWrapper<CeCollection> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", currentUserId)
+                .eq("target_id", targetId)
+                .eq("target_type", targetType);
+        return new Response<>(collectionMapper.selectCount(wrapper) > 0);
+    }
+
+    /**
+     * 切换收藏状态（已收藏则取消，未收藏则新增）
+     */
+    public Response<Boolean> toggleCollection(CeCollection collection) {
+        if (collection == null || collection.getTargetId() == null || collection.getTargetType() == null) {
+            return new Response<Boolean>().failMsg("参数不能为空");
+        }
+        Long currentUserId = SecurityUtil.getUserId();
+        QueryWrapper<CeCollection> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", currentUserId)
+                .eq("target_id", collection.getTargetId())
+                .eq("target_type", collection.getTargetType());
+
+        CeCollection exist = collectionMapper.selectOne(wrapper);
+        if (exist != null) {
+            collectionMapper.deleteById(exist.getCollectionId());
+            return new Response<Boolean>().okMsg("已取消收藏");
+        }
+
+        collection.setUserId(currentUserId);
+        return collectionMapper.insert(collection) > 0
+                ? new Response<Boolean>().okMsg("收藏成功")
+                : new Response<Boolean>().failMsg("收藏失败");
+    }
 }

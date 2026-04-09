@@ -13,25 +13,28 @@
       </div>
 
       <div v-if="news.id">
-        <div style="text-align: center; margin-bottom: 30px;">
+        <div class="news-header">
+          <div class="collect-action">
+            <el-tooltip :content="isCollected ? '取消收藏' : '收藏资讯'" placement="top">
+              <el-button
+                :type="isCollected ? 'warning' : 'info'"
+                :icon="isCollected ? 'el-icon-star-on' : 'el-icon-star-off'"
+                size="mini"
+                round
+                @click="handleCollect"
+              >
+                {{ isCollected ? '已收藏' : '收藏' }}
+              </el-button>
+            </el-tooltip>
+          </div>
           <h1 style="font-size: 24px; color: #303133;">{{ news.title }}</h1>
           <div style="color: #909399; font-size: 13px; margin-top: 10px;">
             <span style="margin-right: 20px;"><i class="el-icon-user"></i> 发布者：{{ news.createBy || '管理员' }}</span>
             <span style="margin-right: 20px;"><i class="el-icon-time"></i> 时间：{{ news.createTime }}</span>
             <span style="margin-right: 20px;"><i class="el-icon-view"></i> 阅读：{{ news.viewCount }}</span>
           </div>
-          <div style="margin-top: 20px;">
-
-            <el-button 
-              :type="isCollected ? 'warning' : 'default'" 
-              icon="el-icon-star-off" 
-              circle 
-              @click="handleCollect"
-            ></el-button>
-            <span style="margin-left: 5px; color: #909399;">{{ isCollected ? '已收藏' : '收藏' }}</span>
-          </div>
         </div>
-        <div class="news-content" v-html="news.content"></div>
+        <div class="news-content" v-html="sanitizedContent"></div>
 
         <!-- 评论区 -->
         <div style="margin-top: 50px; border-top: 1px solid #EBEEF5; padding-top: 30px;">
@@ -49,8 +52,8 @@
           <h3 style="margin-top: 40px; margin-bottom: 20px;">全部评论 ({{ commentList.length }})</h3>
           <div v-if="commentList.length > 0">
             <div v-for="item in commentList" :key="item.id" style="display: flex; margin-bottom: 20px; border-bottom: 1px solid #F2F6FC; padding-bottom: 15px;">
-              <el-avatar :size="40" :src="item.avatar" style="margin-right: 15px;">
-                <img src="@/assets/images/profile.jpg"/>
+              <el-avatar :size="40" :src="item.avatar || defaultAvatar" style="margin-right: 15px;">
+                <img :src="defaultAvatar"/>
               </el-avatar>
               <div style="flex: 1;">
                 <div style="display: flex; justify-content: space-between;">
@@ -82,6 +85,8 @@
 import { getNews } from "@/api/entrance/news";
 import { checkCollect, toggleCollect } from "@/api/entrance/collection";
 import { listComment, addComment, delComment } from "@/api/entrance/comment";
+import DOMPurify from "dompurify";
+import defaultAvatar from "@/assets/images/default-avatar.svg";
 
 export default {
   name: "NewsDetail",
@@ -96,8 +101,15 @@ export default {
         content: "",
         targetId: null,
         type: "1" // 1为资讯
-      }
+      },
+      defaultAvatar
     };
+  },
+  computed: {
+    sanitizedContent() {
+      if (!this.news.content) return '';
+      return DOMPurify.sanitize(this.news.content);
+    }
   },
   created() {
     this.id = this.$route.params.id;
@@ -147,7 +159,9 @@ export default {
     },
     canDelete(comment) {
       const currentUserId = this.$store.getters.userId;
-      return currentUserId === comment.userId || currentUserId === 1;
+      const roles = this.$store.getters.roles || [];
+      const isAdmin = roles.includes('admin') || roles.includes('school_admin');
+      return currentUserId === comment.userId || isAdmin;
     },
     handleDeleteComment(id) {
       this.$confirm('确定删除该评论吗？', '提示', {
@@ -174,5 +188,15 @@ export default {
 }
 .news-content >>> img {
   max-width: 100%;
+}
+.news-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.collect-action {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 </style>
