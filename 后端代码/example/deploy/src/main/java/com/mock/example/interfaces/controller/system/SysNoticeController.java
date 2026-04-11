@@ -18,50 +18,50 @@ public class SysNoticeController extends BaseController {
 
     private final SysNoticeService noticeService;
 
-    @ApiOperation(value = "²éÑ¯¹«¸æÁÐ±í")
+    @ApiOperation(value = "ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½")
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice) {
         startPage();
         return getDataTable(noticeService.selectNoticeList(notice));
     }
 
-    @ApiOperation(value = "²éÑ¯¹«¸æÏêÇé")
+    @ApiOperation(value = "ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
     @GetMapping("/{noticeId}")
     public Response<SysNotice> getInfo(@PathVariable Long noticeId) {
         return new Response<>(noticeService.getById(noticeId));
     }
 
-    @ApiOperation(value = "ÐÂÔö¹«¸æ")
+    @ApiOperation(value = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
     @PostMapping
     public Response<Boolean> add(@RequestBody SysNotice notice) {
         return new Response<>(noticeService.saveNotice(notice, getUsername()));
     }
 
-    @ApiOperation(value = "ÐÞ¸Ä¹«¸æ")
+    @ApiOperation(value = "ï¿½Þ¸Ä¹ï¿½ï¿½ï¿½")
     @PutMapping
     public Response<Boolean> edit(@RequestBody SysNotice notice) {
         return new Response<>(noticeService.updateNotice(notice, getUsername()));
     }
 
-    @ApiOperation(value = "É¾³ý¹«¸æ")
+    @ApiOperation(value = "É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
     @DeleteMapping("/{noticeIds}")
     public Response<Boolean> remove(@PathVariable Long[] noticeIds) {
         return new Response<>(noticeService.removeByIds(Arrays.asList(noticeIds)));
     }
 
-    @ApiOperation(value = "Ç°Ì¨¹«¸æÁÐ±í")
+    @ApiOperation(value = "Ç°Ì¨ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½")
     @GetMapping("/public/list")
     public TableDataInfo publicList(@RequestParam(required = false) String noticeTitle) {
         startPage();
         return getDataTable(noticeService.selectPublicNoticeList(noticeTitle));
     }
 
-    @ApiOperation(value = "Ç°Ì¨¹«¸æÏêÇé")
+    @ApiOperation(value = "Ç°Ì¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
     @GetMapping("/public/{noticeId}")
     public Response<SysNotice> publicInfo(@PathVariable Long noticeId) {
         SysNotice notice = noticeService.getById(noticeId);
         if (notice == null || !"0".equals(notice.getStatus())) {
-            return new Response<SysNotice>().failMsg("¹«¸æ²»´æÔÚ»òÒÑ¹Ø±Õ");
+            return new Response<SysNotice>().failMsg("ï¿½ï¿½ï¿½æ²»ï¿½ï¿½ï¿½Ú»ï¿½ï¿½Ñ¹Ø±ï¿½");
         }
         return new Response<>(notice);
     }

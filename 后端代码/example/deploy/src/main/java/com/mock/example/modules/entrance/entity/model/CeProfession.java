@@ -99,6 +99,12 @@ public class CeProfession implements Serializable {
     private String collegeName;
 
     /**
+     * 所属院校主键（仅用于前后端交互，不入库）
+     */
+    @TableField(exist = false)
+    private Integer collegeId;
+
+    /**
      * 填充分数线文案
      *
      * @param scoreLines 分数线数组

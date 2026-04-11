@@ -9,25 +9,25 @@
       </div>
 
       <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="院校名称" prop="collegeNo">
+        <el-form-item label="院校名称" prop="collegeName">
           <el-select
-            v-model="queryParams.collegeNo"
+            v-model="queryParams.collegeName"
             filterable
             remote
             clearable
             reserve-keyword
-            placeholder="输入院校名称搜索"
-            :remote-method="searchCollege"
-            :loading="collegeSearchLoading"
+            placeholder="输入院校名称搜索并选择"
+            :remote-method="searchCollegeQuery"
+            :loading="collegeQuerySearchLoading"
             size="small"
-            style="width: 240px;"
+            style="width: 260px;"
             @clear="handleQuery"
           >
             <el-option
-              v-for="c in collegeOptions"
-              :key="c.collegeNo"
+              v-for="c in collegeQueryOptions"
+              :key="c.id"
               :label="c.collegeName"
-              :value="c.collegeNo"
+              :value="c.collegeName"
             />
           </el-select>
         </el-form-item>
@@ -55,16 +55,14 @@
       </el-row>
 
       <el-table v-loading="loading" :data="professionList">
-        <el-table-column label="ID" align="center" prop="id" width="80" />
-        <el-table-column label="院校名称" align="center" prop="collegeName" />
-        <el-table-column label="专业编号" align="center" prop="professionNo" width="120" />
-        <el-table-column label="专业名称" align="center" prop="professionName" />
+        <el-table-column label="院校名称" align="center" prop="collegeName" min-width="160" />
+        <el-table-column label="专业名称" align="center" prop="professionName" min-width="200" />
         <el-table-column label="修业年限" align="center" prop="studyYear" width="100">
           <template slot-scope="scope">
             <el-tag size="small">{{ scope.row.studyYear }}年</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="220">
           <template slot-scope="scope">
             <el-button
               v-if="checkRole(['admin', 'school_admin'])"
@@ -101,14 +99,27 @@
       />
     </el-card>
 
-    <!-- 添加或修改专业对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body :close-on-click-modal="false">
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="所属院校" prop="collegeNo">
-          <el-input v-model="form.collegeNo" placeholder="请输入院校代码" :disabled="checkRole(['school_admin'])" />
-        </el-form-item>
-        <el-form-item label="专业编号" prop="professionNo">
-          <el-input v-model="form.professionNo" placeholder="请输入专业编号" />
+      <el-form ref="form" :model="form" :rules="dynamicRules" label-width="100px">
+        <el-form-item v-if="!checkRole(['school_admin'])" label="所属院校" prop="collegeId">
+          <el-select
+            v-model="form.collegeId"
+            filterable
+            remote
+            clearable
+            reserve-keyword
+            placeholder="输入院校名称搜索"
+            :remote-method="searchCollegeForm"
+            :loading="collegeFormSearchLoading"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="c in collegeFormOptions"
+              :key="c.id"
+              :label="c.collegeName"
+              :value="c.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="专业名称" prop="professionName">
           <el-input v-model="form.professionName" placeholder="请输入专业名称" />
@@ -130,7 +141,7 @@
 
 <script>
 import { listProfession, getProfession, delProfession, addProfession, updateProfession } from "@/api/entrance/profession";
-import { listCollege } from "@/api/entrance/college";
+import { listCollege, getCollege } from "@/api/entrance/college";
 import { checkRole } from "@/utils/permission";
 
 export default {
@@ -146,32 +157,50 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        collegeNo: null,
+        collegeName: null,
         professionName: null
       },
       form: {},
-      rules: {
-        collegeNo: [{ required: true, message: "院校编号不能为空", trigger: "blur" }],
-        professionNo: [{ required: true, message: "专业编号不能为空", trigger: "blur" }],
-        professionName: [{ required: true, message: "专业名称不能为空", trigger: "blur" }]
-      },
-      collegeOptions: [],
-      collegeSearchLoading: false
+      collegeQueryOptions: [],
+      collegeQuerySearchLoading: false,
+      collegeFormOptions: [],
+      collegeFormSearchLoading: false
     };
   },
   created() {
+    if (this.$route.query.collegeName) {
+      this.queryParams.collegeName = this.$route.query.collegeName;
+    }
     this.getList();
+  },
+  computed: {
+    dynamicRules() {
+      const r = {
+        professionName: [{ required: true, message: "专业名称不能为空", trigger: "blur" }]
+      };
+      if (!checkRole(["school_admin"])) {
+        r.collegeId = [{ required: true, message: "请选择所属院校", trigger: "change" }];
+      }
+      return r;
+    }
   },
   methods: {
     checkRole,
-    /** 远程搜索院校 */
-    searchCollege(query) {
-      if (query.length < 1) return;
-      this.collegeSearchLoading = true;
+    searchCollegeQuery(query) {
+      if (!query || query.length < 1) return;
+      this.collegeQuerySearchLoading = true;
       listCollege({ collegeName: query, pageSize: 20 }).then(res => {
-        this.collegeOptions = res.rows || [];
-        this.collegeSearchLoading = false;
-      }).catch(() => { this.collegeSearchLoading = false; });
+        this.collegeQueryOptions = res.rows || [];
+        this.collegeQuerySearchLoading = false;
+      }).catch(() => { this.collegeQuerySearchLoading = false; });
+    },
+    searchCollegeForm(query) {
+      if (!query || query.length < 1) return;
+      this.collegeFormSearchLoading = true;
+      listCollege({ collegeName: query, pageSize: 20 }).then(res => {
+        this.collegeFormOptions = res.rows || [];
+        this.collegeFormSearchLoading = false;
+      }).catch(() => { this.collegeFormSearchLoading = false; });
     },
     getList() {
       this.loading = true;
@@ -187,12 +216,13 @@ export default {
     },
     resetQuery() {
       this.resetForm("queryForm");
+      this.collegeQueryOptions = [];
       this.handleQuery();
     },
     handleQuickApply(row) {
       this.$router.push({
-        path: '/filling-view/apply',
-        query: { collegeNo: row.collegeNo, professionNo: row.professionNo }
+        path: "/filling-view/apply",
+        query: { professionId: row.id, sheetNo: this.$route.query.sheetNo || 1 }
       });
     },
     handleAdd() {
@@ -206,6 +236,14 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改专业信息";
+        if (this.form.collegeId) {
+          getCollege(this.form.collegeId).then(res => {
+            const c = res.data;
+            if (c) {
+              this.collegeFormOptions = [{ id: c.id, collegeName: c.collegeName }];
+            }
+          });
+        }
       });
     },
     submitForm() {
@@ -228,7 +266,7 @@ export default {
       });
     },
     handleDelete(row) {
-      this.$confirm('是否确认删除该专业数据？', "警告", {
+      this.$confirm("是否确认删除该专业数据？", "警告", {
         type: "warning"
       }).then(() => {
         return delProfession(row.id);
@@ -244,12 +282,12 @@ export default {
     reset() {
       this.form = {
         id: null,
-        collegeNo: null,
-        professionNo: null,
+        collegeId: null,
         professionName: null,
         studyYear: 4,
         detailInfo: null
       };
+      this.collegeFormOptions = [];
       this.resetForm("form");
     }
   }

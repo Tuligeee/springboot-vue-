@@ -4,15 +4,19 @@ import com.mock.example.common.component.page.TableDataInfo;
 import com.mock.example.common.entity.Response;
 import com.mock.example.interfaces.body.entrance.college.CollegeBody;
 import com.mock.example.interfaces.controller.BaseController;
+import com.mock.example.interfaces.vo.entrance.college.CollegeListRowVo;
+import com.mock.example.modules.entrance.entity.model.CeCollege;
 import com.mock.example.modules.entrance.service.CeCollegeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.mock.example.common.utils.ExcelUtil;
 import com.mock.example.modules.entrance.model.vo.CollegeImportVo;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 院校查询管理
@@ -28,6 +32,7 @@ public class CeCollegeController extends BaseController {
      * 导出院校及专业分数数据
      */
     @ApiOperation(value = "导出院校数据")
+    @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @GetMapping("/export")
     public Response export(CollegeBody collegeBody) {
         List<CollegeImportVo> list = collegeService.selectCollegeExportList(collegeBody);
@@ -39,6 +44,7 @@ public class CeCollegeController extends BaseController {
      * 导入院校及专业分数数据
      */
     @ApiOperation(value = "导入院校数据")
+    @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @PostMapping("/importData")
     public Response importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<CollegeImportVo> util = new ExcelUtil<>(CollegeImportVo.class);
@@ -50,6 +56,7 @@ public class CeCollegeController extends BaseController {
     /**
      * 下载导入模板
      */
+    @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @GetMapping("/importTemplate")
     public Response importTemplate() {
         ExcelUtil<CollegeImportVo> util = new ExcelUtil<>(CollegeImportVo.class);
@@ -60,10 +67,21 @@ public class CeCollegeController extends BaseController {
      * 请求院校列表
      */
     @ApiOperation(value = "请求院校列表")
+    @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @GetMapping("/list")
     public TableDataInfo list(CollegeBody collegeBody) {
         startPage();
-        return getDataTable(collegeService.selectCollegeList(collegeBody));
+        List<CeCollege> list = collegeService.selectCollegeList(collegeBody);
+        List<CollegeListRowVo> rows = list.stream().map(c -> {
+            CollegeListRowVo vo = new CollegeListRowVo();
+            vo.setId(c.getId());
+            vo.setCollegeName(c.getCollegeName());
+            vo.setCity(c.getCity());
+            vo.setRanking(c.getRanking());
+            vo.setPersonCount(c.getPersonCount());
+            return vo;
+        }).collect(Collectors.toList());
+        return getDataTable(rows);
     }
 
     /**
@@ -88,6 +106,7 @@ public class CeCollegeController extends BaseController {
      * 新增院校
      */
     @ApiOperation(value = "新增院校")
+    @PreAuthorize("@ss.hasAnyRoles('admin')") 
     @PostMapping
     public Response add(@RequestBody CollegeBody collegeBody) {
         return collegeService.addCollege(collegeBody);
@@ -97,6 +116,7 @@ public class CeCollegeController extends BaseController {
      * 修改院校
      */
     @ApiOperation(value = "修改院校")
+    @PreAuthorize("@ss.hasAnyRoles('admin,school_admin')")
     @PutMapping
     public Response edit(@RequestBody CollegeBody collegeBody) {
         return collegeService.editCollege(collegeBody);
@@ -106,6 +126,7 @@ public class CeCollegeController extends BaseController {
      * 删除院校
      */
     @ApiOperation(value = "删除院校")
+    @PreAuthorize("@ss.hasAnyRoles('admin')")
     @DeleteMapping("/{collegeIds}")
     public Response<Boolean> remove(@PathVariable Integer[] collegeIds) {
         return collegeService.deleteCollegeByIds(collegeIds);

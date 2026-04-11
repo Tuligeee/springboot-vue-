@@ -23,7 +23,9 @@
           <el-menu-item index="/score-view/list">历年分数线</el-menu-item>
           <el-menu-item index="/news-view/list">政策资讯</el-menu-item>
           <el-menu-item index="/notice-view/list">系统公告</el-menu-item>
-          <el-menu-item index="/filling-view/list">模拟填报</el-menu-item>
+          <el-menu-item :index="checkRole(['admin', 'school_admin']) ? '/my-view/aspiration' : '/filling-view/list'">
+            {{ checkRole(['admin', 'school_admin']) ? '志愿管理' : '模拟填报' }}
+          </el-menu-item>
         </el-menu>
       </div>
 
@@ -42,8 +44,10 @@
             <router-link to="/my-view/collection">
               <el-dropdown-item icon="el-icon-star-off">我的收藏</el-dropdown-item>
             </router-link>
-            <router-link to="/filling-view/list">
-              <el-dropdown-item icon="el-icon-s-order">我的志愿</el-dropdown-item>
+            <router-link :to="checkRole(['admin', 'school_admin']) ? '/my-view/aspiration' : '/filling-view/list'">
+              <el-dropdown-item icon="el-icon-s-order">
+                {{ checkRole(['admin', 'school_admin']) ? '志愿管理' : '我的志愿' }}
+              </el-dropdown-item>
             </router-link>
             <!-- 仅管理员显示后台管理入口 -->
             <router-link to="/index" v-if="checkRole(['admin'])">

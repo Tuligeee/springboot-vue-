@@ -8,6 +8,7 @@ import com.mock.example.modules.entrance.service.CeNewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class CeNewsController extends BaseController {
     private CeNewsService newsService;
 
     /** 查询列表 */
+    @PreAuthorize("@ss.hasPermi('entrance:news:list')")
     @GetMapping("/list")
     public TableDataInfo list(CeNews news) {
         startPage();
@@ -27,6 +29,7 @@ public class CeNewsController extends BaseController {
     }
 
     /** 获取详情 */
+    @PreAuthorize("@ss.hasPermi('entrance:news:query')")
     @GetMapping("/{id}")
     public Response<CeNews> getInfo(@PathVariable Long id) {
         CeNews news = newsService.getNewsById(id);
@@ -38,6 +41,7 @@ public class CeNewsController extends BaseController {
     }
 
     /** 点赞 */
+    @PreAuthorize("@ss.hasPermi('entrance:news:list')")
     @PostMapping("/like/{id}")
     public Response<Void> like(@PathVariable Long id) {
         CeNews news = newsService.getNewsById(id);
@@ -49,36 +53,24 @@ public class CeNewsController extends BaseController {
     }
 
     /** 新增 */
+    @PreAuthorize("@ss.hasAnyPermi('entrance:news:add,entrance:news:edit')")
     @PostMapping
     public Response<Boolean> add(@RequestBody CeNews news) {
-        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
-            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
-                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
-            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可发布政策资讯");
-        }
         return new Response<>(newsService.addNews(news));
     }
 
     /** 修改 */
+    @PreAuthorize("@ss.hasAnyPermi('entrance:news:edit')")
     @PutMapping
     public Response<Boolean> edit(@RequestBody CeNews news) {
-        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
-            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
-                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
-            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可修改政策资讯");
-        }
         news.setUpdateTime(new java.util.Date());
         return new Response<>(newsService.updateById(news));
     }
 
     /** 删除 */
+    @PreAuthorize("@ss.hasAnyPermi('entrance:news:remove')")
     @DeleteMapping("/{ids}")
     public Response<Boolean> remove(@PathVariable Long[] ids) {
-        if (getLoginUser() != null && !getLoginUser().getUserId().equals(1L)) {
-            boolean isAdmin = getLoginUser().getUser().getRoles().stream()
-                    .anyMatch(r -> "admin".equals(r.getRoleKey()));
-            if (!isAdmin) return new Response<Boolean>().failMsg("越权操作：仅超级管理员可删除政策资讯");
-        }
         return new Response<>(newsService.removeByIds(Arrays.asList(ids)));
     }
 }

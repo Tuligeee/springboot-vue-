@@ -9,7 +9,9 @@ import com.mock.example.interfaces.vo.entrance.aspiration.AspirationFormVo;
 import com.mock.example.interfaces.vo.entrance.aspiration.AspirationSelectVo;
 import com.mock.example.modules.entrance.entity.model.*;
 import com.mock.example.modules.entrance.repository.*;
-import com.mock.example.modules.entrance.mapper.CeStudentMapper; // 直接使用 Mapper
+import com.mock.example.modules.entrance.mapper.CeStudentMapper;
+import com.mock.example.modules.system.mapper.SysUserMapper;
+import com.mock.example.modules.system.entity.model.SysUser;
 import com.mock.example.modules.entrance.model.vo.VolunteerExportVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +30,8 @@ public class CeAspirationService {
     private final ICeProfessionRepo professionRepo;
     private final ICeAspirationRepo aspirationRepo;
     private final ICeAspirationDetailRepo aspirationDetailRepo;
-    private final CeStudentMapper studentMapper; // 改用 Mapper 规避 Service 循环依赖
+    private final CeStudentMapper studentMapper;
+    private final SysUserMapper userMapper;
 
     /**
      * 查询导出专用的志愿表数据
@@ -201,6 +204,70 @@ public class CeAspirationService {
         return true;
     }
 
-    public String aspirationDetail(String sNo) { return ""; }
-    public List<CeAspiration> selectAspirationList(AspirationBody b) { return new ArrayList<>(); }
+    public List<CeAspiration> selectAspirationList(AspirationBody b) {
+        QueryWrapper<CeAspiration> qw = new QueryWrapper<>();
+        if (StrUtil.isNotBlank(b.getStudentNo())) {
+            qw.like("student_no", b.getStudentNo());
+        }
+        if (b.getEntranceYear() != null) {
+            qw.eq("entrance_year", b.getEntranceYear());
+        }
+        qw.orderByDesc("created_time");
+        
+        List<CeAspiration> list = aspirationRepo.list(qw);
+        for (CeAspiration asp : list) {
+            try {
+                // student_no 格式为 userId_sheetNo
+                String[] parts = asp.getStudentNo().split("_");
+                Long userId = Long.parseLong(parts[0]);
+                QueryWrapper<CeStudent> sQw = new QueryWrapper<>();
+                sQw.eq("user_id", userId).last("limit 1");
+                CeStudent student = studentMapper.selectOne(sQw);
+                if (student != null) {
+                    asp.setStudentName(student.getStudentName());
+                    asp.setDisplayStudentNo(student.getStudentNo());
+                } else {
+                    // 如果没找到学生档案，尝试查询系统用户账号名作为昵称
+                    SysUser user = userMapper.selectById(userId);
+                    if (user != null) {
+                        asp.setStudentName(user.getUserName());
+                        asp.setDisplayStudentNo("SYS_USER");
+                    } else {
+                        asp.setStudentName("未知用户");
+                        asp.setDisplayStudentNo("ID:" + userId);
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("解析学号姓名异常: {}", e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public String aspirationDetail(String sNo) {
+        if (StrUtil.isBlank(sNo)) return "暂无内容";
+        List<CeAspirationDetail> details = aspirationDetailRepo.selectAspirationDetailList(sNo);
+        if (details == null || details.isEmpty()) return "该志愿表目前为空";
+        
+        StringBuilder sb = new StringBuilder("填报内容摘要：\n");
+        Map<String, List<CeAspirationDetail>> grouped = details.stream()
+                .collect(Collectors.groupingBy(CeAspirationDetail::getCollegeName, LinkedHashMap::new, Collectors.toList()));
+        
+        final int[] idx = {1};
+        grouped.forEach((collegeName, dList) -> {
+            sb.append(idx[0]++).append(". ").append(collegeName).append(" (")
+              .append(dList.stream().map(CeAspirationDetail::getProfessionName).collect(Collectors.joining(", ")))
+              .append(")\n");
+        });
+        return sb.toString();
+    }
+    @Transactional
+    public Boolean deleteById(Integer id) {
+        CeAspiration aspiration = aspirationRepo.getById(id);
+        if (aspiration != null) {
+            aspirationDetailRepo.deleteByStudentNo(aspiration.getStudentNo());
+            aspirationRepo.removeById(id);
+        }
+        return true;
+    }
 }

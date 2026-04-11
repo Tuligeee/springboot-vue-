@@ -66,4 +66,10 @@ public class CeAspiration implements Serializable {
     @TableField(exist = false)
     private String studentName;
 
+    /**
+     * 展示用学号/账号
+     */
+    @TableField(exist = false)
+    private String displayStudentNo;
+
 }

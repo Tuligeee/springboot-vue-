@@ -20,7 +20,6 @@
                   </div>
                   <div class="detail-row">
                     <span><i class="el-icon-location-outline"></i> {{ item.city || '未知城市' }}</span>
-                    <span style="margin-left: 15px;"><i class="el-icon-postcard"></i> 代码：{{ item.collegeNo }}</span>
                   </div>
                   <div class="time-row">收藏于：{{ parseTime(item.createTime) }}</div>
                 </div>

@@ -95,8 +95,6 @@
     </el-dialog>
 
     <el-table v-loading="loading" :data="collegeList">
-      <el-table-column label="ID" align="center" prop="id" width="60" />
-
       <el-table-column label="院校名称" align="center" prop="collegeName">
         <template slot-scope="scope">
           <span
@@ -108,7 +106,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="院校代码" align="center" prop="collegeNo" />
       <el-table-column label="所在城市" align="center" prop="city" />
       <el-table-column label="全国排名" align="center" prop="ranking" sortable />
       <el-table-column label="招生人数" align="center" prop="personCount" />
@@ -121,13 +118,6 @@
               icon="el-icon-view"
               @click="handleDetail(scope.row.id)"
           >查看详情</el-button>
-          <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
-              v-if="checkRole(['admin', 'school_admin'])"
-          >编辑修改</el-button>
           <el-button
               v-hasRole="['admin']"
               size="mini"
@@ -153,9 +143,6 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="院校名称" prop="collegeName">
           <el-input v-model="form.collegeName" placeholder="请输入院校名称" />
-        </el-form-item>
-        <el-form-item label="院校代码" prop="collegeNo">
-          <el-input v-model="form.collegeNo" placeholder="请输入院校代码" />
         </el-form-item>
         <el-form-item label="所在城市" prop="city">
           <el-input v-model="form.city" placeholder="例如：北京市" />
@@ -217,8 +204,7 @@ export default {
       },
       form: {},
       rules: {
-        collegeName: [{ required: true, message: "院校名称不能为空", trigger: "blur" }],
-        collegeNo: [{ required: true, message: "院校代码不能为空", trigger: "blur" }]
+        collegeName: [{ required: true, message: "院校名称不能为空", trigger: "blur" }]
       }
     };
   },
@@ -298,7 +284,6 @@ export default {
       this.form = {
         id: null,
         collegeName: null,
-        collegeNo: null,
         city: null,
         ranking: 1,
         personCount: 0,

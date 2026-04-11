@@ -1050,7 +1050,6 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2022-03-21 21:33:12', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '1', '0', 'admin', '2022-03-21 21:33:12', 'admin', '2023-03-31 21:50:03', '普通角色');
 INSERT INTO `sys_role` VALUES (100, '学生用户', 'student', 2, '1', 1, 1, '0', '0', '', NULL, 'admin', '2026-01-14 14:59:30', NULL);
 INSERT INTO `sys_role` VALUES (101, '学校管理员', 'school_admin', 3, '1', 1, 1, '0', '0', '', NULL, '', NULL, NULL);
 
@@ -1067,9 +1066,6 @@ CREATE TABLE `sys_role_dept`  (
 -- ----------------------------
 -- Records of sys_role_dept
 -- ----------------------------
-INSERT INTO `sys_role_dept` VALUES (2, 100);
-INSERT INTO `sys_role_dept` VALUES (2, 101);
-INSERT INTO `sys_role_dept` VALUES (2, 105);
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -1130,8 +1126,6 @@ INSERT INTO `sys_role_menu` VALUES (1, 2068);
 INSERT INTO `sys_role_menu` VALUES (101, 2054);
 INSERT INTO `sys_role_menu` VALUES (101, 2055);
 INSERT INTO `sys_role_menu` VALUES (101, 2056);
-INSERT INTO `sys_role_menu` VALUES (2, 2052);
-INSERT INTO `sys_role_menu` VALUES (2, 2053);
 INSERT INTO `sys_role_menu` VALUES (100, 2054);
 INSERT INTO `sys_role_menu` VALUES (100, 2055);
 INSERT INTO `sys_role_menu` VALUES (100, 2056);
@@ -1214,8 +1208,6 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (1, 1);
-INSERT INTO `sys_user_role` VALUES (2, 2);
-INSERT INTO `sys_user_role` VALUES (6, 2);
 INSERT INTO `sys_user_role` VALUES (51, 100);
 
 SET FOREIGN_KEY_CHECKS = 1;

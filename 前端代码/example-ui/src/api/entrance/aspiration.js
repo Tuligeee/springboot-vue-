@@ -21,7 +21,7 @@ export function listAspiration(query) {
 // 填报详情
 export function aspirationDetail(studentNo){
     return request({
-        url: '/college_entrance/aspiration/detail?studentNo='+ studentNo ,
+        url: '/college_entrance/aspiration/detailed/' + studentNo,
         method: 'get'
     })
 }
@@ -51,3 +51,10 @@ export function delSheet(sheetNo) {
     })
 }
 
+// 管理员删除志愿记录
+export function delAspiration(id) {
+    return request({
+        url: '/college_entrance/aspiration/remove/' + id,
+        method: 'delete'
+    })
+}

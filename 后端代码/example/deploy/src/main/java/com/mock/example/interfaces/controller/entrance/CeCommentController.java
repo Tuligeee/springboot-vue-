@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/entrance/comment")
@@ -47,21 +48,10 @@ public class CeCommentController {
     /**
      * 删除评论
      */
+    @PreAuthorize("@ss.hasPermi('entrance:comment:remove') or (authentication.principal.userId == @ceCommentMapper.selectById(#id).userId)")
     @DeleteMapping("/{id}")
     public Response<Void> remove(@PathVariable Long id) {
-        CeComment comment = ceCommentMapper.selectById(id);
-        if (comment != null) {
-            Long userId = SecurityUtil.getUserId();
-            // 只有本人或管理员可以删除
-            if (userId.equals(comment.getUserId()) || userId.equals(1L)) {
-                ceCommentMapper.deleteById(id);
-            } else {
-                Response<Void> res = new Response<>();
-                res.setCode(500);
-                res.setMsg("无权删除此评论");
-                return res;
-            }
-        }
+        ceCommentMapper.deleteById(id);
         return new Response<>();
     }
 }

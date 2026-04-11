@@ -9,6 +9,7 @@ import com.mock.example.modules.entrance.service.CeStudentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * 学生管理
@@ -30,6 +31,7 @@ public class CeStudentController extends BaseController {
      * @return 学生列表
      */
     @ApiOperation(value = "请求学生列表")
+    @PreAuthorize("@ss.hasPermi('entrance:student:list')")
     @GetMapping("/list")
     public TableDataInfo list(StudentBody studentBody) {
         startPage();
@@ -43,6 +45,7 @@ public class CeStudentController extends BaseController {
      * @return 结果
      */
     @ApiOperation(value = "添加学生")
+    @PreAuthorize("@ss.hasPermi('entrance:student:add')")
     @PostMapping
     public Response<Boolean> add(@RequestBody StudentBody studentBody) {
         return studentService.addStudent(studentBody);
@@ -55,6 +58,7 @@ public class CeStudentController extends BaseController {
      * @return 结果
      */
     @ApiOperation(value = "编辑学生")
+    @PreAuthorize("@ss.hasPermi('entrance:student:edit')")
     @PutMapping
     public Response<Boolean> edit(@RequestBody StudentBody studentBody) {
         return studentService.editStudent(studentBody);
@@ -67,6 +71,7 @@ public class CeStudentController extends BaseController {
      * @return 结果
      */
     @ApiOperation(value = "通过学生id查询学生信息")
+    @PreAuthorize("@ss.hasPermi('entrance:student:query')")
     @GetMapping("/{studentId}")
     public Response<StudentVo> getInfo(@PathVariable Integer studentId) {
         return new Response<>(studentService.getStudent(studentId));
@@ -79,6 +84,7 @@ public class CeStudentController extends BaseController {
      * @return 结果
      */
     @ApiOperation(value = "删除学生")
+    @PreAuthorize("@ss.hasPermi('entrance:student:remove')")
     @DeleteMapping("/{studentIds}")
     public Response<Boolean> remove(@PathVariable Integer[] studentIds) {
         return studentService.deleteStudentByIds(studentIds);

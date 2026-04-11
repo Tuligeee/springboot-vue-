@@ -98,9 +98,21 @@ export default {
 
 <style scoped>
 .pagination-container {
-  background: #fff;
-  padding: 32px 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  background: transparent;
+  margin-top: 12px;
+  padding: 8px 0 0;
+  min-height: 40px;
 }
+
+.pagination-container .el-pagination {
+  position: static !important;
+  right: auto !important;
+}
+
 .pagination-container.hidden {
   display: none;
 }

@@ -1,5 +1,6 @@
 package com.mock.example.modules.entrance.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mock.example.common.entity.Response;
 import com.mock.example.common.utils.EntityCopyUtil;
@@ -198,6 +199,9 @@ public class CeCollegeService {
     }
 
     public Response<Boolean> addCollege(CollegeBody collegeBody) {
+        if (StrUtil.isBlank(collegeBody.getCollegeNo())) {
+            collegeBody.setCollegeNo(generateUniqueCollegeNo());
+        }
         if (BooleanUtils.isFalse(uniqueCollegeNo(collegeBody.getCollegeNo(), null))) {
             return new Response<>().failMsg("保存院校失败,代码 '" + collegeBody.getCollegeNo() + "' 已存在");
         }
@@ -208,6 +212,12 @@ public class CeCollegeService {
     }
 
     public Response<Boolean> editCollege(CollegeBody collegeBody) {
+        if (StrUtil.isBlank(collegeBody.getCollegeNo()) && collegeBody.getId() != null) {
+            CeCollege existing = collegeRepo.getById(collegeBody.getId());
+            if (existing != null) {
+                collegeBody.setCollegeNo(existing.getCollegeNo());
+            }
+        }
         LoginUser loginUser = SecurityUtil.getLoginUser();
         if (loginUser != null && !loginUser.getUserId().equals(1L)) {
             boolean isSchoolAdmin = loginUser.getUser().getRoles().stream()
@@ -264,5 +274,13 @@ public class CeCollegeService {
     private Boolean uniqueCollegeNo(String collegeNo, Integer collegeId) {
         CeCollege ceCollege = collegeRepo.selectCollegeByNo(collegeNo);
         return ceCollege == null || ceCollege.getId().equals(collegeId);
+    }
+
+    private String generateUniqueCollegeNo() {
+        String candidate;
+        do {
+            candidate = "C" + System.nanoTime();
+        } while (BooleanUtils.isFalse(uniqueCollegeNo(candidate, null)));
+        return candidate;
     }
 }

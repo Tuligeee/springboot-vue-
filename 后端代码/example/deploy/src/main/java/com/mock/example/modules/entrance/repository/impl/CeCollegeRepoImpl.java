@@ -30,8 +30,6 @@ public class CeCollegeRepoImpl
     @Override
     public List<CeCollege> selectCollegeList(CeCollege college) {
         LambdaQueryWrapper<CeCollege> wrapper = Wrappers.<CeCollege>lambdaQuery()
-                .like(StrUtil.isNotBlank(college.getCollegeNo()),
-                        CeCollege::getCollegeNo, college.getCollegeNo())
                 .like(StrUtil.isNotBlank(college.getCollegeName()),
                         CeCollege::getCollegeName, college.getCollegeName())
                 .like(StrUtil.isNotBlank(college.getCity()),

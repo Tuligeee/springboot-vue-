@@ -146,7 +146,7 @@ public class SysMenuService {
         List<com.mock.example.modules.system.entity.model.SysRole> roles = SecurityUtil.getLoginUser().getUser().getRoles();
         boolean isAdmin = roles.stream().anyMatch(r -> "admin".equals(r.getRoleKey()) || r.getRoleId() == 1L);
         boolean isSchoolAdmin = roles.stream().anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-        boolean isStudent = roles.stream().anyMatch(r -> r.getRoleId() == 11L || "common".equals(r.getRoleKey()) || "student".equals(r.getRoleKey()));
+        boolean isStudent = roles.stream().anyMatch(r -> r.getRoleId() == 11L || "student".equals(r.getRoleKey()));
 
         // 如果用户身上多个角色叠加，优先考虑管理员，其次学校，其次学生
         if (isAdmin && isSchoolAdmin) isSchoolAdmin = false;

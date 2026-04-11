@@ -1,14 +1,14 @@
--- ÏµÍ³¹«¸æ±í£¨ÇëÔÚÄ¿±êÊý¾Ý¿âÖ´ÐÐ£©
+-- ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ö´ï¿½Ð£ï¿½
 CREATE TABLE IF NOT EXISTS `sys_notice` (
-  `notice_id` bigint NOT NULL AUTO_INCREMENT COMMENT '¹«¸æID',
-  `notice_title` varchar(100) NOT NULL COMMENT '¹«¸æ±êÌâ',
-  `notice_type` char(1) NOT NULL DEFAULT '2' COMMENT '¹«¸æÀàÐÍ£¨1Í¨Öª 2¹«¸æ£©',
-  `notice_content` longtext COMMENT '¹«¸æÄÚÈÝ',
-  `status` char(1) NOT NULL DEFAULT '0' COMMENT '¹«¸æ×´Ì¬£¨0Õý³£ 1¹Ø±Õ£©',
-  `create_by` varchar(64) DEFAULT '' COMMENT '´´½¨Õß',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_by` varchar(64) DEFAULT '' COMMENT '¸üÐÂÕß',
-  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '¸üÐÂÊ±¼ä',
-  `remark` varchar(255) DEFAULT NULL COMMENT '±¸×¢',
+  `notice_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ï¿½ï¿½ï¿½ï¿½ID',
+  `notice_title` varchar(100) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
+  `notice_type` char(1) NOT NULL DEFAULT '2' COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½1Í¨Öª 2ï¿½ï¿½ï¿½æ£©',
+  `notice_content` longtext COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
+  `status` char(1) NOT NULL DEFAULT '0' COMMENT 'ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ 1ï¿½Ø±Õ£ï¿½',
+  `create_by` varchar(64) DEFAULT '' COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½',
+  `update_by` varchar(64) DEFAULT '' COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½',
+  `remark` varchar(255) DEFAULT NULL COMMENT 'ï¿½ï¿½×¢',
   PRIMARY KEY (`notice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ÏµÍ³¹«¸æ±í';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½';

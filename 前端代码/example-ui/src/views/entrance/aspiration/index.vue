@@ -41,8 +41,7 @@
     <el-table v-loading="loading" :data="aspirationList">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="ID" prop="id" width="100"/>
-      <el-table-column label="学号" prop="studentNo" :show-overflow-tooltip="true" width="200"/>
-      <el-table-column label="学生姓名" prop="studentName" :show-overflow-tooltip="true" width="200"/>
+      <el-table-column label="昵称" prop="studentName" :show-overflow-tooltip="true" width="200"/>
       <el-table-column label="填报年份" prop="entranceYear" :show-overflow-tooltip="true" width="200"/>
       <el-table-column label="创建时间" align="center" prop="createdTime" width="200">
         <template slot-scope="scope">
@@ -50,14 +49,23 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope" v-if="scope.row.id !== 0">
+        <template slot-scope="scope">
           <el-button
               size="mini"
               type="text"
               icon="el-icon-view"
               @click="getDetail(scope.row)"
-              v-hasPermi="['entrance:aspiration:detail']"
+              v-hasPermi="['entrance:aspiration:index']"
           >填报详情
+          </el-button>
+          <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              style="color: #F56C6C; margin-left: 10px;"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['entrance:aspiration:index']"
+          >删除
           </el-button>
         </template>
       </el-table-column>
@@ -72,10 +80,11 @@
     />
 
     <el-dialog
-        title="志愿填报详情"
+        title="志愿填报详情摘要"
         :visible.sync="dialogVisible"
-        width="30%">
-      <span v-text="aspirationDetail"></span>
+        width="450px"
+        custom-class="aspiration-dialog">
+      <div v-text="aspirationDetail" class="detail-summary"></div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
@@ -87,7 +96,7 @@
 
 <script>
 
-import {aspirationDetail, listAspiration} from "@/api/entrance/aspiration";
+import {aspirationDetail, listAspiration, delAspiration} from "@/api/entrance/aspiration";
 
 export default {
   name: "Aspiration",
@@ -169,11 +178,36 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
+    },
+    /** 删除记录 */
+    handleDelete(row) {
+      this.$confirm('确定要永久删除该学生的志愿填报记录吗？删除后不可恢复！', "严重警告", {
+        confirmButtonText: "确定删除",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.loading = true;
+        return delAspiration(row.id);
+      }).then(() => {
+        this.$message.success("删除成功");
+        this.getList();
+      }).catch(() => {
+        this.loading = false;
+      });
     }
   }
 };
 </script>
 
-<style>
-
+<style scoped>
+.detail-summary {
+  white-space: pre-line;
+  line-height: 1.8;
+  font-size: 15px;
+  color: #606266;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
 </style>

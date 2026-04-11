@@ -1,5 +1,5 @@
--- ¹ÜÀí¶Ë¡°Í¨Öª¹«¸æ¡±²Ëµ¥ÓëÈ¨ÏÞ£¨Ö´ÐÐºó¹ÜÀíÔ±²àÀ¸¿É¼û£©
--- ÊÊÅä RuoYi ²Ëµ¥½á¹¹£»Ä¬ÈÏ¸ø½ÇÉ« admin(role_id=1)
+-- ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½Í¨Öªï¿½ï¿½ï¿½æ¡±ï¿½Ëµï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½Ö´ï¿½Ðºï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½É¼ï¿½ï¿½ï¿½
+-- ï¿½ï¿½ï¿½ï¿½ RuoYi ï¿½Ëµï¿½ï¿½á¹¹ï¿½ï¿½Ä¬ï¿½Ï¸ï¿½ï¿½ï¿½É« admin(role_id=1)
 
 SET @parent_id := (
   SELECT menu_id FROM sys_menu
@@ -7,12 +7,12 @@ SET @parent_id := (
   ORDER BY menu_id ASC LIMIT 1
 );
 
--- Èô²»´æÔÚ system Ä¿Â¼£¬Ôò½µ¼¶¹Òµ½¸ùÄ¿Â¼
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ system Ä¿Â¼ï¿½ï¿½ï¿½ò½µ¼ï¿½ï¿½Òµï¿½ï¿½ï¿½Ä¿Â¼
 SET @parent_id := IFNULL(@parent_id, 0);
 
 INSERT INTO sys_menu
 (`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`remark`)
-SELECT 'Í¨Öª¹«¸æ', @parent_id, 9, 'notice', 'system/notice/index', NULL, 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', NOW(), 'ÏµÍ³¹«¸æ²Ëµ¥'
+SELECT 'Í¨Öªï¿½ï¿½ï¿½ï¿½', @parent_id, 9, 'notice', 'system/notice/index', NULL, 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', NOW(), 'ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ëµï¿½'
 FROM dual
 WHERE NOT EXISTS (
   SELECT 1 FROM sys_menu WHERE path='notice' AND component='system/notice/index'
@@ -26,33 +26,33 @@ SET @notice_menu_id := (
 
 INSERT INTO sys_menu
 (`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`remark`)
-SELECT '¹«¸æ²éÑ¯', @notice_menu_id, 1, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'admin', NOW(), ''
+SELECT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯', @notice_menu_id, 1, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'admin', NOW(), ''
 FROM dual
 WHERE @notice_menu_id IS NOT NULL
   AND NOT EXISTS (SELECT 1 FROM sys_menu WHERE parent_id=@notice_menu_id AND perms='system:notice:query');
 
 INSERT INTO sys_menu
 (`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`remark`)
-SELECT '¹«¸æÐÂÔö', @notice_menu_id, 2, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'admin', NOW(), ''
+SELECT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', @notice_menu_id, 2, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'admin', NOW(), ''
 FROM dual
 WHERE @notice_menu_id IS NOT NULL
   AND NOT EXISTS (SELECT 1 FROM sys_menu WHERE parent_id=@notice_menu_id AND perms='system:notice:add');
 
 INSERT INTO sys_menu
 (`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`remark`)
-SELECT '¹«¸æÐÞ¸Ä', @notice_menu_id, 3, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'admin', NOW(), ''
+SELECT 'ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½', @notice_menu_id, 3, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'admin', NOW(), ''
 FROM dual
 WHERE @notice_menu_id IS NOT NULL
   AND NOT EXISTS (SELECT 1 FROM sys_menu WHERE parent_id=@notice_menu_id AND perms='system:notice:edit');
 
 INSERT INTO sys_menu
 (`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`remark`)
-SELECT '¹«¸æÉ¾³ý', @notice_menu_id, 4, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'admin', NOW(), ''
+SELECT 'ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½', @notice_menu_id, 4, '#', NULL, NULL, 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'admin', NOW(), ''
 FROM dual
 WHERE @notice_menu_id IS NOT NULL
   AND NOT EXISTS (SELECT 1 FROM sys_menu WHERE parent_id=@notice_menu_id AND perms='system:notice:remove');
 
--- ¸³È¨¸ø admin ½ÇÉ«£¨role_id=1£©
+-- ï¿½ï¿½È¨ï¿½ï¿½ admin ï¿½ï¿½É«ï¿½ï¿½role_id=1ï¿½ï¿½
 INSERT INTO sys_role_menu (role_id, menu_id)
 SELECT 1, sm.menu_id
 FROM sys_menu sm

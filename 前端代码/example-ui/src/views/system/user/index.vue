@@ -247,7 +247,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="角色">
+            <el-form-item label="角色" prop="roleIds">
               <el-select v-model="form.roleIds" multiple placeholder="请选择">
                 <el-option
                   v-for="item in roleOptions"
@@ -436,6 +436,9 @@ export default {
             message: "请输入正确的手机号码",
             trigger: "blur"
           }
+        ],
+        roleIds: [
+          { required: true, message: "用户角色不能为空", trigger: "blur" }
         ]
       }
     };
@@ -569,7 +572,7 @@ export default {
         this.roleOptions = response.data.roles;
         this.open = true;
         this.title = "添加用户";
-        this.form.password = "123456"; // 强制设为 123456
+        this.form.password = ""; 
       });
     },
     /** 修改按钮操作 */

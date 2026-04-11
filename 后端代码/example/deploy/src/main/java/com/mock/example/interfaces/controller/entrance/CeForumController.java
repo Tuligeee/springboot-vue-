@@ -7,10 +7,12 @@ import com.mock.example.modules.entrance.service.CeForumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/entrance/forum")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class CeForumController {
 
     private final CeForumService forumService;
@@ -28,6 +30,7 @@ public class CeForumController {
     }
 
     // 发布帖子
+    @PreAuthorize("hasAnyRole('admin', 'school_admin', 'student')")
     @PostMapping("/add")
     public Response<Void> add(@RequestBody CeForumPost post) {
         forumService.publishPost(post);
@@ -48,6 +51,7 @@ public class CeForumController {
     }
 
     // [新增] 删除帖子
+    @PreAuthorize("@ss.hasPermi('entrance:forum:remove') or (authentication.principal.userId == #id)")
     @DeleteMapping("/{id}")
     public Response<Void> remove(@PathVariable("id") Long id) {
         forumService.deletePost(id);
@@ -55,6 +59,7 @@ public class CeForumController {
     }
 
     // [新增] 删除评论接口
+    @PreAuthorize("@ss.hasPermi('entrance:forum:remove') or (authentication.principal.userId == #id)")
     @DeleteMapping("/comment/{id}")
     public Response<Void> removeComment(@PathVariable("id") Long id) {
         forumService.deleteComment(id);

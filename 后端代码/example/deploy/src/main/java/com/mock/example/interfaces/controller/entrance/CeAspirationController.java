@@ -1,5 +1,8 @@
 package com.mock.example.interfaces.controller.entrance;
 
+import com.mock.example.common.component.page.TableDataInfo;
+import com.mock.example.interfaces.body.entrance.aspiration.AspirationBody;
+import com.mock.example.modules.entrance.entity.model.CeAspiration;
 import com.mock.example.common.entity.Response;
 import com.mock.example.interfaces.body.entrance.aspiration.AspirationFormBody;
 import com.mock.example.interfaces.controller.BaseController;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mock.example.common.utils.ExcelUtil;
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.mock.example.modules.entrance.model.vo.VolunteerExportVo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +28,7 @@ public class CeAspirationController extends BaseController {
     private final CeAspirationService aspirationService;
 
     @ApiOperation(value = "导出志愿单")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:index')")
     @GetMapping("/export/{sheetNo}")
     public Response export(@PathVariable Integer sheetNo) {
         try {
@@ -40,18 +45,21 @@ public class CeAspirationController extends BaseController {
     }
 
     @ApiOperation(value = "填报志愿")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:form')")
     @PostMapping("/addFrom")
     public Response<Boolean> addFrom(@RequestBody AspirationFormBody body) {
         return new Response<>(aspirationService.addFrom(body));
     }
 
     @ApiOperation(value = "获取志愿单状态列表")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:index')")
     @GetMapping("/listSheets")
     public Response<List<Map<String, Object>>> listSheets() {
         return new Response<>(aspirationService.listAllSheets());
     }
 
     @ApiOperation(value = "志愿填报筛选条件 (湖北模式)")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:form')")
     @GetMapping("/selectItem")
     public Response<Map<String, Object>> selectItem(@RequestParam(required = false) Integer sheetNo) {
         return new Response<>(aspirationService.selectItemNew(sheetNo));
@@ -61,8 +69,40 @@ public class CeAspirationController extends BaseController {
      * 删除/清空指定志愿单
      */
     @ApiOperation(value = "删除志愿单")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:index')")
     @DeleteMapping("/removeSheet/{sheetNo}")
     public Response<Boolean> removeSheet(@PathVariable Integer sheetNo) {
         return new Response<>(aspirationService.deleteSheet(sheetNo));
+    }
+
+    /**
+     * 管理端：获取所有学生的志愿填报列表
+     */
+    @ApiOperation(value = "获取所有学生志愿列表")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:index')")
+    @GetMapping("/list")
+    public TableDataInfo list(AspirationBody aspirationBody) {
+        startPage();
+        List<CeAspiration> list = aspirationService.selectAspirationList(aspirationBody);
+        return getDataTable(list);
+    }
+
+    /**
+     * 管理端：获取特定学生的志愿填报摘要
+     */
+    @ApiOperation(value = "获取志愿填报详情")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:index')")
+    @GetMapping("/detailed/{studentNo}")
+    public Response getDetailed(@PathVariable String studentNo) {
+        return new Response<>(aspirationService.aspirationDetail(studentNo));
+    }
+    /**
+     * 管理端：彻底删除某项志愿记录
+     */
+    @ApiOperation(value = "管理员删除志愿")
+    @PreAuthorize("@ss.hasPermi('entrance:aspiration:index')")
+    @DeleteMapping("/remove/{id}")
+    public Response remove(@PathVariable Integer id) {
+        return new Response(aspirationService.deleteById(id));
     }
 }

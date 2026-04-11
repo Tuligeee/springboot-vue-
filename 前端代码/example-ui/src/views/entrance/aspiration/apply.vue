@@ -83,6 +83,7 @@
 
 <script>
 import { selectItem, addForm } from "@/api/entrance/aspiration";
+import { getProfession } from "@/api/entrance/profession";
 
 export default {
   name: "AspirationApply",
@@ -101,19 +102,33 @@ export default {
   methods: {
     initData() {
       this.loading = true;
+      const professionId = this.$route.query.professionId;
       selectItem(this.currentSheetNo).then(res => {
         if (res.code === 0) {
           this.collegeOptions = res.data.items;
-          // 处理回显
+          if (professionId) {
+            return getProfession(professionId).then(pres => {
+              const prof = pres.data;
+              if (prof && prof.collegeNo) {
+                this.collegeGroups = [{ collegeNo: prof.collegeNo, professionNos: [prof.professionNo] }];
+              } else if (res.data.groups && res.data.groups.length > 0) {
+                this.collegeGroups = res.data.groups;
+              } else {
+                this.addCollege();
+              }
+            });
+          }
           if (res.data.groups && res.data.groups.length > 0) {
             this.collegeGroups = res.data.groups;
           } else {
-            // 如果没数据，给一个默认院校框
             this.addCollege();
           }
         }
+      }).then(() => {
         this.loading = false;
-      }).catch(() => { this.loading = false; });
+      }).catch(() => {
+        this.loading = false;
+      });
     },
     handleSheetChange() {
       this.$router.push({ query: { ...this.$route.query, sheetNo: this.currentSheetNo } });
