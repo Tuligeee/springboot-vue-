@@ -25,6 +25,15 @@ export function addPost(data) {
     })
 }
 
+// 修改帖子
+export function updatePost(data) {
+    return request({
+        url: '/entrance/forum',
+        method: 'put',
+        data: data
+    })
+}
+
 // 查询评论列表
 export function listComment(postId) {
     return request({

@@ -68,7 +68,7 @@
         <div slot="header" class="clearfix">
           <span style="font-weight: bold; font-size: 18px; color: #303133;">
             <i class="el-icon-document-copy" style="color: #409EFF; margin-right: 8px;"></i>
-            填报中心 - 我的模拟志愿表 (共5个方案)
+            填报中心 - 我的模拟志愿表 (共{{ sheetList.length }}个方案)
           </span>
         </div>
 
@@ -145,6 +145,13 @@ export default {
     };
   },
   created() {
+    if (this.checkRole(['admin', 'school_admin'])) {
+      this.getListAdmins();
+    } else {
+      this.getListStudents();
+    }
+  },
+  activated() {
     if (this.checkRole(['admin', 'school_admin'])) {
       this.getListAdmins();
     } else {

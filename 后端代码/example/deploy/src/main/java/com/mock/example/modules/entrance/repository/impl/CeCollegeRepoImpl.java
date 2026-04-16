@@ -33,7 +33,9 @@ public class CeCollegeRepoImpl
                 .like(StrUtil.isNotBlank(college.getCollegeName()),
                         CeCollege::getCollegeName, college.getCollegeName())
                 .like(StrUtil.isNotBlank(college.getCity()),
-                        CeCollege::getCity, college.getCity());
+                        CeCollege::getCity, college.getCity())
+                .eq(StrUtil.isNotBlank(college.getEducationLevel()),
+                        CeCollege::getEducationLevel, college.getEducationLevel());
 
         // 数据隔离
         if (SecurityUtil.getLoginUser() != null && SecurityUtil.getLoginUser().getUser() != null) {

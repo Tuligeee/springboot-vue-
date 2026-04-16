@@ -7,6 +7,8 @@ import com.mock.example.modules.entrance.entity.model.CeForumComment;
 import com.mock.example.modules.entrance.entity.model.CeForumPost;
 import com.mock.example.modules.entrance.mapper.CeForumMapper;
 import com.mock.example.modules.system.mapper.SysUserMapper; // 引入用户Mapper
+import com.mock.example.common.config.security.PermissionService;
+import com.mock.example.common.utils.SensitiveWordUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -22,6 +24,7 @@ public class CeForumService {
     // 如果你没有创建 CommentMapper，下面保存评论时需要单独处理。
     // 建议：在 CeForumMapper 同级目录下创建一个 CeForumCommentMapper 继承 BaseMapper<CeForumComment>
     private final com.mock.example.modules.entrance.mapper.CeForumCommentMapper commentMapper;
+    private final PermissionService permissionService;
 
     // 1. 获取帖子列表
     public List<CeForumPost> getPostList() {
@@ -41,11 +44,32 @@ public class CeForumService {
 
     // 3. 发布帖子
     public void publishPost(CeForumPost post) {
+        checkSensitive(post.getTitle(), "标题");
+        checkSensitive(post.getContent(), "内容");
+
         post.setUserId(SecurityUtil.getUserId());
         post.setCreateTime(new Date());
         post.setViewCount(0);
         post.setLikeCount(0);
         forumMapper.insert(post);
+    }
+
+    // 更新帖子
+    public void updatePost(CeForumPost post) {
+        checkSensitive(post.getTitle(), "标题");
+        checkSensitive(post.getContent(), "内容");
+
+        CeForumPost oldPost = forumMapper.selectById(post.getId());
+        if (oldPost == null) {
+            return;
+        }
+        Long currentUserId = SecurityUtil.getUserId();
+        if (!currentUserId.equals(1L) && !currentUserId.equals(oldPost.getUserId())) {
+            throw new BizException("您无权修改此帖子！");
+        }
+        oldPost.setTitle(post.getTitle());
+        oldPost.setContent(post.getContent());
+        forumMapper.updateById(oldPost);
     }
 
     // 4. 获取评论列表
@@ -55,9 +79,19 @@ public class CeForumService {
 
     // 5. 发布评论
     public void publishComment(CeForumComment comment) {
+        checkSensitive(comment.getContent(), "评论内容");
+
         comment.setUserId(SecurityUtil.getUserId());
         comment.setCreateTime(new Date());
         commentMapper.insert(comment);
+    }
+
+    /** 统一封装的敏感词核验器 */
+    private void checkSensitive(String text, String fieldType) {
+        String hitWord = SensitiveWordUtil.getFirstMatchedWord(text);
+        if (hitWord != null) {
+            throw new BizException("发布失败！提交的" + fieldType + "中包含违规词汇，请修改后重试。");
+        }
     }
 
     public void deletePost(Long postId) {
@@ -67,9 +101,10 @@ public class CeForumService {
             return;
         }
 
-        // 2. 权限校验：只有 "当前登录用户是作者" 或者 "超级管理员(ID=1)" 才能删除
+        // 2. 权限校验：只有 "当前登录用户是作者" 或者 "具有entrance:forum:remove权限" 才能删除
         Long currentUserId = SecurityUtil.getUserId();
-        if (!currentUserId.equals(1L) && !currentUserId.equals(post.getUserId())) {
+        boolean hasAdminPerm = permissionService.hasPermi("entrance:forum:remove");
+        if (!hasAdminPerm && !currentUserId.equals(post.getUserId())) {
             throw new BizException("您无权删除此帖子！");
         }
 
@@ -89,12 +124,13 @@ public class CeForumService {
         Long currentUserId = SecurityUtil.getUserId();
 
         // 权限校验逻辑：
-        // 1. 超级管理员 (ID=1)
+        // 1. 后台具有论坛管理权限的管理员
         // 2. 评论本人 (comment.userId)
-        // 3. 帖子楼主 (需查出帖子信息)
+        // 3. 帖子楼主 (帖子拥有者)
         boolean canDelete = false;
 
-        if (currentUserId.equals(1L) || currentUserId.equals(comment.getUserId())) {
+        boolean hasAdminPerm = permissionService.hasPermi("entrance:forum:remove");
+        if (hasAdminPerm || currentUserId.equals(comment.getUserId())) {
             canDelete = true;
         } else {
             // 查询帖子，看是否是楼主删除

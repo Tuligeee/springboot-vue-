@@ -61,6 +61,16 @@ public class CeProfession implements Serializable {
     private String detailInfo;
 
     /**
+     * 招生人数
+     */
+    private Integer personCount;
+
+    /**
+     * 选科要求
+     */
+    private String subjectRequirement;
+
+    /**
      * 创建时间
      */
     private Date createdTime;

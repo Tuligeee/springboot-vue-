@@ -3,7 +3,7 @@ package com.mock.example.interfaces.vo.entrance.college;
 import lombok.Data;
 
 /**
- * ÔºĞ£ÁĞ±í£¨Ç°Ì¨²éÑ¯Ò³£©£º²»·µ»ØÔºĞ£´úÂë
+ * é™¢æ ¡åˆ—è¡¨ï¼ˆå‰å°æŸ¥è¯¢é¡µï¼‰ï¼šä¸è¿”å›é™¢æ ¡ä»£ç 
  */
 @Data
 public class CollegeListRowVo {
@@ -13,4 +13,5 @@ public class CollegeListRowVo {
     private String city;
     private Integer ranking;
     private Integer personCount;
+    private String educationLevel;
 }

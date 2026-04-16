@@ -75,6 +75,7 @@
       <el-table-column label="院校代码" align="center" prop="collegeNo" />
       <el-table-column label="专业代码" align="center" prop="professionNo" />
       <el-table-column label="录取分数" align="center" prop="score" />
+      <el-table-column label="录取人数" align="center" prop="admissionCount" />
       <el-table-column label="年份" align="center" prop="year" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -115,6 +116,9 @@
         </el-form-item>
         <el-form-item label="录取分数" prop="score">
           <el-input-number v-model="form.score" :min="0" :max="750" />
+        </el-form-item>
+        <el-form-item label="录取人数" prop="admissionCount">
+          <el-input-number v-model="form.admissionCount" :min="0" />
         </el-form-item>
         <el-form-item label="年份" prop="year">
           <el-input v-model="form.year" placeholder="请输入年份" />
@@ -182,6 +186,7 @@ export default {
         collegeNo: null,
         professionNo: null,
         score: null,
+        admissionCount: null,
         year: new Date().getFullYear()
       };
       this.resetForm("form");

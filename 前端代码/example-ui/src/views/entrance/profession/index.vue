@@ -62,6 +62,13 @@
             <el-tag size="small">{{ scope.row.studyYear }}年</el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="选科要求" align="center" prop="subjectRequirement" min-width="150">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.subjectRequirement === '不提科目要求' || !scope.row.subjectRequirement ? 'info' : 'warning'" size="small">
+              {{ scope.row.subjectRequirement || '不提科目要求' }}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="220">
           <template slot-scope="scope">
             <el-button
@@ -126,6 +133,10 @@
         </el-form-item>
         <el-form-item label="修业年限" prop="studyYear">
           <el-input-number v-model="form.studyYear" :min="1" :max="10" />
+        </el-form-item>
+        <el-form-item label="选科要求" prop="subjectRequirement">
+          <el-input v-model="form.subjectRequirement" placeholder="如：物理,化学,生物 或 不提科目要求" />
+          <div style="font-size:12px;color:#999;line-height:14px;margin-top:5px;">请用逗号(英文或中文均可但不建议只用中文逗号，请后台格式统一)将限制隔开，若无限制可填【不提科目要求】</div>
         </el-form-item>
         <el-form-item label="详细介绍" prop="detailInfo">
           <el-input v-model="form.detailInfo" type="textarea" :rows="4" placeholder="请输入专业介绍" />
@@ -285,7 +296,9 @@ export default {
         collegeId: null,
         professionName: null,
         studyYear: 4,
-        detailInfo: null
+        subjectRequirement: '不提科目要求',
+        detailInfo: null,
+        personCount: null
       };
       this.collegeFormOptions = [];
       this.resetForm("form");

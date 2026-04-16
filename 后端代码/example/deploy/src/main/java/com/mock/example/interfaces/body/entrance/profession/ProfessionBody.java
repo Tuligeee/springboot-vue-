@@ -44,6 +44,16 @@ public class ProfessionBody {
     private String detailInfo;
 
     /**
+     * 招生人数
+     */
+    private Integer personCount;
+
+    /**
+     * 选科要求
+     */
+    private String subjectRequirement;
+
+    /**
      * 分数线
      */
     private List<ScoreLineWrapper> scoreLines;
@@ -63,8 +73,11 @@ public class ProfessionBody {
          * 分数
          */
         private Integer score;
+
+        /**
+         * 录取人数
+         */
+        private Integer admissionCount;
     }
 
 }
-
-  

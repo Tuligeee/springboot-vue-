@@ -90,6 +90,24 @@ public class CeStudentController extends BaseController {
         return studentService.deleteStudentByIds(studentIds);
     }
 
+    /**
+     * 获取我的学生档案
+     */
+    @ApiOperation(value = "获取我的学生档案")
+    @GetMapping("/myProfile")
+    public Response<StudentVo> getMyProfile() {
+        return new Response<>(studentService.getMyProfile());
+    }
+
+    /**
+     * 更新我的学生档案
+     */
+    @ApiOperation(value = "更新我的学生档案")
+    @PutMapping("/updateMyProfile")
+    public Response<Boolean> updateMyProfile(@RequestBody StudentBody studentBody) {
+        return studentService.updateMyProfile(studentBody);
+    }
+
 }
 
   

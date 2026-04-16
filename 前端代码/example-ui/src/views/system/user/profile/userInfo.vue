@@ -15,8 +15,33 @@
         <el-radio label="1">女</el-radio>
       </el-radio-group>
     </el-form-item>
+
+    <div style="font-weight: bold; margin: 15px 0 10px 0; color:#303133; border-left: 4px solid #409EFF; padding-left: 8px;">高考考籍 (必填)</div>
+    
+    <el-form-item label="毕业年份" required>
+      <el-input-number v-model="studentForm.graduateYear" placeholder="请输入毕业年份" :min="2020" :max="2030" style="width: 200px" />
+    </el-form-item>
+    <el-form-item label="高考成绩" required>
+      <el-input-number v-model="studentForm.achievement" placeholder="请输入高考成绩" :min="0" :max="750" style="width: 200px" />
+    </el-form-item>
+    <el-form-item label="首选科目" required>
+      <el-radio-group v-model="studentForm.subjectFirst">
+        <el-radio label="物理">物理</el-radio>
+        <el-radio label="历史">历史</el-radio>
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item label="再选科目" required>
+      <el-checkbox-group v-model="subjectSecondArray" :max="2">
+        <el-checkbox label="思想政治">思想政治</el-checkbox>
+        <el-checkbox label="地理">地理</el-checkbox>
+        <el-checkbox label="化学">化学</el-checkbox>
+        <el-checkbox label="生物">生物</el-checkbox>
+      </el-checkbox-group>
+      <div style="font-size:12px;color:#F56C6C;line-height:14px;margin-top:5px;">高考新规要求，请严格、必须选择两门再选科目方可保存！</div>
+    </el-form-item>
+
     <el-form-item>
-      <el-button type="primary" size="mini" @click="submit">保存</el-button>
+      <el-button type="primary" size="mini" @click="submit" :loading="loading">保存信息与档案</el-button>
       <el-button type="danger" size="mini" @click="close">关闭</el-button>
     </el-form-item>
   </el-form>
@@ -24,6 +49,7 @@
 
 <script>
 import { updateUserProfile } from "@/api/system/user";
+import { getMyProfile, updateMyProfile } from "@/api/entrance/student";
 
 export default {
   props: {
@@ -39,10 +65,9 @@ export default {
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
         ],
         email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
           {
             type: "email",
-            message: "'请输入正确的邮箱地址",
+            message: "请输入正确的邮箱地址",
             trigger: ["blur", "change"]
           }
         ],
@@ -54,15 +79,62 @@ export default {
             trigger: "blur"
           }
         ]
-      }
+      },
+      studentForm: {
+        graduateYear: new Date().getFullYear(),
+        achievement: 500,
+        subjectFirst: "",
+        subjectSecond: ""
+      },
+      subjectSecondArray: [],
+      loading: false
     };
   },
+  watch: {
+    subjectSecondArray(val) {
+      if (val) {
+        this.studentForm.subjectSecond = val.join(',');
+      } else {
+        this.studentForm.subjectSecond = '';
+      }
+    }
+  },
+  created() {
+    this.loadStudentProfile();
+  },
   methods: {
+    loadStudentProfile() {
+      getMyProfile().then(res => {
+        if (res.data && res.data.id) {
+          this.studentForm = res.data;
+          if (this.studentForm.subjectSecond) {
+            this.subjectSecondArray = this.studentForm.subjectSecond.split(',');
+          }
+        }
+      });
+    },
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          updateUserProfile(this.user).then(response => {
-            this.msgSuccess("修改成功");
+          if (!this.studentForm.subjectFirst) {
+            this.$message.error("必填错误：请选择首选科目（物理或历史）");
+            return;
+          }
+          if (this.subjectSecondArray.length !== 2) {
+            this.$message.error("必填错误：请严格选择满两门再选科目");
+            return;
+          }
+          
+          this.loading = true;
+          // 同时保存基本信息与高考考籍
+          Promise.all([
+            updateUserProfile(this.user),
+            updateMyProfile(this.studentForm)
+          ]).then(() => {
+            this.msgSuccess("用户的基本信息与高考考籍已全部修改成功！");
+            this.loading = false;
+          }).catch(() => {
+            this.loading = false;
           });
         }
       });

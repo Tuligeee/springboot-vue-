@@ -20,7 +20,6 @@ public class CeNewsController extends BaseController {
     private CeNewsService newsService;
 
     /** 查询列表 */
-    @PreAuthorize("@ss.hasPermi('entrance:news:list')")
     @GetMapping("/list")
     public TableDataInfo list(CeNews news) {
         startPage();
@@ -29,7 +28,6 @@ public class CeNewsController extends BaseController {
     }
 
     /** 获取详情 */
-    @PreAuthorize("@ss.hasPermi('entrance:news:query')")
     @GetMapping("/{id}")
     public Response<CeNews> getInfo(@PathVariable Long id) {
         CeNews news = newsService.getNewsById(id);
@@ -41,7 +39,6 @@ public class CeNewsController extends BaseController {
     }
 
     /** 点赞 */
-    @PreAuthorize("@ss.hasPermi('entrance:news:list')")
     @PostMapping("/like/{id}")
     public Response<Void> like(@PathVariable Long id) {
         CeNews news = newsService.getNewsById(id);

@@ -53,9 +53,17 @@ public class StudentBody {
     private SexEnum sex;
 
     /**
-     * 成绩分数
+     * 总分
      */
     private Integer achievement;
-}
 
-  
+    /**
+     * 首选科目
+     */
+    private String subjectFirst;
+
+    /**
+     * 再选科目
+     */
+    private String subjectSecond;
+}

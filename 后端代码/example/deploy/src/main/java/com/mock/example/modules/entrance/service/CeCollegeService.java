@@ -80,28 +80,14 @@ public class CeCollegeService {
                 exportList.add(EntityCopyUtil.copyEntity(CollegeImportVo.class, college));
             } else {
                 for (CeProfession profession : professions) {
-                    QueryWrapper<CeScoreLine> sQuery = new QueryWrapper<>();
-                    sQuery.eq("college_no", college.getCollegeNo())
-                          .eq("profession_no", profession.getProfessionNo());
-                    List<CeScoreLine> scores = scoreLineMapper.selectList(sQuery);
-                    
-                    if (scores.isEmpty()) {
                         CollegeImportVo vo = EntityCopyUtil.copyEntity(CollegeImportVo.class, college);
+                        vo.setCollegePersonCount(college.getPersonCount());
                         vo.setProfessionNo(profession.getProfessionNo());
                         vo.setProfessionName(profession.getProfessionName());
                         vo.setStudyYear(profession.getStudyYear());
+                        vo.setSubjectRequirement(profession.getSubjectRequirement());
+                        vo.setProfessionPersonCount(profession.getPersonCount());
                         exportList.add(vo);
-                    } else {
-                        for (CeScoreLine score : scores) {
-                            CollegeImportVo vo = EntityCopyUtil.copyEntity(CollegeImportVo.class, college);
-                            vo.setProfessionNo(profession.getProfessionNo());
-                            vo.setProfessionName(profession.getProfessionName());
-                            vo.setStudyYear(profession.getStudyYear());
-                            vo.setYear(score.getYear());
-                            vo.setScore(score.getScore());
-                            exportList.add(vo);
-                        }
-                    }
                 }
             }
         }
@@ -116,86 +102,119 @@ public class CeCollegeService {
         if (collegeList == null || collegeList.isEmpty()) {
             return "导入院校数据不能为空！";
         }
+        
         int successCount = 0;
+        int failureCount = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
         String operName = SecurityUtil.getUsername();
+
+        // 1. 启发式检查：增加过滤 null 元素的鲁棒性
+        boolean hasValidData = collegeList.stream()
+            .filter(java.util.Objects::nonNull)
+            .anyMatch(item -> StrUtil.isNotBlank(item.getCollegeName()));
+            
+        if (!hasValidData) {
+            return "导入失败：未在文件中找到包含“学校”列的有效数据。请确保至少有一行填写了学校名称。";
+        }
         
-        java.util.Set<String> processedColleges = new java.util.HashSet<>();
-        java.util.Set<String> processedProfessions = new java.util.HashSet<>();
+        java.util.Map<String, String> collegeNameToNo = new java.util.HashMap<>();
+        java.util.Map<String, String> professionNameToNo = new java.util.HashMap<>();
         
-        for (CollegeImportVo data : collegeList) {
+        for (int i = 0; i < collegeList.size(); i++) {
+            CollegeImportVo data = collegeList.get(i);
+            if (data == null) continue; // 过滤空行
+            
+            int rowNum = i + 2; 
+            log.info("--- 正在处理第 {} 行数据: 院校={}, 专业={} ---", rowNum, data.getCollegeName(), data.getProfessionName());
             try {
-                // 1. 处理院校表数据 (相同 batch 只处理/更新一次)
-                if (!processedColleges.contains(data.getCollegeNo())) {
-                    CeCollege college = collegeRepo.selectCollegeByNo(data.getCollegeNo());
-                    if (college == null) {
-                        college = EntityCopyUtil.copyEntity(CeCollege.class, data);
-                        college.setCreatedUser(operName);
-                        collegeRepo.save(college);
-                    } else if (updateSupport) {
-                        college.setCollegeName(data.getCollegeName());
-                        college.setCity(data.getCity());
-                        college.setRanking(data.getRanking());
-                        college.setUpdatedUser(operName);
-                        collegeRepo.updateById(college);
-                    }
-                    processedColleges.add(data.getCollegeNo());
+                if (StrUtil.isBlank(data.getCollegeName())) {
+                    continue; 
                 }
                 
-                // 2. 处理专业表数据 (相同 batch、相同专业只处理/更新一次)
-                if (data.getProfessionNo() != null && !data.getProfessionNo().isEmpty()) {
-                    String profKey = data.getCollegeNo() + "_" + data.getProfessionNo();
-                    if (!processedProfessions.contains(profKey)) {
+                // 1. 处理院校表数据 (相同院校名只处理/更新一次)
+                String colNo = collegeNameToNo.get(data.getCollegeName());
+                if (colNo == null) {
+                    QueryWrapper<CeCollege> cQuery = new QueryWrapper<>();
+                    cQuery.eq("college_name", data.getCollegeName());
+                    List<CeCollege> dbCols = collegeRepo.list(cQuery);
+                    
+                    CeCollege college;
+                    if (dbCols != null && !dbCols.isEmpty()) {
+                        college = dbCols.get(0);
+                        colNo = college.getCollegeNo();
+                        if (updateSupport) {
+                            college.setCity(data.getCity());
+                            college.setRanking(data.getRanking());
+                            college.setEducationLevel(data.getEducationLevel());
+                            // 如果 Excel 中没这一列，data 里的值为 null，我们补 0
+                            college.setPersonCount(data.getCollegePersonCount() == null ? 0 : data.getCollegePersonCount()); 
+                            college.setUpdatedUser(operName);
+                            collegeRepo.updateById(college);
+                        }
+                    } else {
+                        college = EntityCopyUtil.copyEntity(CeCollege.class, data);
+                        college.setPersonCount(data.getCollegePersonCount() == null ? 0 : data.getCollegePersonCount()); 
+                        colNo = "C" + System.nanoTime(); 
+                         college.setCollegeNo(colNo);
+                        college.setCreatedUser(operName);
+                        collegeRepo.save(college);
+                    }
+                    collegeNameToNo.put(data.getCollegeName(), colNo);
+                }
+                data.setCollegeNo(colNo);
+                
+                // 2. 处理专业表数据
+                if (StrUtil.isNotBlank(data.getProfessionName())) {
+                    String profKey = colNo + "_" + data.getProfessionName();
+                    String profNo = professionNameToNo.get(profKey);
+                    
+                    if (profNo == null) {
                         QueryWrapper<CeProfession> pQuery = new QueryWrapper<>();
-                        pQuery.eq("profession_no", data.getProfessionNo())
-                              .eq("college_no", data.getCollegeNo());
+                        pQuery.eq("profession_name", data.getProfessionName())
+                              .eq("college_no", colNo);
                         CeProfession profession = professionMapper.selectOne(pQuery);
                         
                         if (profession == null) {
+                            profNo = "P" + System.nanoTime();
                             profession = new CeProfession();
-                            profession.setCollegeNo(data.getCollegeNo());
-                            profession.setProfessionNo(data.getProfessionNo());
+                            profession.setCollegeNo(colNo);
+                            profession.setProfessionNo(profNo);
                             profession.setProfessionName(data.getProfessionName());
                             profession.setStudyYear(data.getStudyYear());
+                            // 处理 null 情况，补 0
+                            profession.setPersonCount(data.getProfessionPersonCount() == null ? 0 : data.getProfessionPersonCount()); 
+                            profession.setSubjectRequirement(StrUtil.isBlank(data.getSubjectRequirement()) ? "不提科目要求" : data.getSubjectRequirement());
                             profession.setCreatedUser(operName);
                             professionMapper.insert(profession);
-                        } else if (updateSupport) {
-                            profession.setProfessionName(data.getProfessionName());
-                            profession.setStudyYear(data.getStudyYear());
-                            profession.setUpdatedUser(operName);
-                            professionMapper.updateById(profession);
+                        } else {
+                            profNo = profession.getProfessionNo();
+                            if (updateSupport) {
+                                profession.setStudyYear(data.getStudyYear());
+                                // 处理 null 情况，补 0
+                                profession.setPersonCount(data.getProfessionPersonCount() == null ? 0 : data.getProfessionPersonCount()); 
+                                profession.setSubjectRequirement(StrUtil.isBlank(data.getSubjectRequirement()) ? "不提科目要求" : data.getSubjectRequirement());
+                                profession.setUpdatedUser(operName);
+                                professionMapper.updateById(profession);
+                            }
                         }
-                        processedProfessions.add(profKey);
+                        professionNameToNo.put(profKey, profNo);
                     }
-                    
-                    // 3. 处理录取分数线记录
-                    if (data.getYear() != null && data.getScore() != null) {
-                        QueryWrapper<CeScoreLine> sQuery = new QueryWrapper<>();
-                        sQuery.eq("college_no", data.getCollegeNo())
-                              .eq("profession_no", data.getProfessionNo())
-                              .eq("year", data.getYear());
-                        CeScoreLine scoreLine = scoreLineMapper.selectOne(sQuery);
-                        
-                        if (scoreLine == null) {
-                            scoreLine = new CeScoreLine();
-                            scoreLine.setCollegeNo(data.getCollegeNo());
-                            scoreLine.setProfessionNo(data.getProfessionNo());
-                            scoreLine.setYear(data.getYear());
-                            scoreLine.setScore(data.getScore());
-                            scoreLine.setCreatedUser(operName);
-                            scoreLineMapper.insert(scoreLine);
-                        } else if (updateSupport) {
-                            scoreLine.setScore(data.getScore());
-                            scoreLine.setUpdatedUser(operName);
-                            scoreLineMapper.updateById(scoreLine);
-                        }
-                    }
+                    data.setProfessionNo(profNo);
                 }
                 successCount++;
             } catch (Exception e) {
+                failureCount++;
+                failureMsg.append("<br/>第 ").append(rowNum).append(" 行导入异常：").append(e.getMessage());
                 log.error("导入单条数据失败", e);
             }
         }
-        return "恭喜您，数据已全部处理完成！共涉及 " + successCount + " 条记录。";
+        
+        successMsg.append("恭喜您，数据处理完成！共成功导入/更新 ").append(successCount).append(" 条记录。");
+        if (failureCount > 0) {
+            successMsg.append("<br/><br/><span style='color:red; font-weight:bold;'>以下 ").append(failureCount).append(" 条记录处理失败：</span>").append(failureMsg);
+        }
+        return successMsg.toString();
     }
 
     public Response<Boolean> addCollege(CollegeBody collegeBody) {

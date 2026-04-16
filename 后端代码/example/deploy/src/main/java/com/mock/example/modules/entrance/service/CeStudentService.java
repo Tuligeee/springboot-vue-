@@ -208,6 +208,38 @@ public class CeStudentService {
         return ceStudent == null || ceStudent.getId().equals(studentId);
     }
 
+    public StudentVo getMyProfile() {
+        Long userId = SecurityUtil.getUserId();
+        CeStudent stu = studentRepo.selectStudentByUserId(userId);
+        if (stu == null) {
+            return new StudentVo();
+        }
+        return EntityCopyUtil.copyEntity(StudentVo.class, stu);
+    }
+
+    public Response<Boolean> updateMyProfile(StudentBody body) {
+        Long userId = SecurityUtil.getUserId();
+        CeStudent stu = studentRepo.selectStudentByUserId(userId);
+        if (stu == null) {
+            stu = new CeStudent();
+            stu.setUserId(userId);
+            stu.setStudentNo("STU_" + userId + "_" + System.currentTimeMillis() % 100000);
+            stu.setStudentName(SecurityUtil.getUsername());
+            stu.setSex(com.mock.example.modules.entrance.entity.enums.SexEnum.MAN);
+            stu.setCreatedUser(SecurityUtil.getUsername());
+            org.springframework.beans.BeanUtils.copyProperties(body, stu);
+            studentRepo.save(stu);
+        } else {
+            stu.setAchievement(body.getAchievement());
+            stu.setGraduateYear(body.getGraduateYear());
+            stu.setSubjectFirst(body.getSubjectFirst());
+            stu.setSubjectSecond(body.getSubjectSecond());
+            stu.setUpdatedUser(SecurityUtil.getUsername());
+            studentRepo.updateById(stu);
+        }
+        return new Response<>(Boolean.TRUE);
+    }
+
 }
 
   

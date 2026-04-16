@@ -118,6 +118,8 @@
       </el-table-column>
       <el-table-column label="入学年份" prop="enrollmentYear" :show-overflow-tooltip="true" width="80"/>
       <el-table-column label="毕业年份" prop="graduateYear" :show-overflow-tooltip="true" width="80"/>
+      <el-table-column label="首选" prop="subjectFirst" :show-overflow-tooltip="true" width="80"/>
+      <el-table-column label="再选" prop="subjectSecond" :show-overflow-tooltip="true" width="100"/>
       <el-table-column label="高考成绩" prop="achievement" :show-overflow-tooltip="true" width="80"/>
       <el-table-column label="学生标签" prop="tagNameText" :show-overflow-tooltip="true" width="150"/>
       <el-table-column label="创建时间" align="center" prop="createdTime" width="160">
@@ -180,7 +182,22 @@
           </el-select>
         </el-form-item>
         <el-form-item label="高考成绩" prop="achievement">
-          <el-input v-model="form.achievement" placeholder="请输入高考成绩"/>
+          <el-input-number v-model="form.achievement" placeholder="请输入高考成绩" :min="0" :max="750" />
+        </el-form-item>
+        <el-form-item label="首选科目" prop="subjectFirst">
+          <el-radio-group v-model="form.subjectFirst">
+            <el-radio label="物理">物理</el-radio>
+            <el-radio label="历史">历史</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="再选科目" prop="subjectSecond">
+          <el-checkbox-group v-model="subjectSecondArray" :max="2">
+            <el-checkbox label="思想政治">思想政治</el-checkbox>
+            <el-checkbox label="地理">地理</el-checkbox>
+            <el-checkbox label="化学">化学</el-checkbox>
+            <el-checkbox label="生物">生物</el-checkbox>
+          </el-checkbox-group>
+          <div style="font-size:12px;color:#999;line-height:14px;margin-top:5px;">请严格选择两门再选科目</div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -295,8 +312,18 @@ export default {
       tagNames: [],
       tagName: '',
       tagType: 'STUDENT',
-      bindTagId: undefined
+      bindTagId: undefined,
+      subjectSecondArray: [] // 用于绑定多选框数组
     };
+  },
+  watch: {
+    subjectSecondArray(val) {
+      if(val) {
+        this.form.subjectSecond = val.join(',');
+      } else {
+        this.form.subjectSecond = '';
+      }
+    }
   },
   created() {
     this.getList();
@@ -328,8 +355,11 @@ export default {
         enrollmentYear: undefined,
         graduateYear: undefined,
         sex: undefined,
-        achievement: undefined
+        achievement: undefined,
+        subjectFirst: undefined,
+        subjectSecond: undefined
       };
+      this.subjectSecondArray = [];
       this.resetForm("form");
     },
     // 多选框选中数据
@@ -360,6 +390,11 @@ export default {
       const studentId = row.id || this.ids
       getStudent(studentId).then(response => {
         this.form = response.data;
+        if(this.form.subjectSecond) {
+            this.subjectSecondArray = this.form.subjectSecond.split(',');
+        } else {
+            this.subjectSecondArray = [];
+        }
         this.open = true;
         this.title = "修改学生";
       });

@@ -42,3 +42,18 @@ export function delStudent(studentId) {
         method: 'delete'
     })
 }
+
+export function getMyProfile() {
+    return request({
+        url: '/college_entrance/student/myProfile',
+        method: 'get'
+    })
+}
+
+export function updateMyProfile(data) {
+    return request({
+        url: '/college_entrance/student/updateMyProfile',
+        method: 'put',
+        data: data
+    })
+}

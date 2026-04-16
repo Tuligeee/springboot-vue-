@@ -26,6 +26,12 @@
             @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="办学层次" prop="educationLevel">
+        <el-select v-model="queryParams.educationLevel" placeholder="请选择层级" clearable size="small" style="width: 130px;">
+          <el-option label="本科" value="本科" />
+          <el-option label="专科" value="专科" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -75,6 +81,7 @@
         :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress"
         :on-success="handleFileSuccess"
+        :on-error="handleFileError"
         :auto-upload="false"
         drag
       >
@@ -89,8 +96,8 @@
         </div>
       </el-upload>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitFileForm">确 定</el-button>
-        <el-button @click="upload.open = false">取 消</el-button>
+        <el-button type="primary" @click="submitFileForm" :loading="upload.isUploading">确 定</el-button>
+        <el-button @click="upload.open = false" :disabled="upload.isUploading">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -107,8 +114,15 @@
       </el-table-column>
 
       <el-table-column label="所在城市" align="center" prop="city" />
+      <el-table-column label="办学层次" align="center" prop="educationLevel">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.educationLevel === '本科' ? 'success' : 'warning'" v-if="scope.row.educationLevel">
+            {{ scope.row.educationLevel }}
+          </el-tag>
+          <span v-else>-</span>
+        </template>
+      </el-table-column>
       <el-table-column label="全国排名" align="center" prop="ranking" sortable />
-      <el-table-column label="招生人数" align="center" prop="personCount" />
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -146,6 +160,12 @@
         </el-form-item>
         <el-form-item label="所在城市" prop="city">
           <el-input v-model="form.city" placeholder="例如：北京市" />
+        </el-form-item>
+        <el-form-item label="办学层次" prop="educationLevel">
+          <el-radio-group v-model="form.educationLevel">
+            <el-radio label="本科">本科</el-radio>
+            <el-radio label="专科">专科</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-row>
           <el-col :span="12">
@@ -200,7 +220,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         collegeName: null,
-        city: null
+        city: null,
+        educationLevel: null
       },
       form: {},
       rules: {
@@ -285,6 +306,7 @@ export default {
         id: null,
         collegeName: null,
         city: null,
+        educationLevel: '本科',
         ranking: 1,
         personCount: 0,
         detailInfo: null
@@ -340,11 +362,29 @@ export default {
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
-      this.getList();
+      if (response.code === 200) {
+        this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+        this.getList();
+      } else {
+        this.$message.error(response.msg || "导入失败");
+      }
+    },
+    // 文件上传失败处理
+    handleFileError(err, file, fileList) {
+      this.upload.isUploading = false;
+      let errMsg = "文件上传失败，请检查网络或联系管理员。";
+      try {
+        // el-upload 的 err 对象通常包含响应内容
+        const response = JSON.parse(err.message);
+        if (response && response.msg) errMsg = response.msg;
+      } catch (e) {
+        console.error("解析上传错误失败", err);
+      }
+      this.$message.error(errMsg);
     },
     // 提交上传文件
     submitFileForm() {
+      this.upload.isUploading = true;
       this.$refs.upload.submit();
     }
   }

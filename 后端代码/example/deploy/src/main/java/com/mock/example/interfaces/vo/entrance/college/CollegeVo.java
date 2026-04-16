@@ -42,6 +42,11 @@ public class CollegeVo {
     private Integer personCount;
 
     /**
+     * 办学层次
+     */
+    private String educationLevel;
+
+    /**
      * 详细信息
      */
     private String detailInfo;

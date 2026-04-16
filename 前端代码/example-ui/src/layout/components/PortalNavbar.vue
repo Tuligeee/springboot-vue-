@@ -23,6 +23,7 @@
           <el-menu-item index="/score-view/list">历年分数线</el-menu-item>
           <el-menu-item index="/news-view/list">政策资讯</el-menu-item>
           <el-menu-item index="/notice-view/list">系统公告</el-menu-item>
+          <el-menu-item index="/forum-view/list">交流论坛</el-menu-item>
           <el-menu-item :index="checkRole(['admin', 'school_admin']) ? '/my-view/aspiration' : '/filling-view/list'">
             {{ checkRole(['admin', 'school_admin']) ? '志愿管理' : '模拟填报' }}
           </el-menu-item>
@@ -137,7 +138,7 @@ export default {
 
   .menu-container {
     flex: 1;
-    margin-left: 50px;
+    margin-left: 20px;
     
     .portal-el-menu {
       border-bottom: none;
@@ -145,10 +146,11 @@ export default {
       line-height: 60px;
       
       .el-menu-item {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 500;
         height: 60px;
         line-height: 60px;
+        padding: 0 10px;
         
         &:hover {
           background-color: transparent !important;

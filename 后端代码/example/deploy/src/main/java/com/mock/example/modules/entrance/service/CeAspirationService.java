@@ -92,6 +92,27 @@ public class CeAspirationService {
         
         if (body.getCollegeGroups() == null || body.getCollegeGroups().isEmpty()) return true;
 
+        // 【新高考选科兼容性核心拦截器】获取学生已填写的选修科目
+        Set<String> studentSubjects = new HashSet<>();
+        try {
+            QueryWrapper<CeStudent> query = new QueryWrapper<>();
+            query.eq("user_id", userId).last("limit 1");
+            CeStudent student = studentMapper.selectOne(query);
+            if (student != null) {
+                if (StrUtil.isNotBlank(student.getSubjectFirst())) {
+                    studentSubjects.add(student.getSubjectFirst().trim());
+                }
+                if (StrUtil.isNotBlank(student.getSubjectSecond())) {
+                    String[] seconds = student.getSubjectSecond().split(",");
+                    for (String s : seconds) {
+                        studentSubjects.add(s.trim());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("查询学生选修科目异常: {}", e.getMessage());
+        }
+
         List<CeAspirationDetail> details = new ArrayList<>();
         int globalSort = 1;
         for (AspirationFormBody.CollegeGroup group : body.getCollegeGroups()) {
@@ -103,6 +124,17 @@ public class CeAspirationService {
                 if (StrUtil.isBlank(pNo)) continue;
                 CeProfession prof = professionRepo.selectByProfessionNo(pNo);
                 if (prof == null) continue;
+
+                // 校验：专业的【选科要求】必须是该考生的【选考组合】的子集
+                String req = prof.getSubjectRequirement();
+                if (StrUtil.isNotBlank(req) && !"不提科目要求".equals(req) && !"不限".equals(req)) {
+                    String[] reqArray = req.split(",");
+                    for (String r : reqArray) {
+                        if (StrUtil.isNotBlank(r) && !studentSubjects.contains(r.trim())) {
+                            throw new RuntimeException("填报失败！您的实际选考科目不符合目标对象【" + prof.getProfessionName() + "】的选科门槛（要求包含: " + r.trim() + "）。强行填报存在100%退档风险！");
+                        }
+                    }
+                }
 
                 CeAspirationDetail d = new CeAspirationDetail();
                 d.setStudentNo(userTag);

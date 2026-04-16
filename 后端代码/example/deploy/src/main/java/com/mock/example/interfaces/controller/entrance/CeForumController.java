@@ -30,10 +30,16 @@ public class CeForumController {
     }
 
     // 发布帖子
-    @PreAuthorize("hasAnyRole('admin', 'school_admin', 'student')")
     @PostMapping("/add")
     public Response<Void> add(@RequestBody CeForumPost post) {
         forumService.publishPost(post);
+        return new Response<>();
+    }
+
+    // 修改帖子
+    @PutMapping
+    public Response<Void> edit(@RequestBody CeForumPost post) {
+        forumService.updatePost(post);
         return new Response<>();
     }
 
@@ -51,7 +57,6 @@ public class CeForumController {
     }
 
     // [新增] 删除帖子
-    @PreAuthorize("@ss.hasPermi('entrance:forum:remove') or (authentication.principal.userId == #id)")
     @DeleteMapping("/{id}")
     public Response<Void> remove(@PathVariable("id") Long id) {
         forumService.deletePost(id);
@@ -59,7 +64,6 @@ public class CeForumController {
     }
 
     // [新增] 删除评论接口
-    @PreAuthorize("@ss.hasPermi('entrance:forum:remove') or (authentication.principal.userId == #id)")
     @DeleteMapping("/comment/{id}")
     public Response<Void> removeComment(@PathVariable("id") Long id) {
         forumService.deleteComment(id);

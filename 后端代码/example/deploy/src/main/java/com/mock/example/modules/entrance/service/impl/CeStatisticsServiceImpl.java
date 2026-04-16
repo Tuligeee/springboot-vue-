@@ -16,6 +16,8 @@ import com.mock.example.modules.entrance.mapper.CeScoreLineMapper;
 import com.mock.example.modules.system.types.LoginUser;
 import com.mock.example.modules.system.mapper.SysUserMapper;
 import com.mock.example.modules.system.entity.model.SysUser;
+import com.mock.example.modules.entrance.entity.model.CeAspiration;
+import com.mock.example.modules.entrance.mapper.CeAspirationMapper;
 import com.mock.example.modules.entrance.service.CeStatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class CeStatisticsServiceImpl implements CeStatisticsService {
     private final CeNewsMapper newsMapper;
     private final CeScoreLineMapper scoreLineMapper;
     private final CeAspirationDetailMapper aspirationDetailMapper;
+    private final CeAspirationMapper aspirationMapper;
     private final SysUserMapper sysUserMapper;
 
     @Override
@@ -132,10 +135,44 @@ public class CeStatisticsServiceImpl implements CeStatisticsService {
         }
         charts.put("pieData", pieData);
 
-        // Bar chart data
-        List<String> xData = CollUtil.newArrayList("周一", "周二", "周三", "周四", "周五", "周六", "周日");
-        List<Integer> yData1 = CollUtil.newArrayList(120, 200, 150, 80, 70, 110, 130);
-        List<Integer> yData2 = CollUtil.newArrayList(20, 40, 35, 12, 10, 22, 33);
+        // Bar chart data: 展示近7天的活跃趋势
+        // 我们需要过去7天的日期列表作为 X 轴
+        List<String> xData = new ArrayList<>();
+        java.time.LocalDate today = java.time.LocalDate.now();
+        for (int i = 6; i >= 0; i--) {
+            xData.add(today.minusDays(i).toString());
+        }
+
+        // 查询近7天每日填报量 (CeAspiration)
+        QueryWrapper<CeAspiration> aspQ = new QueryWrapper<>();
+        aspQ.select("DATE_FORMAT(created_time, '%Y-%m-%d') as day, count(*) as count")
+            .apply("created_time >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)")
+            .groupBy("day")
+            .orderByAsc("day");
+        List<Map<String, Object>> aspStats = aspirationMapper.selectMaps(aspQ);
+        Map<String, Integer> aspMap = new HashMap<>();
+        if (aspStats != null) {
+            aspStats.forEach(m -> aspMap.put(m.get("day").toString(), Integer.parseInt(m.get("count").toString())));
+        }
+
+        // 查询近7天每日新用户注册量 (SysUser)
+        QueryWrapper<SysUser> userQ = new QueryWrapper<>();
+        userQ.select("DATE_FORMAT(create_time, '%Y-%m-%d') as day, count(*) as count")
+            .apply("create_time >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)")
+            .groupBy("day")
+            .orderByAsc("day");
+        List<Map<String, Object>> userStats = sysUserMapper.selectMaps(userQ);
+        Map<String, Integer> userMap = new HashMap<>();
+        if (userStats != null) {
+            userStats.forEach(m -> userMap.put(m.get("day").toString(), Integer.parseInt(m.get("count").toString())));
+        }
+
+        List<Integer> yData1 = new ArrayList<>();
+        List<Integer> yData2 = new ArrayList<>();
+        for (String day : xData) {
+            yData1.add(aspMap.getOrDefault(day, 0));
+            yData2.add(userMap.getOrDefault(day, 0));
+        }
         
         Map<String, Object> barData = new HashMap<>();
         barData.put("xData", xData);

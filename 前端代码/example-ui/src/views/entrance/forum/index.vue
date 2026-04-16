@@ -14,14 +14,6 @@
     <el-card v-for="post in postList" :key="post.id" style="margin-bottom: 10px; cursor: pointer;" shadow="hover">
       <div slot="header" class="clearfix">
         <span style="font-weight: bold; font-size: 16px;" @click="handleDetail(post.id)">{{ post.title }}</span>
-
-        <el-button
-            style="float: right; padding: 3px 0; color: #F56C6C; margin-left: 10px;"
-            type="text"
-            icon="el-icon-delete"
-            @click.stop="handleDelete(post)"
-        >删除</el-button>
-
         <el-tag size="mini" type="info" style="float: right;">{{ post.createTime }}</el-tag>
       </div>
 
@@ -77,6 +69,9 @@ export default {
   created() {
     this.getList();
   },
+  activated() {
+    this.getList();
+  },
   methods: {
     /** 查询帖子列表 */
     getList() {
@@ -108,25 +103,13 @@ export default {
     },
     /** 跳转详情页 */
     handleDetail(id) {
-      this.$router.push({ path: '/forum/detail/' + id });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const id = row.id;
-      // 【修改点】使用 Element 原生的 $confirm
-      this.$confirm('是否确认删除这条帖子？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        return delPost(id);
-      }).then(() => {
-        this.getList();
-        this.$message({
-          message: '删除成功',
-          type: 'success'
-        });
-      }).catch(() => {});
+      if (this.$route.path.startsWith('/forum-view')) {
+         // 从学生端进入
+         this.$router.push({ path: '/forum-view/detail/' + id });
+      } else {
+         // 从后台管理进入
+         this.$router.push({ path: '/entrance/forum/detail/' + id });
+      }
     },
     /** 提交按钮 */
     submitForm() {

@@ -16,6 +16,9 @@
           <i class="el-icon-user"></i> {{ post.nickName }} &nbsp;|&nbsp;
           <i class="el-icon-time"></i> {{ post.createTime }} &nbsp;|&nbsp;
           <i class="el-icon-view"></i> {{ post.viewCount }}
+          
+          <el-button v-if="currentUserId === post.userId || checkRole(['admin'])" type="text" size="mini" icon="el-icon-edit" style="margin-left: 15px;" @click="openEditDialog">修改</el-button>
+          <el-button v-if="currentUserId === post.userId || checkRole(['admin'])" type="text" size="mini" icon="el-icon-delete" style="color: #F56C6C; margin-left: 5px;" @click="handleDeletePost">删除</el-button>
         </div>
       </div>
       <div style="padding: 20px 0; font-size: 16px; line-height: 1.8; min-height: 100px;">
@@ -36,6 +39,7 @@
           </div>
 
           <el-button
+              v-if="currentUserId === item.userId || currentUserId === post.userId || checkRole(['admin'])"
               type="text"
               style="color: #F56C6C; padding: 0;"
               icon="el-icon-delete"
@@ -64,22 +68,42 @@
         <el-button type="primary" @click="submitComment" icon="el-icon-s-promotion">发送评论</el-button>
       </div>
     </div>
-      </el-card>
+
+    <el-dialog title="修改帖子" :visible.sync="editDialogVisible" width="500px" append-to-body>
+      <el-form ref="editForm" :model="editForm" label-width="80px">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="editForm.title" placeholder="请输入帖子标题" />
+        </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <el-input v-model="editForm.content" type="textarea" :rows="5" placeholder="请输入内容" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitEdit">确 定</el-button>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
+  </el-card>
   </div>
 </template>
 
 <script>
-// [注意] 引入 delComment
-import { getPost, listComment, addComment, delComment } from "@/api/entrance/forum";
+import { getInfo } from "@/api/login";
+import { checkRole } from "@/utils/permission";
+import { getPost, listComment, addComment, delComment, delPost, updatePost } from "@/api/entrance/forum";
 
 export default {
   name: "ForumDetail",
   data() {
     return {
+      currentUserId: null,
       postId: null,
       post: {},
       commentList: [],
-      commentContent: ""
+      commentContent: "",
+      editDialogVisible: false,
+      editForm: { title: "", content: "" }
     };
   },
   created() {
@@ -88,8 +112,13 @@ export default {
       this.getDetail();
       this.getComments();
     }
+    getInfo().then(res => {
+      const user = res.user || (res.data && res.data.user) || {};
+      this.currentUserId = user.userId;
+    });
   },
   methods: {
+    checkRole,
     /** 获取帖子详情 */
     getDetail() {
       getPost(this.postId).then(res => {
@@ -138,6 +167,43 @@ export default {
         this.getComments();
       }).catch(err => {
         console.error("评论失败", err);
+      });
+    },
+    /** 打开编辑弹窗 */
+    openEditDialog() {
+      this.editForm = {
+        id: this.post.id,
+        title: this.post.title,
+        content: this.post.content
+      };
+      this.editDialogVisible = true;
+    },
+    /** 提交编辑 */
+    submitEdit() {
+      if (!this.editForm.title || !this.editForm.content) {
+        this.$message.warning("标题和内容不能为空");
+        return;
+      }
+      updatePost(this.editForm).then(() => {
+        this.$message.success("修改成功");
+        this.editDialogVisible = false;
+        this.getDetail(); // 刷新详情
+      });
+    },
+    /** 删除帖子 */
+    handleDeletePost() {
+      this.$confirm('确认删除这篇帖子吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        return delPost(this.postId);
+      }).then(() => {
+        this.$message.success("删除成功");
+        // 返回上一页或列表页
+        if (this.$route.path.startsWith('/forum-view')) {
+           this.$router.push('/forum-view/list');
+        } else {
+           this.$router.push('/entrance/forum/list');
+        }
       });
     }
   }

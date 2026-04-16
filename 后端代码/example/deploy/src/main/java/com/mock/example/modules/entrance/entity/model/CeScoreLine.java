@@ -49,6 +49,11 @@ public class CeScoreLine implements Serializable {
     private Integer year;
 
     /**
+     * 录取人数
+     */
+    private Integer admissionCount;
+
+    /**
      * 创建时间
      */
     private Date createdTime;

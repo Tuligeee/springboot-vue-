@@ -31,6 +31,20 @@ export const constantRoutes = [
       }
     ]
   },
+  // --- Admin 论坛隐藏路由 ---
+  {
+    path: '/entrance/forum',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'detail/:postId(\\d+)',
+        component: (resolve) => require(['@/views/entrance/forum/detail'], resolve),
+        name: 'AdminForumDetail',
+        meta: { title: '帖子详情', activeMenu: '/forum' } // sys_menu path is /forum
+      }
+    ]
+  },
   // --- 【修复1】个人中心：使用 DynamicLayout，学生看到Portal，管理员看到后台 ---
   {
     path: '/user',
@@ -142,6 +156,25 @@ export const constantRoutes = [
         component: (resolve) => require(['@/views/entrance/aspiration/apply'], resolve),
         name: 'StaticApply',
         meta: { title: '在线填报' }
+      }
+    ]
+  },
+  {
+    path: '/forum-view',
+    component: PortalLayout,
+    hidden: true,
+    children: [
+      {
+        path: 'list',
+        component: (resolve) => require(['@/views/entrance/forum/index'], resolve),
+        name: 'StaticForum',
+        meta: { title: '交流论坛', activeMenu: '/forum-view/list' }
+      },
+      {
+        path: 'detail/:postId(\\d+)',
+        component: (resolve) => require(['@/views/entrance/forum/detail'], resolve),
+        name: 'StaticForumDetail',
+        meta: { title: '帖子详情', activeMenu: '/forum-view/list' }
       }
     ]
   },

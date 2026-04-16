@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.extern.slf4j.Slf4j;
 
 import com.mock.example.common.utils.ExcelUtil;
 import com.mock.example.modules.entrance.model.vo.CollegeImportVo;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 /**
  * 院校查询管理
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/college_entrance/college")
@@ -32,7 +34,6 @@ public class CeCollegeController extends BaseController {
      * 导出院校及专业分数数据
      */
     @ApiOperation(value = "导出院校数据")
-    @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @GetMapping("/export")
     public Response export(CollegeBody collegeBody) {
         List<CollegeImportVo> list = collegeService.selectCollegeExportList(collegeBody);
@@ -46,11 +47,21 @@ public class CeCollegeController extends BaseController {
     @ApiOperation(value = "导入院校数据")
     @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @PostMapping("/importData")
-    public Response importData(MultipartFile file, boolean updateSupport) throws Exception {
-        ExcelUtil<CollegeImportVo> util = new ExcelUtil<>(CollegeImportVo.class);
-        List<CollegeImportVo> collegeList = util.importExcel(file.getInputStream());
-        String message = collegeService.importCollegeData(collegeList, updateSupport);
-        return new Response<>().okMsg(message);
+    public Response importData(MultipartFile file, boolean updateSupport) {
+        log.info("【上传接收】文件名: {}, 大小: {} bytes, 内容类型: {}", 
+            file.getOriginalFilename(), file.getSize(), file.getContentType());
+        if (file.isEmpty()) {
+            return new Response<>().failMsg("上传文件不能为空");
+        }
+        try {
+            ExcelUtil<CollegeImportVo> util = new ExcelUtil<>(CollegeImportVo.class);
+            List<CollegeImportVo> collegeList = util.importExcel(file.getInputStream());
+            log.info("Excel 解析成功，共 {} 条数据", collegeList == null ? 0 : collegeList.size());
+            String message = collegeService.importCollegeData(collegeList, updateSupport);
+            return new Response<>().okMsg(message);
+        } catch (Exception e) {
+            return new Response<>().failMsg("导入失败，解析 Excel 文件时出错：" + e.getMessage());
+        }
     }
 
     /**
@@ -67,7 +78,6 @@ public class CeCollegeController extends BaseController {
      * 请求院校列表
      */
     @ApiOperation(value = "请求院校列表")
-    @PreAuthorize("@ss.hasPermi('entrance:college:index')")
     @GetMapping("/list")
     public TableDataInfo list(CollegeBody collegeBody) {
         startPage();
@@ -79,6 +89,7 @@ public class CeCollegeController extends BaseController {
             vo.setCity(c.getCity());
             vo.setRanking(c.getRanking());
             vo.setPersonCount(c.getPersonCount());
+            vo.setEducationLevel(c.getEducationLevel());
             return vo;
         }).collect(Collectors.toList());
         return getDataTable(rows);

@@ -63,9 +63,12 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-             <el-col :span="8">
-              <el-form-item label="招生人数" prop="personCount">
-                <el-input-number v-model="collegeForm.personCount" :min="0" style="width: 100%" />
+            <el-col :span="12">
+              <el-form-item label="办学层次" prop="educationLevel">
+                <el-radio-group v-model="collegeForm.educationLevel">
+                  <el-radio label="本科">本科</el-radio>
+                  <el-radio label="专科">专科</el-radio>
+                </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
@@ -89,10 +92,12 @@
               <el-descriptions class="margin-top" title="院校概况" :column="3" border>
                 <el-descriptions-item label="学校名称">
                   <span class="college-title">{{ college.collegeName }}</span>
+                  <el-tag :type="college.educationLevel === '本科' ? 'success' : 'warning'" size="mini" style="margin-left: 10px;" v-if="college.educationLevel">
+                    {{ college.educationLevel }}
+                  </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item label="所在城市">{{ college.city || '未知' }}</el-descriptions-item>
                 <el-descriptions-item label="全国排名">第 {{ college.ranking }} 名</el-descriptions-item>
-                <el-descriptions-item label="招生人数">{{ college.personCount }} 人</el-descriptions-item>
                 <el-descriptions-item label="更新时间">{{ college.updatedTime || '暂无记录' }}</el-descriptions-item>
               </el-descriptions>
             </el-col>
@@ -115,14 +120,21 @@
               <span style="font-weight: 600; color: #303133;">{{ scope.row.professionName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="修业年限" align="center" prop="studyYear" width="120">
+          <el-table-column label="修业年限" align="center" prop="studyYear" width="100">
             <template slot-scope="scope">
               <el-tag size="small" type="success" effect="light">{{ scope.row.studyYear }}年制</el-tag>
             </template>
           </el-table-column>
+          <el-table-column label="选科要求" align="center" prop="subjectRequirement" min-width="150">
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.subjectRequirement === '不提科目要求' || !scope.row.subjectRequirement ? 'info' : 'warning'" size="small">
+                {{ scope.row.subjectRequirement || '不提科目要求' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="200">
             <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-data-analysis" @click="handleShowScore(scope.row)">历年分数</el-button>
+              <!-- <el-button type="text" icon="el-icon-data-analysis" @click="handleShowScore(scope.row)">历年分数</el-button> -->
               <el-button v-if="checkRole(['student', 'common'])" type="text" icon="el-icon-edit" @click="handleApplyWithProf(scope.row)">快速填报</el-button>
             </template>
           </el-table-column>
@@ -139,6 +151,12 @@
           <el-table-column property="score" label="录取分数" align="center">
             <template slot-scope="scope">
               <span style="font-weight: bold; color: #F56C6C;">{{ scope.row.score }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column property="admissionCount" label="录取人数" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.admissionCount">{{ scope.row.admissionCount }}人</span>
+              <span v-else style="color:#999">-</span>
             </template>
           </el-table-column>
         </el-table>
