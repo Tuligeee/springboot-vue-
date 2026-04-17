@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mock.example.modules.system.mapper.SysUserPostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mock.example.modules.system.entity.model.SysUserPost">
+        <id column="user_id" property="userId" />
+        <result column="post_id" property="postId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, post_id
+    </sql>
+
+    <select id="selectPostListByUserId"  resultType="java.lang.Integer">
+        select p.post_id
+        from sys_post p
+                 left join sys_user_post up on up.post_id = p.post_id
+                 left join sys_user u on u.user_id = up.user_id
+        where u.user_id = #{userId}
+    </select>
+
+</mapper>

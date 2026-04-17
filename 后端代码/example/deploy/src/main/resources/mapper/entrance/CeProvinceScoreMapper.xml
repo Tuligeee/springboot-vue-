@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mock.example.modules.entrance.repository.CeProvinceScoreMapper">
+    
+    <resultMap type="com.mock.example.modules.entrance.model.CeProvinceScore" id="CeProvinceScoreResult">
+        <result property="id"    column="id"    />
+        <result property="year"    column="year"    />
+        <result property="province"    column="province"    />
+        <result property="category"    column="category"    />
+        <result property="batch"    column="batch"    />
+        <result property="score"    column="score"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCeProvinceScoreVo">
+        select id, year, province, category, batch, score, remark, create_by, create_time, update_by, update_time from ce_province_score
+    </sql>
+
+</mapper>

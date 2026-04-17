@@ -1,0 +1,14 @@
+<svg width="1200" height="480" viewBox="0 0 1200 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="480" fill="url(#paint0_linear)"/>
+  <circle cx="1100" cy="100" r="150" fill="white" fill-opacity="0.05"/>
+  <circle cx="100" cy="380" r="100" fill="white" fill-opacity="0.05"/>
+  <path d="M400 240L420 220M420 220L440 240M420 220V280" stroke="white" stroke-width="2" stroke-opacity="0.3"/>
+  <text x="100" y="220" fill="white" style="font-family:Arial; font-weight:bold; font-size:48px;">圆梦名校 · 精准导航</text>
+  <text x="100" y="280" fill="white" fill-opacity="0.8" style="font-family:Arial; font-size:24px;">全国 2800+ 所高校招生数据实时掌握</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="1200" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e3c72"/>
+      <stop offset="1" stop-color="#2a5298"/>
+    </linearGradient>
+  </defs>
+</svg>

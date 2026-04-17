@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mock.example.modules.entrance.mapper.CeProfessionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mock.example.modules.entrance.entity.model.CeProfession">
+        <id column="id" property="id" />
+        <result column="profession_no" property="professionNo" />
+        <result column="profession_name" property="professionName" />
+        <result column="college_no" property="collegeNo" />
+        <result column="study_year" property="studyYear" />
+        <result column="created_time" property="createdTime" />
+        <result column="created_user" property="createdUser" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="updated_user" property="updatedUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, profession_no, profession_name, college_no, study_year, created_time, created_user, updated_time, updated_user
+    </sql>
+
+</mapper>

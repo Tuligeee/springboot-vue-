@@ -1,0 +1,350 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './btn.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.padding-content {
+  padding: 4px 0;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.block {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+aside {
+  background: #eef1f6;
+  padding: 8px 24px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  display: block;
+  line-height: 32px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: #337ab7;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+//main-container全局样式
+.app-container {
+  padding: 20px;
+}
+
+.components-container {
+  margin: 30px 50px;
+  position: relative;
+}
+
+.pagination-container {
+  margin-top: 30px;
+}
+
+.text-center {
+  text-align: center
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+
+  .subtitle {
+    font-size: 20px;
+    color: #fff;
+  }
+
+  &.draft {
+    background: #d0d0d0;
+  }
+
+  &.deleted {
+    background: #d0d0d0;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+.filter-container {
+  padding-bottom: 10px;
+
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}
+
+/* Global modern card styling */
+.page-card {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #ebeef5 !important;
+  transition: all 0.3s ease;
+}
+
+.page-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+.page-card > .el-card__header {
+  background-color: #fafbfc;
+  border-bottom: 1px solid #ebeef5;
+  border-radius: 8px 8px 0 0;
+  padding: 15px 20px;
+}
+
+/* 高级深蓝侧边栏增强样式 - 移除阴影，改为经典高亮 */
+.sidebar-container {
+  .el-menu-item.is-active {
+    background-color: #0974e7 !important; /* 纯正主题蓝 */
+    color: #fff !important;
+    font-weight: bold;
+    border-radius: 0; /* 移除圆角，回归经典条状 */
+    margin: 0 !important; /* 铺满宽度 */
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #fff; /* 左侧白色高亮条 */
+      box-shadow: 2px 0 6px rgba(255, 255, 255, 0.5);
+    }
+  }
+  
+  .el-menu-item, .el-submenu__title {
+    height: 50px !important;
+    line-height: 50px !important;
+    transition: all 0.2s;
+    &:hover {
+      color: #fff !important;
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+}
+
+/* 深度同步登录页风格：全局背景色 */
+.app-main {
+  background-color: #f0f4f8 !important; /* 登录页同款淡雅灰蓝背景 */
+  min-height: calc(100vh - 50px);
+  padding: 20px;
+}
+
+/* 增强卡片的“悬浮感”，使其像登录框一样立体 */
+.page-card {
+  background: #fff !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important; /* 柔和的大阴影 */
+  border-radius: 12px !important;
+  margin-bottom: 20px;
+}
+
+/* 统一步骤条和标签的颜色为主题蓝 */
+.el-step__head.is-process, .el-step__title.is-process {
+  color: #0974e7 !important;
+  border-color: #0974e7 !important;
+}
+
+.el-button--primary {
+  background-color: #0974e7 !important;
+  border-color: #0974e7 !important;
+  box-shadow: none !important; /* 彻底移除蓝色阴影 */
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: none !important; /* 悬浮时也不要阴影 */
+  }
+}
+
+/* 全局 Loading 风格统一：移除绿色，改为主题蓝 */
+.el-loading-spinner {
+  .path {
+    stroke: #0974e7 !important; /* 转圈轨迹颜色 */
+  }
+  .el-loading-text {
+    color: #0974e7 !important; /* 加载文字颜色 */
+  }
+}
+
+/* 针对部分页面可能存在的旧式绿色进度条或装饰 */
+.el-progress-bar__inner {
+  background-color: #0974e7 !important;
+}
+
+/* 修正退出登录时可能出现的绿色遮罩感 */
+#app .main-container {
+  background-color: #f0f4f8;
+}
+
+/* 深度统一样式：彻底消除绿色 Loading 和 圈圈 */
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.el-loading-spinner .path {
+  stroke: #0974e7 !important; /* 强制 Loading 圈为主题蓝 */
+}
+
+.el-loading-spinner .el-loading-text {
+  color: #0974e7 !important;
+}
+
+/* 针对 RuoYi 默认可能存在的绿色背景或按钮 */
+.theme-dark .nest-menu .el-menu-item.is-active,
+.theme-dark .el-submenu .el-menu-item.is-active {
+  background-color: #0974e7 !important;
+}
+
+/* 修正 plain 按钮：移除边框并加深文字颜色 */
+.el-button--primary.is-plain {
+  color: #0974e7 !important;
+  background: #ecf5ff !important;
+  border-color: transparent !important; /* 移除蓝色边框 */
+  &:hover {
+    background: #0974e7 !important;
+    color: #fff !important;
+  }
+}
+
+.el-button--success.is-plain {
+  color: #67c23a !important;
+  background: #f0f9eb !important;
+  border-color: transparent !important; /* 移除绿色边框 */
+  &:hover {
+    background: #67c23a !important;
+    color: #fff !important;
+  }
+}
+
+.el-button--danger.is-plain {
+  color: #f56c6c !important;
+  background: #fef0f0 !important;
+  border-color: transparent !important; /* 移除红色边框 */
+  &:hover {
+    background: #f56c6c !important;
+    color: #fff !important;
+  }
+}
+
+/* 修正退出登录或重定向时的绿色闪烁 */
+#app .main-container {
+  background-color: #f0f4f8 !important;
+}

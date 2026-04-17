@@ -1,0 +1,38 @@
+// base color
+$blue:#0974e7;
+$light-blue:#3A71A8;
+$red:#f5222d;
+$pink: #E65D6E;
+$green: #52c41a;
+$tiffany: #4AB7BD;
+$yellow:#faad14;
+$panGreen: #30B08F;
+
+// 高级深蓝菜单主题风格 - 经典且专业
+$base-menu-color: rgba(255, 255, 255, 0.7);
+$base-menu-color-active: #ffffff;
+$base-menu-background: #001529; // 深宝蓝背景
+$base-logo-title-color: #ffffff;
+
+$base-menu-light-color: rgba(0, 0, 0, 0.85);
+$base-menu-light-background: #ffffff;
+$base-logo-light-title-color: #001529;
+
+$base-sub-menu-background: #000c17;
+$base-sub-menu-hover: #1890ff; // 悬浮使用亮蓝色
+
+$base-sidebar-width: 210px;
+
+// the :export directive is the magic sauce for webpack
+:export {
+  menuColor: $base-menu-color;
+  menuLightColor: $base-menu-light-color;
+  menuColorActive: $base-menu-color-active;
+  menuBackground: $base-menu-background;
+  menuLightBackground: $base-menu-light-background;
+  subMenuBackground: $base-sub-menu-background;
+  subMenuHover: $base-sub-menu-hover;
+  sideBarWidth: $base-sidebar-width;
+  logoTitleColor: $base-logo-title-color;
+  logoLightTitleColor: $base-logo-light-title-color
+}
