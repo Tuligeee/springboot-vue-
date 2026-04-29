@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-chat-dot-round" style="color: #409EFF; margin-right: 8px;"></i>
           交流论坛
         </span>
-      </div>
+      </template>
     <div style="margin-bottom: 20px;">
       <el-button type="primary" icon="el-icon-edit" @click="handleAdd">我要发帖</el-button>
     </div>

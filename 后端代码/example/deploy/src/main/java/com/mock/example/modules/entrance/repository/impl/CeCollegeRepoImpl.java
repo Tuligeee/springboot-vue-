@@ -12,6 +12,7 @@ import com.mock.example.modules.entrance.repository.ICeCollegeRepo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.mock.example.common.utils.SecurityUtil;
 
@@ -38,16 +39,12 @@ public class CeCollegeRepoImpl
                         CeCollege::getEducationLevel, college.getEducationLevel());
 
         // 数据隔离
-        if (SecurityUtil.getLoginUser() != null && SecurityUtil.getLoginUser().getUser() != null) {
-            boolean isSchoolAdmin = SecurityUtil.getLoginUser().getUser().getRoles().stream()
-                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-            if (isSchoolAdmin) {
-                Long myCollegeId = SecurityUtil.getLoginUser().getUser().getCollegeId();
-                if (myCollegeId != null) {
-                    wrapper.eq(CeCollege::getId, myCollegeId);
-                } else {
-                    wrapper.eq(CeCollege::getId, -1); // 无权查看
-                }
+        if (SecurityUtil.isRestrictedSchoolAdmin()) {
+            Long myCollegeId = SecurityUtil.getLoginUser().getUser().getCollegeId();
+            if (myCollegeId != null) {
+                wrapper.eq(CeCollege::getId, myCollegeId);
+            } else {
+                wrapper.eq(CeCollege::getId, -1); // 无权查看
             }
         }
 
@@ -72,6 +69,15 @@ public class CeCollegeRepoImpl
                         .eq(CeCollege::getCollegeNo, collegeNo)
                         .last(" limit 1")
         );
+    }
+
+    @Override
+    public List<String> selectUniqueEducationLevels() {
+        return this.baseMapper.selectObjs(
+                Wrappers.<CeCollege>query().select("distinct education_level")
+                        .isNotNull("education_level")
+                        .ne("education_level", "")
+        ).stream().filter(o -> o != null).map(Object::toString).sorted().collect(Collectors.toList());
     }
 
 }

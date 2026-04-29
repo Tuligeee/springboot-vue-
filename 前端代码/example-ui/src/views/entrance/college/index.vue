@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-school" style="color: #409EFF; margin-right: 8px;"></i>
           院校查询
         </span>
-      </div>
+      </template>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="院校名称" prop="collegeName">
         <el-input
@@ -28,8 +28,12 @@
       </el-form-item>
       <el-form-item label="办学层次" prop="educationLevel">
         <el-select v-model="queryParams.educationLevel" placeholder="请选择层级" clearable size="small" style="width: 130px;">
-          <el-option label="本科" value="本科" />
-          <el-option label="专科" value="专科" />
+          <el-option
+            v-for="item in uniqueEducationLevels"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -103,9 +107,20 @@
         </div>
         <el-progress :percentage="upload.progress" :stroke-width="16" striped striped-flow :duration="10" />
       </div>
+
+      <!-- 异常情况详情展示 -->
+      <div v-if="upload.showErrors && upload.errorList && upload.errorList.length > 0" style="margin-top: 20px;">
+        <el-divider content-position="left">错误详情 (前50条)</el-divider>
+        <div style="max-height: 200px; overflow-y: auto; background: #FFF5F5; border: 1px solid #FFD1D1; padding: 10px; border-radius: 4px;">
+          <div v-for="(err, index) in upload.errorList.slice(0, 50)" :key="index" style="color: #F56C6C; font-size: 12px; margin-bottom: 5px;">
+             {{ index + 1 }}. {{ err }}
+          </div>
+        </div>
+      </div>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFileForm" :loading="upload.isUploading">确 定</el-button>
-        <el-button @click="upload.open = false" :disabled="upload.isUploading">取 消</el-button>
+        <el-button @click="closeUploadDialog" :disabled="upload.isUploading">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -170,10 +185,21 @@
           <el-input v-model="form.city" placeholder="例如：北京市" />
         </el-form-item>
         <el-form-item label="办学层次" prop="educationLevel">
-          <el-radio-group v-model="form.educationLevel">
-            <el-radio label="本科">本科</el-radio>
-            <el-radio label="专科">专科</el-radio>
-          </el-radio-group>
+          <el-select
+            v-model="form.educationLevel"
+            placeholder="请选择或输入"
+            filterable
+            allow-create
+            default-first-option
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in uniqueEducationLevels"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </el-form-item>
         <el-row>
           <el-col :span="12">
@@ -202,7 +228,7 @@
 
 <script>
 import request from '@/utils/request'
-import { listCollege, getCollege, delCollege, addCollege, updateCollege } from "@/api/entrance/college";
+import { listCollege, getCollege, delCollege, addCollege, updateCollege, getUniqueEducationLevels } from "@/api/entrance/college";
 import { checkRole } from "@/utils/permission";
 import { getToken } from "@/utils/auth";
 
@@ -210,6 +236,8 @@ export default {
   name: "College",
   data() {
     return {
+      // 数据库中实际存在的办学层次列表
+      uniqueEducationLevels: [],
       loading: true,
       collegeList: [],
       total: 0,
@@ -225,7 +253,9 @@ export default {
         url: process.env.VUE_APP_BASE_API + "/college_entrance/college/importData",
         progress: 0,
         taskId: null,
-        timer: null
+        timer: null,
+        errorList: [],
+        showErrors: false
       },
       queryParams: {
         pageNum: 1,
@@ -242,6 +272,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getUniqueLevels();
   },
   methods: {
     checkRole,
@@ -256,6 +287,7 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
+      this.getUniqueLevels();
     },
     resetQuery() {
       this.resetForm("queryForm");
@@ -389,22 +421,41 @@ export default {
           url: '/college_entrance/college/importProgress/' + this.upload.taskId,
           method: 'get'
         }).then(res => {
-          const { progress, result, finished } = res.data;
+          const { progress, result, finished, errorList } = res.data;
           this.upload.progress = progress || 0;
+          this.upload.errorList = errorList || [];
           
           if (finished) {
             this.stopPollingProgress();
-            this.upload.open = false;
             this.upload.isUploading = false;
+            if (this.upload.errorList.length > 0) {
+                this.upload.showErrors = true;
+            }
             this.$refs.upload.clearFiles();
-            this.$alert("<div style='overflow: auto;max-height: 70vh;padding: 10px;'>" + result + "</div>", "导入完成", { dangerouslyUseHTMLString: true });
+            
+            this.$confirm("导入任务处理完成，是否立即查看结果详情？", "处理完毕", {
+                confirmButtonText: '查看结果',
+                cancelButtonText: '关闭',
+                type: (this.upload.errorList.length > 0) ? 'warning' : 'success'
+            }).then(() => {
+                this.$alert("<div style='overflow: auto;max-height: 40vh;color:#333;'>" + result + "</div>", "结果概览", { dangerouslyUseHTMLString: true });
+            });
+            
             this.getList();
+            this.getUniqueLevels();
           }
         }).catch(() => {
           this.stopPollingProgress();
           this.upload.isUploading = false;
         });
       }, 1500); // 每 1.5 秒查一次
+    },
+    /** 关闭上传弹窗并清理 */
+    closeUploadDialog() {
+       this.upload.open = false;
+       this.upload.showErrors = false;
+       this.upload.errorList = [];
+       this.stopPollingProgress();
     },
     stopPollingProgress() {
       if (this.upload.timer) {
@@ -429,6 +480,12 @@ export default {
     submitFileForm() {
       this.upload.isUploading = true;
       this.$refs.upload.submit();
+    },
+    /** 获取实时去重的办学层次 */
+    getUniqueLevels() {
+      getUniqueEducationLevels().then(res => {
+        this.uniqueEducationLevels = res.data;
+      });
     }
   }
 };

@@ -104,7 +104,7 @@ public class CeCollegeService {
      */
     @Async
     @Transactional
-    public void importCollegeDataAsync(String filePath, boolean updateSupport, String taskId, String operName) {
+    public void importCollegeDataAsync(String filePath, boolean updateSupport, String taskId, String operName, Long currentUserId) {
         File file = new File(filePath);
         try {
             log.info("【异步任务】开始流式解析文件: {}, 大小: {} bytes", file.getAbsolutePath(), file.length());
@@ -130,7 +130,7 @@ public class CeCollegeService {
             
             // 2. 流式分批解析与入库 (每批以 2000 条为界)
             util.importExcelStreaming(file, batch -> {
-                processImportBatch(batch, updateSupport, operName, collegeCache, professionCache, timeBasis, counts, failureMsg);
+                processImportBatch(batch, updateSupport, operName, currentUserId, collegeCache, professionCache, timeBasis, counts, failureMsg, taskId);
                 
                 // 更新进度：由于 SAX 难以提前预知总行数，这里根据处理量估算汇报（针对 9-10 万量级）
                 if (taskId != null) {
@@ -141,9 +141,9 @@ public class CeCollegeService {
 
             // 3. 构建结果消息
             StringBuilder successMsg = new StringBuilder();
-            successMsg.append("恭喜您，数据处理完成！共成功处理 ").append(counts[1]).append(" 条记录。");
+            successMsg.append("恭喜您，数据处理完成！共收到 ").append(counts[0]).append(" 条记录，其中成功处理 ").append(counts[1]).append(" 条。");
             if (counts[2] > 0) {
-                successMsg.append("<br/><br/><span style='color:red; font-weight:bold;'>以下 ").append(counts[2]).append(" 条记录处理失败：</span>").append(failureMsg);
+                successMsg.append("<br/><br/><span style='color:red; font-weight:bold;'>有 ").append(counts[2]).append(" 条记录处理失败。</span> 请点击下方的“查看错误日志”了解详情。");
             }
             
             ImportProgressContext.setProgress(taskId, 100);
@@ -161,15 +161,16 @@ public class CeCollegeService {
     /**
      * 处理导入批次（单次 DB 写入单位）
      */
-    private void processImportBatch(List<CollegeImportVo> batch, boolean updateSupport, String operName,
+    private void processImportBatch(List<CollegeImportVo> batch, boolean updateSupport, String operName, Long currentUserId,
                                    java.util.Map<String, CeCollege> collegeCache, 
                                    java.util.Map<String, CeProfession> professionCache,
-                                   long timeBasis, int[] counts, StringBuilder failureMsg) {
+                                   long timeBasis, int[] counts, StringBuilder failureMsg, String taskId) {
         
         List<CeCollege> collegesToSave = new ArrayList<>();
         List<CeCollege> collegesToUpdate = new ArrayList<>();
         List<CeProfession> professionsToSave = new ArrayList<>();
         List<CeProfession> professionsToUpdate = new ArrayList<>();
+        int batchFailureCount = 0;
 
         for (CollegeImportVo data : batch) {
             counts[0]++; // total
@@ -191,6 +192,7 @@ public class CeCollegeService {
                     colNo = "C" + (timeBasis + counts[0]); 
                     college.setCollegeNo(colNo);
                     college.setCreatedUser(operName);
+                    college.setManagerId(currentUserId);
                     collegesToSave.add(college);
                     collegeCache.put(data.getCollegeName(), college);
                 }
@@ -208,18 +210,29 @@ public class CeCollegeService {
                         professionsToUpdate.add(profession);
                     }
                 }
-                counts[1]++; // success
             } catch (Exception e) {
+                batchFailureCount++;
                 counts[2]++; // failure
-                failureMsg.append("<br/>数据 [" + data.getCollegeName() + "] 处理异常：" + e.getMessage());
+                String errorMsg = "院校 [" + data.getCollegeName() + "] 导入失败: " + e.getMessage();
+                if (taskId != null) {
+                    ImportProgressContext.addError(taskId, errorMsg);
+                }
             }
         }
 
         // 下发批量写
-        if (!collegesToSave.isEmpty()) collegeRepo.saveBatch(collegesToSave, 1000);
-        if (!collegesToUpdate.isEmpty()) collegeRepo.updateBatchById(collegesToUpdate, 1000);
-        if (!professionsToSave.isEmpty()) professionRepo.saveBatch(professionsToSave, 1000);
-        if (!professionsToUpdate.isEmpty()) professionRepo.updateBatchById(professionsToUpdate, 1000);
+        try {
+            if (!collegesToSave.isEmpty()) collegeRepo.saveBatch(collegesToSave, 1000);
+            if (!collegesToUpdate.isEmpty()) collegeRepo.updateBatchById(collegesToUpdate, 1000);
+            if (!professionsToSave.isEmpty()) professionRepo.saveBatch(professionsToSave, 1000);
+            if (!professionsToUpdate.isEmpty()) professionRepo.updateBatchById(professionsToUpdate, 1000);
+            
+            // 只有批量保存成功后，才增加成功计数
+            counts[1] += (batch.size() - batchFailureCount);
+        } catch (Exception e) {
+            log.error("批量保存导入数据失败", e);
+            throw e; // 抛出异常以触发事务回滚和外层捕获
+        }
     }
 
     private void updateCollegeFields(CeCollege college, CollegeImportVo data, String operName) {
@@ -231,14 +244,14 @@ public class CeCollegeService {
     }
 
     private void sanitizeCollegeData(CeCollege college, CollegeImportVo data) {
-        if (college.getCollegeName() != null && college.getCollegeName().length() > 100) {
-            college.setCollegeName(college.getCollegeName().substring(0, 97) + "...");
+        if (college.getCollegeName() != null && college.getCollegeName().length() > 255) {
+            college.setCollegeName(college.getCollegeName().substring(0, 250) + "...");
         }
-        if (college.getCity() != null && college.getCity().length() > 50) {
-            college.setCity(college.getCity().substring(0, 47) + "...");
+        if (college.getCity() != null && college.getCity().length() > 64) {
+            college.setCity(college.getCity().substring(0, 60) + "...");
         }
-        if (college.getEducationLevel() != null && college.getEducationLevel().length() > 50) {
-            college.setEducationLevel(college.getEducationLevel().substring(0, 47) + "...");
+        if (college.getEducationLevel() != null && college.getEducationLevel().length() > 128) {
+            college.setEducationLevel(college.getEducationLevel().substring(0, 120) + "...");
         }
         college.setPersonCount(data.getCollegePersonCount() == null ? 0 : data.getCollegePersonCount());
     }
@@ -248,11 +261,15 @@ public class CeCollegeService {
         p.setCollegeNo(colNo);
         p.setProfessionNo("P" + (uniqueSuffix + 1000000)); 
         String profName = data.getProfessionName();
-        if (profName != null && profName.length() > 100) profName = profName.substring(0, 97) + "...";
+        if (profName != null && profName.length() > 255) profName = profName.substring(0, 250) + "...";
         p.setProfessionName(profName);
         p.setStudyYear(data.getStudyYear());
         p.setPersonCount(data.getProfessionPersonCount() == null ? 0 : data.getProfessionPersonCount()); 
+        
+        // 归一化选科要求：去掉空格，并将“政治”替换为全称“思想政治”
         String subReq = StrUtil.isBlank(data.getSubjectRequirement()) ? "不提科目要求" : data.getSubjectRequirement();
+        subReq = subReq.replaceAll("\\s+", "").replace("政治", "思想政治").replace("，", ",");
+        
         if (subReq.length() > 200) subReq = subReq.substring(0, 197) + "...";
         p.setSubjectRequirement(subReq);
         p.setCreatedUser(operName);
@@ -262,7 +279,11 @@ public class CeCollegeService {
     private void updateProfessionFields(CeProfession profession, CollegeImportVo data, String operName) {
         profession.setStudyYear(data.getStudyYear());
         profession.setPersonCount(data.getProfessionPersonCount() == null ? 0 : data.getProfessionPersonCount()); 
+        
+        // 归一化选科要求：去掉空格，并将“政治”替换为全称“思想政治”
         String subReq = StrUtil.isBlank(data.getSubjectRequirement()) ? "不提科目要求" : data.getSubjectRequirement();
+        subReq = subReq.replaceAll("\\s+", "").replace("政治", "思想政治").replace("，", ",");
+        
         if (subReq.length() > 200) subReq = subReq.substring(0, 197) + "...";
         profession.setSubjectRequirement(subReq);
         profession.setUpdatedUser(operName);
@@ -284,7 +305,8 @@ public class CeCollegeService {
         java.util.Map<String, CeProfession> professionCache = allProfessions.stream()
             .collect(java.util.stream.Collectors.toMap(p -> p.getCollegeNo() + "_" + p.getProfessionName(), p -> p, (a, b) -> a));
 
-        processImportBatch(collegeList, updateSupport, operName, collegeCache, professionCache, System.currentTimeMillis(), counts, failureMsg);
+        Long currentUserId = SecurityUtil.getUserId();
+        processImportBatch(collegeList, updateSupport, operName, currentUserId, collegeCache, professionCache, System.currentTimeMillis(), counts, failureMsg, null);
 
         StringBuilder successMsg = new StringBuilder();
         successMsg.append("数据处理完成！共成功处理 ").append(counts[1]).append(" 条记录。");
@@ -301,6 +323,7 @@ public class CeCollegeService {
         }
         CeCollege ceCollege = EntityCopyUtil.copyEntity(CeCollege.class, collegeBody);
         ceCollege.setCreatedUser(SecurityUtil.getUsername());
+        ceCollege.setManagerId(SecurityUtil.getUserId());
         collegeRepo.save(ceCollege);
         return new Response<>(Boolean.TRUE);
     }
@@ -376,5 +399,12 @@ public class CeCollegeService {
             candidate = "C" + System.nanoTime();
         } while (BooleanUtils.isFalse(uniqueCollegeNo(candidate, null)));
         return candidate;
+    }
+
+    /**
+     * 获取数据库中不重复的办学层次列表
+     */
+    public List<String> getUniqueEducationLevels() {
+        return collegeRepo.selectUniqueEducationLevels();
     }
 }

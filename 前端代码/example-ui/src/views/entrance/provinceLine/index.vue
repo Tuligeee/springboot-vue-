@@ -3,18 +3,17 @@
     <el-card shadow="hover" class="page-card">
       <template slot="header">
         <span class="page-title">
-          <i class="el-icon-data-analysis" style="color: #409EFF; margin-right: 8px;"></i>
-          历年省控分数线
+          <i class="el-icon-guide" style="color: #409EFF; margin-right: 8px;"></i>
+          省控批次线管理
         </span>
       </template>
 
-      <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
         <el-form-item label="年份" prop="year">
           <el-input
             v-model="queryParams.year"
             placeholder="请输入年份"
             clearable
-            size="small"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
@@ -23,16 +22,16 @@
             v-model="queryParams.province"
             placeholder="请输入省份"
             clearable
-            size="small"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="科类" prop="category">
-          <el-select v-model="queryParams.category" placeholder="请选择科类" clearable size="small">
-            <el-option label="理科" value="理科" />
-            <el-option label="文科" value="文科" />
-            <el-option label="综合" value="综合" />
-          </el-select>
+        <el-form-item label="批次" prop="batchName">
+          <el-input
+            v-model="queryParams.batchName"
+            placeholder="请输入批次名称"
+            clearable
+            @keyup.enter.native="handleQuery"
+          />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -48,7 +47,7 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
-            v-hasPermi="['entrance:provinceScore:add']"
+            v-hasPermi="['entrance:provinceLine:add']"
           >新增</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -59,7 +58,7 @@
             size="mini"
             :disabled="single"
             @click="handleUpdate"
-            v-hasPermi="['entrance:provinceScore:edit']"
+            v-hasPermi="['entrance:provinceLine:edit']"
           >修改</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -70,20 +69,20 @@
             size="mini"
             :disabled="multiple"
             @click="handleDelete"
-            v-hasPermi="['entrance:provinceScore:remove']"
+            v-hasPermi="['entrance:provinceLine:remove']"
           >删除</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
-      <el-table v-loading="loading" :data="provinceScoreList" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="provinceLineList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="ID" align="center" prop="id" />
         <el-table-column label="年份" align="center" prop="year" />
         <el-table-column label="省份" align="center" prop="province" />
+        <el-table-column label="批次" align="center" prop="batchName" />
+        <el-table-column label="控制分数线" align="center" prop="score" />
         <el-table-column label="科类" align="center" prop="category" />
-        <el-table-column label="录取批次" align="center" prop="batch" />
-        <el-table-column label="分数线" align="center" prop="score" />
-        <el-table-column label="备注" align="center" prop="remark" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
@@ -91,14 +90,14 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['entrance:provinceScore:edit']"
+              v-hasPermi="['entrance:provinceLine:edit']"
             >修改</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['entrance:provinceScore:remove']"
+              v-hasPermi="['entrance:provinceLine:remove']"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -113,14 +112,20 @@
       />
     </el-card>
 
-    <!-- 添加或修改历年分数线对话框 -->
+    <!-- 添加或修改档线对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="年份" prop="year">
           <el-input v-model="form.year" placeholder="请输入年份" />
         </el-form-item>
         <el-form-item label="省份" prop="province">
           <el-input v-model="form.province" placeholder="请输入省份" />
+        </el-form-item>
+        <el-form-item label="批次" prop="batchName">
+          <el-input v-model="form.batchName" placeholder="请输入批次" />
+        </el-form-item>
+        <el-form-item label="分数线" prop="score">
+          <el-input-number v-model="form.score" placeholder="请输入分数" :min="0" :max="900" />
         </el-form-item>
         <el-form-item label="科类" prop="category">
           <el-select v-model="form.category" placeholder="请选择科类">
@@ -128,15 +133,6 @@
             <el-option label="文科" value="文科" />
             <el-option label="综合" value="综合" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="录取批次" prop="batch">
-          <el-input v-model="form.batch" placeholder="请输入批次(如：本科一批)" />
-        </el-form-item>
-        <el-form-item label="分数线" prop="score">
-          <el-input-number v-model="form.score" :min="0" :max="750" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -148,10 +144,10 @@
 </template>
 
 <script>
-import { listProvinceScore, getProvinceScore, delProvinceScore, addProvinceScore, updateProvinceScore } from "@/api/entrance/provinceScore";
+import { listProvinceLine, getProvinceLine, delProvinceLine, addProvinceLine, updateProvinceLine } from "@/api/entrance/provinceLine";
 
 export default {
-  name: "ProvinceScore",
+  name: "ProvinceLine",
   data() {
     return {
       // 遮罩层
@@ -166,8 +162,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 历年分数线表格数据
-      provinceScoreList: [],
+      // 档线表格数据
+      provinceLineList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -178,27 +174,16 @@ export default {
         pageSize: 10,
         year: null,
         province: null,
-        category: null
+        batchName: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        year: [
-          { required: true, message: "年份不能为空", trigger: "blur" }
-        ],
-        province: [
-          { required: true, message: "省份不能为空", trigger: "blur" }
-        ],
-        category: [
-          { required: true, message: "科类不能为空", trigger: "change" }
-        ],
-        batch: [
-          { required: true, message: "批次不能为空", trigger: "blur" }
-        ],
-        score: [
-          { required: true, message: "分数线不能为空", trigger: "blur" }
-        ]
+        year: [{ required: true, message: "年份不能为空", trigger: "blur" }],
+        province: [{ required: true, message: "省份不能为空", trigger: "blur" }],
+        batchName: [{ required: true, message: "批次集不能为空", trigger: "blur" }],
+        score: [{ required: true, message: "分数线不能为空", trigger: "blur" }]
       }
     };
   },
@@ -206,11 +191,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询历年分数线列表 */
+    /** 查询档线列表 */
     getList() {
       this.loading = true;
-      listProvinceScore(this.queryParams).then(response => {
-        this.provinceScoreList = response.rows;
+      listProvinceLine(this.queryParams).then(response => {
+        this.provinceLineList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -224,12 +209,11 @@ export default {
     reset() {
       this.form = {
         id: null,
-        year: null,
-        province: "湖北",
-        category: null,
-        batch: "本科一批",
+        year: new Date().getFullYear(),
+        province: null,
+        batchName: null,
         score: null,
-        remark: null
+        category: '理科'
       };
       this.resetForm("form");
     },
@@ -253,16 +237,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加历年分数线";
+      this.title = "添加省控档线";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getProvinceScore(id).then(response => {
+      getProvinceLine(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改历年分数线";
+        this.title = "修改省控档线";
       });
     },
     /** 提交按钮 */
@@ -270,14 +254,14 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateProvinceScore(this.form).then(response => {
-              this.msgSuccess("修改成功");
+            updateProvinceLine(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addProvinceScore(this.form).then(response => {
-              this.msgSuccess("新增成功");
+            addProvinceLine(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -288,16 +272,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除历年分数线编号为"' + ids + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delProvinceScore(ids);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        })
+      this.$modal.confirm('是否确认删除档线编号为"' + ids + '"的数据项？').then(function() {
+        return delProvinceLine(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     }
   }
 };

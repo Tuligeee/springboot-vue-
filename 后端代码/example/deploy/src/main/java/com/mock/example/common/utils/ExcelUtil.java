@@ -188,23 +188,34 @@ public class ExcelUtil<T> {
             public void handle(int sheetIndex, int rowIndex, List<Object> rowList) {
                 if (rowList == null || rowList.isEmpty()) return;
 
-                // 处理表头
-                if (rowIndex == 0) {
+                // 处理表头：寻找包含至少一个已知业务字段的那一行作为表头
+                if (headerMap.isEmpty()) {
+                    boolean isHeaderRow = false;
                     for (int i = 0; i < rowList.size(); i++) {
                         Object val = rowList.get(i);
-                        if (val != null) headerMap.put(val.toString().trim(), i);
-                    }
-                    
-                    // 根据表头映射 Field 和缓存好的 Excel 注解
-                    for (Object[] os : fields) {
-                        Field field = (Field) os[0];
-                        Excel attr = (Excel) os[1];
-                        Integer colIndex = headerMap.get(attr.name());
-                        if (colIndex != null) {
-                            colMetadataMap.put(colIndex, os);
+                        if (val == null) continue;
+                        String headerName = val.toString().trim();
+                        // 检查该列名是否在注解定义的列名列表中
+                        for (Object[] os : fields) {
+                            Excel attr = (Excel) os[1];
+                            if (attr.name().equals(headerName)) {
+                                headerMap.put(headerName, i);
+                                isHeaderRow = true;
+                            }
                         }
                     }
-                    return;
+                    if (isHeaderRow) {
+                        // 根据表头映射 Field 和缓存好的 Excel 注解
+                        for (Object[] os : fields) {
+                            Field field = (Field) os[0];
+                            Excel attr = (Excel) os[1];
+                            Integer colIndex = headerMap.get(attr.name());
+                            if (colIndex != null) {
+                                colMetadataMap.put(colIndex, os);
+                            }
+                        }
+                    }
+                    return; // 识别到表头后跳过当前行处理，避免表头被当作数据
                 }
 
                 // 处理数据行
@@ -264,6 +275,9 @@ public class ExcelUtil<T> {
                     }
                 } catch (Exception e) {
                     log.error("流式解析 Excel 行失败: rowIndex={}", rowIndex, e);
+                    // 核心修复：如果是因为批次处理（batchConsumer.accept）抛出的异常，必须向上抛出
+                    // 否则 Spring 事务会被标记为 rollback-only 但外层却以为处理成功
+                    throw new RuntimeException("Excel 数据处理失败 (第" + (rowIndex + 1) + "行): " + e.getMessage(), e);
                 }
             }
         });

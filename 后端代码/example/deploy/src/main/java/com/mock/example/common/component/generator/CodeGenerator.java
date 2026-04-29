@@ -41,7 +41,7 @@ public class CodeGenerator {
     private static final String DATA_SOURCE_URL
             = "jdbc:mysql://localhost:3306/example-college-entrance?useUnicode=true&characterEncoding=UTF-8";
     private static final String DATA_SOURCE_USERNAME = "root";
-    private static final String DATA_SOURCE_PASSWORD = "12345678";
+    private static final String DATA_SOURCE_PASSWORD = "";
     private static final String DATA_SOURCE_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     /**

@@ -39,4 +39,10 @@ public interface ICeCollegeRepo extends IService<CeCollege> {
      */
     CeCollege selectCollegeByNo(String collegeNo);
 
+    /**
+     * 查询去重后的办学层次列表
+     * @return 办学层次列表
+     */
+    List<String> selectUniqueEducationLevels();
+
 }

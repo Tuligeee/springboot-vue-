@@ -11,6 +11,8 @@
         <result column="ranking" property="ranking" />
         <result column="person_count" property="personCount" />
         <result column="detail_info" property="detailInfo" />
+        <result column="education_level" property="educationLevel" />
+        <result column="manager_id" property="managerId" />
         <result column="created_time" property="createdTime" />
         <result column="created_user" property="createdUser" />
         <result column="updated_time" property="updatedTime" />
@@ -19,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, college_no, college_name, city, ranking, person_count, detail_info, created_time, created_user,
+        id, college_no, college_name, city, ranking, person_count, education_level, manager_id, detail_info, created_time, created_user,
         updated_time, updated_user
     </sql>
 

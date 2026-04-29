@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-star-on" style="color: #F7BA2A; margin-right: 8px;"></i>
           我的收藏中心
         </span>
-      </div>
+      </template>
 
       <div v-loading="loading">
         <el-row :gutter="20" v-if="collectionList.length > 0">

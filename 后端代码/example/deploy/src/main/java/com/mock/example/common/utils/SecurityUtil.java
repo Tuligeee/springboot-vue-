@@ -128,4 +128,11 @@ public class SecurityUtil {
             return false;
         }
     }
+
+    /**
+     * 判断是否为受限的院校管理员（是院校管理员但不是超级管理员）
+     */
+    public static boolean isRestrictedSchoolAdmin() {
+        return !isAdmin(getUserId()) && hasRole("school_admin");
+    }
 }

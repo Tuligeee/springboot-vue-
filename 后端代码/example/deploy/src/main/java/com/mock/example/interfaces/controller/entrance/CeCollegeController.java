@@ -76,8 +76,8 @@ public class CeCollegeController extends BaseController {
         // 3. 初始化进度并回执
         ImportProgressContext.setProgress(taskId, 5); // 5% 表示文件已接收
         
-        // 4. 异步执行解析与导入 (传入文件路径)
-        collegeService.importCollegeDataAsync(filePath, updateSupport, taskId, operName);
+        // 4. 异步执行解析与导入 (传入文件路径与用户信息)
+        collegeService.importCollegeDataAsync(filePath, updateSupport, taskId, operName, getUserId());
         
         return new Response(200, "文件上传成功，正在后台解析并导入", taskId);
     }
@@ -90,10 +90,12 @@ public class CeCollegeController extends BaseController {
     public Response getImportProgress(@PathVariable String taskId) {
         Integer progress = ImportProgressContext.getProgress(taskId);
         String result = ImportProgressContext.getResult(taskId);
+        List<String> errorList = ImportProgressContext.getErrorList(taskId);
         
         Map<String, Object> data = new HashMap<>();
         data.put("progress", progress);
         data.put("result", result);
+        data.put("errorList", errorList);
         data.put("finished", progress != null && progress >= 100);
         
         return new Response(data);
@@ -179,5 +181,14 @@ public class CeCollegeController extends BaseController {
     @DeleteMapping("/{collegeIds}")
     public Response<Boolean> remove(@PathVariable Integer[] collegeIds) {
         return collegeService.deleteCollegeByIds(collegeIds);
+    }
+
+    /**
+     * 获取数据库中不重复的办学层次列表
+     */
+    @ApiOperation(value = "获取唯一步学层次")
+    @GetMapping("/uniqueEducationLevels")
+    public Response getUniqueEducationLevels() {
+        return new Response(collegeService.getUniqueEducationLevels());
     }
 }

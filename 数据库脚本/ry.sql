@@ -966,11 +966,7 @@ INSERT INTO `sys_menu` VALUES (3003, '分数线修改', 3000, 3, '#', '', '', 1,
 INSERT INTO `sys_menu` VALUES (3004, '分数线删除', 3000, 4, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:remove', '#', 'admin', NOW(), '', NULL, '');
 INSERT INTO `sys_menu` VALUES (3005, '分数线导出', 3000, 5, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:provinceScore:export', '#', 'admin', NOW(), '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2068, '轮播图管理', 0, 1, 'banner', 'entrance/banner/index', NULL, 1, 0, 'C', '0', '0', NULL, 'color', 'admin', '2026-02-26 12:10:08', 'admin', '2026-02-26 12:13:39', '');
-INSERT INTO `sys_menu` VALUES (2069, '专业分数管理', 2054, 4, 'scoreLine', 'entrance/scoreLine/index', NULL, 1, 0, 'C', '0', '0', 'entrance:scoreLine:list', 'chart', 'admin', NOW(), '', NULL, '维护各校专业的历年分数');
-INSERT INTO `sys_menu` VALUES (2075, '分数查询', 2069, 1, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:query', '#', 'admin', NOW(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2076, '分数新增', 2069, 2, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:add', '#', 'admin', NOW(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2077, '分数修改', 2069, 3, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:edit', '#', 'admin', NOW(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2078, '分数删除', 2069, 4, '#', '', '', 1, 0, 'F', '0', '0', 'entrance:scoreLine:remove', '#', 'admin', NOW(), '', NULL, '');
+
 
 
 -- ----------------------------

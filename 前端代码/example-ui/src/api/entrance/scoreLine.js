@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询各校专业录取分数线列表
+// 查询专业分数线列表
 export function listScoreLine(query) {
   return request({
     url: '/entrance/scoreLine/list',
@@ -9,7 +9,7 @@ export function listScoreLine(query) {
   })
 }
 
-// 查询详情
+// 查询专业分数线详细
 export function getScoreLine(id) {
   return request({
     url: '/entrance/scoreLine/' + id,
@@ -17,7 +17,7 @@ export function getScoreLine(id) {
   })
 }
 
-// 新增
+// 新增专业分数线
 export function addScoreLine(data) {
   return request({
     url: '/entrance/scoreLine',
@@ -26,7 +26,7 @@ export function addScoreLine(data) {
   })
 }
 
-// 修改
+// 修改专业分数线
 export function updateScoreLine(data) {
   return request({
     url: '/entrance/scoreLine',
@@ -35,7 +35,7 @@ export function updateScoreLine(data) {
   })
 }
 
-// 删除
+// 删除专业分数线
 export function delScoreLine(id) {
   return request({
     url: '/entrance/scoreLine/' + id,

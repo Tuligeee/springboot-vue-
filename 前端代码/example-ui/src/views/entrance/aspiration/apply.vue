@@ -1,13 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-edit-outline" style="color: #409EFF; margin-right: 8px;"></i>
-          在线模拟志愿填报 (湖北院校专业组模式)
+          在线模拟志愿填报
         </span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="$router.back()">返回上一页</el-button>
-      </div>
+      </template>
 
       <div class="apply-content" v-loading="loading">
         <!-- 志愿单切换 -->
@@ -31,12 +30,16 @@
                 <el-select 
                   v-model="group.collegeNo" 
                   filterable 
+                  clearable
+                  default-first-option
+                  reserve-keyword
+                  :filter-method="filterColleges"
                   placeholder="请搜索并选择院校"
                   style="width: 300px"
                   @change="handleCollegeChange(group)"
                 >
                   <el-option
-                    v-for="item in collegeOptions"
+                    v-for="item in filteredColleges"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -60,6 +63,8 @@
                     :key="prof.value"
                     :label="prof.label"
                     :value="prof.value">
+                    <span style="float: left">{{ prof.label }}</span>
+                    <span v-if="prof.info === 'incompatible'" style="float: right; color: #F56C6C; font-size: 12px; font-weight: bold;">[选科不符]</span>
                   </el-option>
                 </el-select>
                 <el-button type="text" icon="el-icon-close" @click="removeProfession(gIndex, pIndex)"></el-button>
@@ -92,6 +97,7 @@ export default {
       loading: false,
       currentSheetNo: 1,
       collegeOptions: [], // [{label, value, children:[]}]
+      filteredColleges: [], // 用于展示的过滤后的列表
       collegeGroups: [] // [{collegeNo: '', professionNos: ['']}]
     };
   },
@@ -103,9 +109,27 @@ export default {
     initData() {
       this.loading = true;
       const professionId = this.$route.query.professionId;
+      
+      // --- 关键闭环：进入时校验学生档案 ---
+      import("@/api/entrance/student").then(({ getMyProfile }) => {
+        return getMyProfile();
+      }).then(res => {
+        const profile = res.data;
+        if (!profile || !profile.achievement || !profile.subjectFirst || !profile.subjectSecond) {
+          this.$confirm('检测到您的“高考档案”信息不全（成绩或选科缺失），这可能导致无法准确校验填报资格。是否立即去完善？', '填报预警', {
+            confirmButtonText: '去完善',
+            cancelButtonText: '暂不',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push('/my-view/student-profile');
+          });
+        }
+      });
+
       selectItem(this.currentSheetNo).then(res => {
-        if (res.code === 0) {
+        if (res.code === 200) {
           this.collegeOptions = res.data.items;
+          this.filteredColleges = this.collegeOptions.slice(0, 100); // 默认显示前100条以保证性能
           if (professionId) {
             return getProfession(professionId).then(pres => {
               const prof = pres.data;
@@ -133,6 +157,15 @@ export default {
     handleSheetChange() {
       this.$router.push({ query: { ...this.$route.query, sheetNo: this.currentSheetNo } });
       this.initData();
+    },
+    filterColleges(query) {
+      if (query) {
+        this.filteredColleges = this.collegeOptions.filter(item => {
+          return item.label.toLowerCase().includes(query.toLowerCase());
+        }).slice(0, 100);
+      } else {
+        this.filteredColleges = this.collegeOptions.slice(0, 100);
+      }
     },
     addCollege() {
       this.collegeGroups.push({ collegeNo: '', professionNos: [''] });
@@ -195,7 +228,7 @@ export default {
           sheetNo: this.currentSheetNo,
           collegeGroups: this.collegeGroups
         }).then(res => {
-          if (res.code === 0) {
+          if (res.code === 200) {
             this.$message.success("志愿方案保存成功！");
             this.$router.go(-1);
           }
@@ -208,6 +241,16 @@ export default {
 </script>
 
 <style scoped>
+.page-title { font-weight: bold; font-size: 18px; color: #303133; }
+.back-btn { 
+  border-radius: 4px;
+  padding: 5px 12px;
+  transition: all 0.2s;
+  &:hover {
+    transform: translateX(-3px);
+  }
+}
+
 .apply-content { max-width: 900px; margin: 0 auto; }
 .sheet-selector { margin-bottom: 25px; text-align: center; }
 .action-bar { margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }

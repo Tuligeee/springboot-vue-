@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-picture-outline" style="color: #409EFF; margin-right: 8px;"></i>
           轮播图管理
         </span>
-      </div>
+      </template>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
       <el-form-item label="标题" prop="title">
         <el-input v-model="queryParams.title" placeholder="请输入标题" clearable size="small" @keyup.enter.native="handleQuery"/>

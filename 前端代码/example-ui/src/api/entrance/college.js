@@ -50,3 +50,11 @@ export function delCollege(collegeId) {
         method: 'delete'
     })
 }
+
+// 获取数据库中不重复的办学层次列表
+export function getUniqueEducationLevels() {
+    return request({
+        url: '/college_entrance/college/uniqueEducationLevels',
+        method: 'get'
+    })
+}

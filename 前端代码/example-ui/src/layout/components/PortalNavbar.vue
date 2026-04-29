@@ -45,6 +45,9 @@
             <router-link to="/my-view/collection">
               <el-dropdown-item icon="el-icon-star-off">我的收藏</el-dropdown-item>
             </router-link>
+            <router-link to="/my-view/student-profile" v-if="!checkRole(['admin', 'school_admin'])">
+              <el-dropdown-item icon="el-icon-medal">高考档案</el-dropdown-item>
+            </router-link>
             <router-link :to="checkRole(['admin', 'school_admin']) ? '/my-view/aspiration' : '/filling-view/list'">
               <el-dropdown-item icon="el-icon-s-order">
                 {{ checkRole(['admin', 'school_admin']) ? '志愿管理' : '我的志愿' }}

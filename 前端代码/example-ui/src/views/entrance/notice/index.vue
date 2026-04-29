@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-bell" style="color: #E6A23C; margin-right: 8px;"></i>
           系统公告
         </span>
-      </div>
+      </template>
 
       <el-form :model="queryParams" :inline="true" label-width="68px" style="margin-bottom: 8px;">
         <el-form-item label="标题">

@@ -56,16 +56,12 @@ public class CeProfessionRepoImpl
                         CeProfession::getCollegeNo, ceProfession.getCollegeNo());
 
         // 数据隔离
-        if (SecurityUtil.getLoginUser() != null && SecurityUtil.getLoginUser().getUser() != null) {
-            boolean isSchoolAdmin = SecurityUtil.getLoginUser().getUser().getRoles().stream()
-                    .anyMatch(r -> "school_admin".equals(r.getRoleKey()));
-            if (isSchoolAdmin) {
-                Long myCollegeId = SecurityUtil.getLoginUser().getUser().getCollegeId();
-                if (myCollegeId != null) {
-                    wrapper.inSql(CeProfession::getCollegeNo, "SELECT college_no FROM ce_college WHERE id = " + myCollegeId);
-                } else {
-                    wrapper.eq(CeProfession::getCollegeNo, "NO_COLLEGE_ASSIGNED");
-                }
+        if (SecurityUtil.isRestrictedSchoolAdmin()) {
+            Long myCollegeId = SecurityUtil.getLoginUser().getUser().getCollegeId();
+            if (myCollegeId != null) {
+                wrapper.inSql(CeProfession::getCollegeNo, "SELECT college_no FROM ce_college WHERE id = " + myCollegeId);
+            } else {
+                wrapper.eq(CeProfession::getCollegeNo, "NO_COLLEGE_ASSIGNED");
             }
         }
 

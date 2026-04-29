@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card shadow="hover" class="page-card">
-      <div slot="header" class="clearfix">
-        <span style="font-weight: bold; font-size: 18px; color: #303133;">
+      <template slot="header">
+        <span class="page-title">
           <i class="el-icon-news" style="color: #409EFF; margin-right: 8px;"></i>
           {{ isAdmin ? '政策资讯管理' : '最新高考政策资讯' }}
         </span>
-      </div>
+      </template>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="资讯标题" prop="title">
         <el-input

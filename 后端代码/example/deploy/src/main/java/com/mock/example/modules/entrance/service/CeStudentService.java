@@ -223,13 +223,19 @@ public class CeStudentService {
         if (stu == null) {
             stu = new CeStudent();
             stu.setUserId(userId);
-            stu.setStudentNo("STU_" + userId + "_" + System.currentTimeMillis() % 100000);
-            stu.setStudentName(SecurityUtil.getUsername());
-            stu.setSex(com.mock.example.modules.entrance.entity.enums.SexEnum.MAN);
+            stu.setStudentNo(StrUtil.isNotBlank(body.getStudentNo()) ? body.getStudentNo() : "STU_" + userId + "_" + System.currentTimeMillis() % 100000);
+            stu.setStudentName(StrUtil.isNotBlank(body.getStudentName()) ? body.getStudentName() : SecurityUtil.getUsername());
+            stu.setSex(body.getSex() != null ? body.getSex() : com.mock.example.modules.entrance.entity.enums.SexEnum.MAN);
             stu.setCreatedUser(SecurityUtil.getUsername());
-            org.springframework.beans.BeanUtils.copyProperties(body, stu);
+            stu.setAchievement(body.getAchievement());
+            stu.setGraduateYear(body.getGraduateYear());
+            stu.setSubjectFirst(body.getSubjectFirst());
+            stu.setSubjectSecond(body.getSubjectSecond());
             studentRepo.save(stu);
         } else {
+            if (StrUtil.isNotBlank(body.getStudentName())) stu.setStudentName(body.getStudentName());
+            if (StrUtil.isNotBlank(body.getStudentNo())) stu.setStudentNo(body.getStudentNo());
+            if (body.getSex() != null) stu.setSex(body.getSex());
             stu.setAchievement(body.getAchievement());
             stu.setGraduateYear(body.getGraduateYear());
             stu.setSubjectFirst(body.getSubjectFirst());

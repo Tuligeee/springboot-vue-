@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.mock.example.modules.entrance.entity.model.CeScoreLine">
         <id column="id" property="id" />
         <result column="profession_no" property="professionNo" />
+        <result column="college_no" property="collegeNo" />
         <result column="score" property="score" />
         <result column="year" property="year" />
         <result column="created_time" property="createdTime" />
@@ -16,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, profession_no, score, year, created_time, created_user, updated_time, updated_user
+        id, profession_no, college_no, score, year, created_time, created_user, updated_time, updated_user
     </sql>
 
 </mapper>

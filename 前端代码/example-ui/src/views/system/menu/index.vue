@@ -431,8 +431,6 @@ export default {
       this.reset();
       this.getTreeselect();
       getMenu(row.menuId).then(response => {
-        console.log(this.form)
-
         this.form = response.data;
         this.open = true;
         this.title = "修改菜单";

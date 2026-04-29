@@ -73,6 +73,8 @@ CREATE TABLE `ce_college` (
                               `city` varchar(16) NOT NULL DEFAULT '' COMMENT '城市',
                               `ranking` int NOT NULL DEFAULT '0' COMMENT '排名',
                               `person_count` int NOT NULL DEFAULT '0' COMMENT '人数',
+                              `education_level` varchar(64) DEFAULT NULL COMMENT '办学层次',
+                              `manager_id` bigint DEFAULT NULL COMMENT '学校管理员ID',
                               `detail_info` text COMMENT '详细信息',
                               `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                               `created_user` varchar(16) NOT NULL DEFAULT '' COMMENT '创建人',
@@ -145,16 +147,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `ce_score_line`;
 CREATE TABLE `ce_score_line` (
-                                 `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
-                                 `profession_no` varchar(32) NOT NULL DEFAULT '' COMMENT '专业代码',
-                                 `college_no` varchar(32) DEFAULT NULL,
-                                 `score` int DEFAULT NULL COMMENT '分数线',
-                                 `year` int DEFAULT NULL COMMENT '年份',
-                                 `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                 `created_user` varchar(16) NOT NULL DEFAULT '' COMMENT '创建人',
-                                 `updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-                                 `updated_user` varchar(16) DEFAULT NULL COMMENT '修改人',
-                                 PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `profession_no` varchar(32) NOT NULL DEFAULT '' COMMENT '专业代码',
+  `college_no` varchar(32) DEFAULT NULL,
+  `score` int DEFAULT NULL COMMENT '分数线',
+  `year` int DEFAULT NULL COMMENT '年份',
+  `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `created_user` varchar(16) NOT NULL DEFAULT '' COMMENT '创建人',
+  `updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `updated_user` varchar(16) DEFAULT NULL COMMENT '修改人',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=125  COMMENT='分数线表';
 
 -- ----------------------------
@@ -167,61 +169,12 @@ INSERT INTO `ce_score_line` VALUES (7, 'A001', 'C001', 657, 2022, '2023-04-02 17
 INSERT INTO `ce_score_line` VALUES (26, 'P005', 'C002', 700, 2022, '2023-04-02 17:35:34', 'admin', '2023-04-02 17:35:34', NULL);
 INSERT INTO `ce_score_line` VALUES (27, 'P005', 'C002', 677, 2020, '2023-04-02 17:35:34', 'admin', '2023-04-02 17:35:34', NULL);
 INSERT INTO `ce_score_line` VALUES (28, 'P005', 'C002', 690, 2021, '2023-04-02 17:35:34', 'admin', '2023-04-02 17:35:34', NULL);
-INSERT INTO `ce_score_line` VALUES (68, 'P-16', 'C009', 401, 2022, '2023-04-02 18:13:02', 'admin', '2023-04-02 18:13:02', NULL);
-INSERT INTO `ce_score_line` VALUES (69, 'P-16', 'C009', 400, 2021, '2023-04-02 18:13:02', 'admin', '2023-04-02 18:13:02', NULL);
-INSERT INTO `ce_score_line` VALUES (70, 'P-16', 'C009', 410, 2020, '2023-04-02 18:13:02', 'admin', '2023-04-02 18:13:02', NULL);
 INSERT INTO `ce_score_line` VALUES (71, 'P011', 'C004', 580, 2021, '2023-04-02 18:18:31', 'admin', '2023-04-02 18:18:31', NULL);
 INSERT INTO `ce_score_line` VALUES (72, 'P011', 'C004', 550, 2022, '2023-04-02 18:18:31', 'admin', '2023-04-02 18:18:31', NULL);
 INSERT INTO `ce_score_line` VALUES (73, 'P011', 'C004', 590, 2020, '2023-04-02 18:18:31', 'admin', '2023-04-02 18:18:31', NULL);
-INSERT INTO `ce_score_line` VALUES (74, 'P001', 'C001', 700, 2021, '2023-04-02 18:18:47', 'admin', '2023-04-02 18:18:47', NULL);
-INSERT INTO `ce_score_line` VALUES (75, 'P001', 'C001', 657, 2022, '2023-04-02 18:18:47', 'admin', '2023-04-02 18:18:47', NULL);
-INSERT INTO `ce_score_line` VALUES (76, 'P001', 'C001', 679, 2020, '2023-04-02 18:18:47', 'admin', '2023-04-02 18:18:47', NULL);
-INSERT INTO `ce_score_line` VALUES (77, 'P002', 'C001', 666, 2020, '2023-04-02 18:19:13', 'admin', '2023-04-02 18:19:13', NULL);
-INSERT INTO `ce_score_line` VALUES (78, 'P002', 'C001', 710, 2021, '2023-04-02 18:19:13', 'admin', '2023-04-02 18:19:13', NULL);
-INSERT INTO `ce_score_line` VALUES (79, 'P002', 'C001', 699, 2022, '2023-04-02 18:19:13', 'admin', '2023-04-02 18:19:13', NULL);
-INSERT INTO `ce_score_line` VALUES (80, 'P003', 'C001', 701, 2021, '2023-04-02 18:19:29', 'admin', '2023-04-02 18:19:29', NULL);
-INSERT INTO `ce_score_line` VALUES (81, 'P003', 'C001', 687, 2022, '2023-04-02 18:19:29', 'admin', '2023-04-02 18:19:29', NULL);
-INSERT INTO `ce_score_line` VALUES (82, 'P003', 'C001', 710, 2020, '2023-04-02 18:19:29', 'admin', '2023-04-02 18:19:29', NULL);
-INSERT INTO `ce_score_line` VALUES (83, 'P004', 'C001', 699, 2020, '2023-04-02 18:19:49', 'admin', '2023-04-02 18:19:49', NULL);
-INSERT INTO `ce_score_line` VALUES (84, 'P004', 'C001', 680, 2021, '2023-04-02 18:19:49', 'admin', '2023-04-02 18:19:49', NULL);
-INSERT INTO `ce_score_line` VALUES (85, 'P004', 'C001', 691, 2022, '2023-04-02 18:19:49', 'admin', '2023-04-02 18:19:49', NULL);
-INSERT INTO `ce_score_line` VALUES (86, 'P005', 'C001', 700, 2020, '2023-04-02 18:20:03', 'admin', '2023-04-02 18:20:03', NULL);
-INSERT INTO `ce_score_line` VALUES (87, 'P005', 'C001', 711, 2022, '2023-04-02 18:20:03', 'admin', '2023-04-02 18:20:03', NULL);
-INSERT INTO `ce_score_line` VALUES (88, 'P005', 'C001', 720, 2021, '2023-04-02 18:20:03', 'admin', '2023-04-02 18:20:03', NULL);
-INSERT INTO `ce_score_line` VALUES (89, 'P006', 'C002', 677, 2020, '2023-04-02 18:20:19', 'admin', '2023-04-02 18:20:19', NULL);
-INSERT INTO `ce_score_line` VALUES (90, 'P006', 'C002', 690, 2021, '2023-04-02 18:20:19', 'admin', '2023-04-02 18:20:19', NULL);
-INSERT INTO `ce_score_line` VALUES (91, 'P006', 'C002', 700, 2022, '2023-04-02 18:20:19', 'admin', '2023-04-02 18:20:19', NULL);
-INSERT INTO `ce_score_line` VALUES (92, 'P007', 'C002', 670, 2020, '2023-04-02 18:20:35', 'admin', '2023-04-02 18:20:35', NULL);
-INSERT INTO `ce_score_line` VALUES (93, 'P007', 'C002', 691, 2022, '2023-04-02 18:20:35', 'admin', '2023-04-02 18:20:35', NULL);
-INSERT INTO `ce_score_line` VALUES (94, 'P007', 'C002', 688, 2021, '2023-04-02 18:20:35', 'admin', '2023-04-02 18:20:35', NULL);
-INSERT INTO `ce_score_line` VALUES (95, 'P008', 'C002', 710, 2021, '2023-04-02 18:20:58', 'admin', '2023-04-02 18:20:58', NULL);
-INSERT INTO `ce_score_line` VALUES (96, 'P008', 'C002', 711, 2022, '2023-04-02 18:20:58', 'admin', '2023-04-02 18:20:58', NULL);
-INSERT INTO `ce_score_line` VALUES (97, 'P008', 'C002', 699, 2020, '2023-04-02 18:20:58', 'admin', '2023-04-02 18:20:58', NULL);
-INSERT INTO `ce_score_line` VALUES (98, 'P009', 'C002', 681, 2020, '2023-04-02 18:21:12', 'admin', '2023-04-02 18:21:12', NULL);
-INSERT INTO `ce_score_line` VALUES (99, 'P009', 'C002', 688, 2021, '2023-04-02 18:21:12', 'admin', '2023-04-02 18:21:12', NULL);
-INSERT INTO `ce_score_line` VALUES (100, 'P009', 'C002', 690, 2022, '2023-04-02 18:21:12', 'admin', '2023-04-02 18:21:12', NULL);
-INSERT INTO `ce_score_line` VALUES (101, 'P010', 'C003', 620, 2021, '2023-04-02 18:21:29', 'admin', '2023-04-02 18:21:29', NULL);
-INSERT INTO `ce_score_line` VALUES (102, 'P010', 'C003', 630, 2022, '2023-04-02 18:21:29', 'admin', '2023-04-02 18:21:29', NULL);
-INSERT INTO `ce_score_line` VALUES (103, 'P010', 'C003', 610, 2020, '2023-04-02 18:21:29', 'admin', '2023-04-02 18:21:29', NULL);
-INSERT INTO `ce_score_line` VALUES (104, 'P012', 'C005', 500, 2020, '2023-04-02 18:21:44', 'admin', '2023-04-02 18:21:44', NULL);
-INSERT INTO `ce_score_line` VALUES (105, 'P012', 'C005', 510, 2021, '2023-04-02 18:21:44', 'admin', '2023-04-02 18:21:44', NULL);
-INSERT INTO `ce_score_line` VALUES (106, 'P012', 'C005', 520, 2022, '2023-04-02 18:21:44', 'admin', '2023-04-02 18:21:44', NULL);
-INSERT INTO `ce_score_line` VALUES (107, 'P013', 'C007', 477, 2021, '2023-04-02 18:22:00', 'admin', '2023-04-02 18:22:00', NULL);
-INSERT INTO `ce_score_line` VALUES (108, 'P013', 'C007', 490, 2022, '2023-04-02 18:22:00', 'admin', '2023-04-02 18:22:00', NULL);
-INSERT INTO `ce_score_line` VALUES (109, 'P013', 'C007', 499, 2020, '2023-04-02 18:22:00', 'admin', '2023-04-02 18:22:00', NULL);
-INSERT INTO `ce_score_line` VALUES (110, 'P013', 'C011', 499, 2022, '2023-04-02 18:22:14', 'admin', '2023-04-02 18:22:14', NULL);
-INSERT INTO `ce_score_line` VALUES (111, 'P013', 'C011', 500, 2021, '2023-04-02 18:22:14', 'admin', '2023-04-02 18:22:14', NULL);
-INSERT INTO `ce_score_line` VALUES (112, 'P013', 'C011', 460, 2020, '2023-04-02 18:22:14', 'admin', '2023-04-02 18:22:14', NULL);
-INSERT INTO `ce_score_line` VALUES (113, 'P014', 'C008', 500, 2022, '2023-04-02 18:22:29', 'admin', '2023-04-02 18:22:29', NULL);
-INSERT INTO `ce_score_line` VALUES (114, 'P014', 'C008', 502, 2021, '2023-04-02 18:22:29', 'admin', '2023-04-02 18:22:29', NULL);
-INSERT INTO `ce_score_line` VALUES (115, 'P014', 'C008', 501, 2020, '2023-04-02 18:22:29', 'admin', '2023-04-02 18:22:29', NULL);
-INSERT INTO `ce_score_line` VALUES (116, 'P015', 'C009', 450, 2022, '2023-04-02 18:22:45', 'admin', '2023-04-02 18:22:45', NULL);
-INSERT INTO `ce_score_line` VALUES (117, 'P015', 'C009', 410, 2020, '2023-04-02 18:22:45', 'admin', '2023-04-02 18:22:45', NULL);
-INSERT INTO `ce_score_line` VALUES (118, 'P015', 'C009', 420, 2021, '2023-04-02 18:22:45', 'admin', '2023-04-02 18:22:45', NULL);
-INSERT INTO `ce_score_line` VALUES (122, 'P016', 'C009', 400, 2021, '2023-04-02 18:23:08', 'admin', '2023-04-02 18:23:08', NULL);
-INSERT INTO `ce_score_line` VALUES (123, 'P016', 'C009', 401, 2022, '2023-04-02 18:23:08', 'admin', '2023-04-02 18:23:08', NULL);
-INSERT INTO `ce_score_line` VALUES (124, 'P016', 'C009', 410, 2020, '2023-04-02 18:23:08', 'admin', '2023-04-02 18:23:08', NULL);
 COMMIT;
+
+
 
 -- ----------------------------
 -- Table structure for ce_student
@@ -797,8 +750,11 @@ INSERT INTO `sys_menu` VALUES (2058, '学生编辑', 2052, 3, '', NULL, NULL, 1,
 INSERT INTO `sys_menu` VALUES (2059, '学生删除', 2052, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:remove', '#', 'admin', '2023-04-02 03:39:25', 'admin', '2023-04-04 06:45:48', '');
 INSERT INTO `sys_menu` VALUES (2060, '学生标签', 2052, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'entrance:student:tag', '#', 'admin', '2023-04-04 06:45:39', 'admin', '2023-04-04 06:45:58', '');
 INSERT INTO `sys_menu` VALUES (2061, '填报管理', 0, 6, 'aspiration', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'list', 'admin', '2023-04-04 19:00:03', 'admin', '2023-04-04 20:17:55', '');
-INSERT INTO `sys_menu` VALUES (2062, '测评分析', 2061, 1, 'evaluate', 'entrance/aspiration/evaluate', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:evaluate', 'cascader', 'admin', '2023-04-04 20:14:59', 'admin', '2023-04-05 04:35:54', '');
-INSERT INTO `sys_menu` VALUES (2063, '志愿管理', 2061, 2, 'aspiration', 'entrance/aspiration/form', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:form', 'logininfor', 'admin', '2023-04-05 04:34:31', 'admin', '2023-04-05 04:37:58', '');
+INSERT INTO `sys_menu` VALUES (2063, '志愿管理', 2061, 2, 'aspiration', 'entrance/aspiration/index', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:index', 'logininfor', 'admin', '2023-04-05 04:34:31', 'admin', '2023-04-30 20:49:11', '');
+INSERT INTO `sys_menu` VALUES (2064, '志愿填报', 2061, 3, 'form', 'entrance/aspiration/form', NULL, 1, 0, 'C', '0', '0', 'entrance:aspiration:form', 'edit', 'admin', '2023-04-29 21:01:01', 'admin', '2023-04-29 21:03:17', '');
+INSERT INTO `sys_menu` VALUES (2066, '我的志愿表', 2061, 1, 'my-volunteer', 'entrance/filling/index', NULL, 1, 0, 'C', '0', '0', NULL, 'button', 'admin', '2023-05-20 13:26:29', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2070, '高校概况', 2054, 0, 'schoolDashboard', 'dashboard/SchoolDashboard', NULL, 1, 0, 'C', '0', '0', 'entrance:school:dashboard', 'dashboard', 'admin', NOW(), '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2071, '本校资料', 2054, 4, 'myProfile', 'entrance/college/myProfile', NULL, 1, 0, 'C', '0', '0', 'entrance:college:myProfile', 'user', 'admin', NOW(), '', NULL, '');
 COMMIT;
 
 -- ----------------------------
@@ -923,17 +879,22 @@ CREATE TABLE `sys_role_menu` (
 -- Records of sys_role_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_menu` VALUES (2, 2052);
-INSERT INTO `sys_role_menu` VALUES (2, 2053);
-INSERT INTO `sys_role_menu` VALUES (11, 2052);
-INSERT INTO `sys_role_menu` VALUES (11, 2053);
+-- 高校管理员 (Role ID 2)
+INSERT INTO `sys_role_menu` VALUES (2, 2);
+INSERT INTO `sys_role_menu` VALUES (2, 2054);
+INSERT INTO `sys_role_menu` VALUES (2, 2055);
+INSERT INTO `sys_role_menu` VALUES (2, 2056);
+INSERT INTO `sys_role_menu` VALUES (2, 2070);
+INSERT INTO `sys_role_menu` VALUES (2, 2071);
+
+-- 学生角色 (Role ID 11)
 INSERT INTO `sys_role_menu` VALUES (11, 2054);
 INSERT INTO `sys_role_menu` VALUES (11, 2055);
 INSERT INTO `sys_role_menu` VALUES (11, 2056);
-INSERT INTO `sys_role_menu` VALUES (11, 2058);
-INSERT INTO `sys_role_menu` VALUES (11, 2060);
 INSERT INTO `sys_role_menu` VALUES (11, 2061);
-INSERT INTO `sys_role_menu` VALUES (11, 2062);
+INSERT INTO `sys_role_menu` VALUES (11, 2063);
+INSERT INTO `sys_role_menu` VALUES (11, 2064);
+INSERT INTO `sys_role_menu` VALUES (11, 2066);
 COMMIT;
 
 -- ----------------------------

@@ -25,7 +25,6 @@ function websocketSend (agentData) {
             websock.send(JSON.stringify(agentData))
         }
         if (websock.readyState === websock.CLOSED) { // websock.CLOSED = 3
-            console.log('websock.readyState=3')
             Message.error('ws连接异常，请稍候重试')
             errorCallback()
         }
@@ -54,7 +53,6 @@ function websocketclose (e) {
 }
 // 建立ws连接
 function websocketOpen (e) {
-    // console.log('ws连接成功')
 }
 
 // 初始化weosocket

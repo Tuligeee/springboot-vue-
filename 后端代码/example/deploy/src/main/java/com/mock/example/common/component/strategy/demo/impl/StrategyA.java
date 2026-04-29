@@ -19,8 +19,6 @@ public class StrategyA implements StrategyInterface{
 
     @Override
     public void method() {
-        System.out.println("执行策略A~");
+        // 执行策略A
     }
 }
-
-  

@@ -195,6 +195,12 @@ export const constantRoutes = [
         component: (resolve) => require(['@/views/entrance/aspiration/index'], resolve),
         name: 'StaticAspiration',
         meta: { title: '我的志愿' }
+      },
+      {
+        path: 'student-profile',
+        component: (resolve) => require(['@/views/entrance/student/profile'], resolve),
+        name: 'StaticStudentProfile',
+        meta: { title: '高考档案' }
       }
     ]
   },

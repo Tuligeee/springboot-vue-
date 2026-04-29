@@ -3,12 +3,12 @@
     <!-- ================= 管理员视图：汇总管理列表 ================= -->
     <template v-if="checkRole(['admin', 'school_admin'])">
       <el-card shadow="hover" class="page-card">
-        <div slot="header" class="clearfix">
-          <span class="management-title">
+        <template slot="header">
+          <span class="page-title">
             <i class="el-icon-s-management" style="color: #409EFF; margin-right: 8px;"></i>
             全员志愿填报管理中心
           </span>
-        </div>
+        </template>
         
         <!-- 搜索栏 -->
         <el-form :model="queryParams" ref="queryForm" :inline="true" class="management-query">
@@ -65,12 +65,12 @@
     <!-- ================= 学生视图：模拟填报方案 ================= -->
     <template v-else>
       <el-card shadow="hover" class="page-card">
-        <div slot="header" class="clearfix">
-          <span style="font-weight: bold; font-size: 18px; color: #303133;">
+        <template slot="header">
+          <span class="page-title">
             <i class="el-icon-document-copy" style="color: #409EFF; margin-right: 8px;"></i>
             填报中心 - 我的模拟志愿表 (共{{ sheetList.length }}个方案)
           </span>
-        </div>
+        </template>
 
         <div v-loading="loading" class="sheets-list">
           <el-row :gutter="20">
